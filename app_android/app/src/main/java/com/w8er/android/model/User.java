@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-public class User implements Parcelable {
+public class User {
     private String _id;
     private String first_name;
     private String last_name;
@@ -32,38 +32,6 @@ public class User implements Parcelable {
 //    private String courses[];
 
     public User(){}
-
-    protected User(Parcel in) {
-        _id = in.readString();
-        first_name = in.readString();
-        last_name = in.readString();
-        email = in.readString();
-        password = in.readString();
-        password_cnfrm = in.readString();
-        role = in.readString();
-        accessToken = in.readString();
-        display_name = in.readString();
-        about_me = in.readString();
-        country = in.readString();
-        address = in.readString();
-        gender = in.readString();
-        profile_img = in.readString();
-        temp_password = in.readString();
-        temp_password_time = in.readString();
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
 
     public String getPassword_cnfrm() {
         return password_cnfrm;
@@ -222,28 +190,4 @@ public class User implements Parcelable {
                 this.getAbout_me().equals(u.getAbout_me());
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(_id);
-        parcel.writeString(first_name);
-        parcel.writeString(last_name);
-        parcel.writeString(email);
-        parcel.writeString(password);
-        parcel.writeString(password_cnfrm);
-        parcel.writeString(role);
-        parcel.writeString(accessToken);
-        parcel.writeString(display_name);
-        parcel.writeString(about_me);
-        parcel.writeString(country);
-        parcel.writeString(address);
-        parcel.writeString(gender);
-        parcel.writeString(profile_img);
-        parcel.writeString(temp_password);
-        parcel.writeString(temp_password_time);
-    }
 }
