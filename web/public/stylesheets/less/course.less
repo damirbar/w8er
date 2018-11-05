@@ -1,0 +1,123 @@
+.course-page {
+
+  .course-header {
+    margin: auto;
+    font-weight: 600;
+    color: #206800;
+    margin-top: 2%;
+  }
+
+  .right-hand-side {
+
+    .nav-tabs--vertical {
+      border-bottom: none;
+      border-right: 1px solid #ddd;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+    .nav-tabs--left {
+      margin: 0 15px;
+    }
+    .nav-tabs--left .nav-item + .nav-item {
+      margin-top: .25rem;
+    }
+    .nav-tabs--left .nav-link {
+      transition: border-color .125s ease-in;
+      white-space: nowrap;
+    }
+    .nav-tabs--left .nav-link:hover {
+      background-color: #f7f7f7;
+      border-color: transparent;
+    }
+    .nav-tabs--left .nav-link.active {
+      border-bottom-color: #ddd;
+      border-right-color: #fff;
+      border-bottom-left-radius: 0.25rem;
+      border-top-right-radius: 0;
+      margin-right: -1px;
+    }
+    .nav-tabs--left .nav-link.active:hover {
+      background-color: #fff;
+      border-color: #0275d8 #fff #0275d8 #0275d8;
+    }
+
+
+    .messages-table-body {
+      .message-text {
+        font-size: 30px;
+        word-break: break-word;
+      }
+    }
+
+    .courses-file {
+
+      margin-top: 5%;
+
+      //margin-top: 2%;
+
+      .file-name {
+        text-align: center;
+      }
+
+      .single-file-container {
+        margin-bottom: 18%;
+      }
+
+    }
+
+    .course-upload-file {
+      .upload-file-label {
+        text-align: center;
+        font-size: 200%;
+      }
+      .upload-file-btn {
+        font-size: 200%;
+      }
+    }
+
+    .new-session-cont {
+
+      .add-session-div {
+        font-size: 200%;
+        color: green;
+        cursor: pointer;
+
+      }
+      .save-session {
+        margin: auto;
+      }
+    }
+
+    .session-desc {
+      font-size: 140%;
+    }
+
+  }
+
+  .left-hand-side {
+
+    .basic-details-cont {
+      white-space: nowrap;
+
+      .basic-details {
+
+        .c-cont {
+          margin: 4% 0;
+        }
+        .c-header {
+          font-size: 110%;
+          font-weight: 700;
+
+          &.students-num-header {
+            color: #00cd00;;
+            font-size: 150%;
+          }
+        }
+        .c-info {
+          font-size: 110%;
+        }
+      }
+    }
+  }
+
+}

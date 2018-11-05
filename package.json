@@ -1,0 +1,14 @@
+{
+  "name": "w8er",
+  "version": "1.0.0",
+  "dependencies": {
+    "cloudinary": "^1.11.0",
+    "express": "latest",
+    "less": "^3.8.1",
+    "mongoose": "^5.3.9",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0"
+  }
+}

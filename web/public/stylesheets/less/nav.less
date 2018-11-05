@@ -1,0 +1,112 @@
+body {
+  background: rgba(255, 222, 143, 0.44);
+
+}
+
+.wizer-nav {
+  z-index: 99;
+  //height: 50px;
+  //background-color: #ff6654 !important;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff321b+66,ffca1b+89,47fa00+100 */
+  background: rgb(255,50,27); /* Old browsers */
+  background: -moz-linear-gradient(left, rgba(255,50,27,1) 66%, rgba(255,202,27,1) 89%, rgba(71,250,0,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(255,50,27,1) 66%,rgba(255,202,27,1) 89%,rgba(71,250,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(255,50,27,1) 66%,rgba(255,202,27,1) 89%,rgba(71,250,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff321b', endColorstr='#47fa00',GradientType=1 ); /* IE6-9 */
+  
+  .wizer-logo-div {
+    img{
+      max-width: 50px;
+    }
+  }
+  .wizer-logo {
+    color: white !important;
+    margin-right: 3%;
+  }
+
+  .search-nav-form {
+  }
+
+  .animate-show-hide {
+    transition: all linear 0.5s;
+  }
+  .animate-show-hide {
+    &.ng-hide {
+      transition: all linear 0.5s;
+      opacity: 0;
+    }
+  }
+
+  .notifications-cont {
+    background-color: #b3ff99;
+
+    .no-nofitifications {
+      text-align: center;
+    }
+  }
+}
+
+.modal {
+  .modal-dialog {
+    &.modal-width {
+      //max-width: fit-content;
+      max-width: 55%;
+    }
+
+    .modal-content {
+
+      .modal-container {
+        width: 100%;
+        text-align: center;
+
+        .text {
+          //float: left;
+          text-align: left;
+        }
+
+        .err-msg {
+          font-size: 140%;
+        }
+
+        //.facebook-signin {
+        //  .fb-btn {
+        //    display: block;
+        //    margin: auto;
+        //    margin-top: 2%;
+        //    margin-bottom: 4%;
+        //  }
+        //}
+
+        .google-btn{
+          color: #fff;
+          text-decoration: none;
+          font-size: 18px;
+          padding: 10px;
+          background: #ff5353;
+
+          display: block;
+          width: fit-content;
+          border-radius: 6%;
+          margin: 10px auto;
+          cursor: pointer;
+        }
+        .facebook-btn{
+          color: #fff;
+          text-decoration: none;
+          font-size: 18px;
+          padding: 10px;
+          background: #3018ff;
+
+          display: block;
+          width: fit-content;
+          border-radius: 6%;
+          margin: 10px auto;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+  }
+}
