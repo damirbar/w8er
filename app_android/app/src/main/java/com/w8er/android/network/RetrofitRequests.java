@@ -1,14 +1,10 @@
 package com.w8er.android.network;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Base64;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,14 +19,14 @@ import static com.w8er.android.utils.Constants.TOKEN_HEADER;
 
 public class RetrofitRequests {
 
-    private Activity activity;
+    private Context context;
     private SharedPreferences sharedPreferences;
     private String token;
 
 
     public RetrofitRequests(Activity _activity){
 
-        this.activity = _activity;
+        this.context = _activity;
         initSharedPreferences();
 
     }
@@ -43,7 +39,7 @@ public class RetrofitRequests {
 
 
     private void initSharedPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.activity);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
         token = sharedPreferences.getString(TOKEN,"");
     }
 
@@ -110,18 +106,5 @@ public class RetrofitRequests {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
     }
-
-//    public static byte[] getBytes(InputStream is) throws IOException {
-//        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
-//        int buffSize = 1024;
-//        byte[] buff = new byte[buffSize];
-//
-//        int len;
-//        while ((len = is.read(buff)) != -1) {
-//            byteBuff.write(buff, 0, len);
-//        }
-//        return byteBuff.toByteArray();
-//    }
-
 
 }
