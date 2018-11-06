@@ -73,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:inputType="phone"
                 android:singleLine="true" />
         </LinearLayout>
@@ -102,20 +103,22 @@
             android:text="@string/next"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textColorHighlight="@color/white"/>
+            android:textColorHighlight="@color/white"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/text_sing_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="230dp"
             android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
             android:gravity="end"
             android:text="@string/sing_in"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
