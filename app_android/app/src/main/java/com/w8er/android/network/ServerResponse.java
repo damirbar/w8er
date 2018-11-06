@@ -1,8 +1,9 @@
 package com.w8er.android.network;
 
+import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 
+import com.devspark.appmsg.AppMsg;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.w8er.android.model.Response;
@@ -12,33 +13,17 @@ import retrofit2.adapter.rxjava.HttpException;
 
 public class ServerResponse {
 
-    private View layout;
+    private Activity activity;
 
-    public ServerResponse(View _layout) {
-        this.layout = _layout;
+    public ServerResponse(Activity activity) {
+        this.activity = activity;
     }
 
-    public View getLayout() {
-        return layout;
+
+    private void toastMessage(String message) {
+
+        AppMsg.makeText(activity, message, AppMsg.STYLE_ALERT).show();
     }
-
-    public void setLayout(View layout) {
-        this.layout = layout;
-    }
-
-//    public void showSnackBarMessage(String message) {
-//        TSnackbar snackBar = TSnackbar.make(layout, message, TSnackbar.LENGTH_LONG);
-//        View snackBarView = snackBar.getView();
-//        snackBarView.setBackgroundColor(Color.parseColor("#3e4a5b"));
-//        TextView textView = (TextView) snackBarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-//        textView.setTextColor(Color.WHITE);
-//        snackBar.show();
-//    }
-
-//    public void downSnackBarMessage(String message) {
-//        Snackbar.make(layout, message,Snackbar.LENGTH_SHORT).show();
-//    }
-
 
     public void handleError(Throwable error) {
         Log.d("error", error.toString());
@@ -47,46 +32,15 @@ public class ServerResponse {
                 Gson gson = new GsonBuilder().setLenient().create();
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody, Response.class);
-//                showSnackBarMessage(response.getMessage());
+                toastMessage(response.getMessage());
             } else {
-//                showSnackBarMessage("No Internet Connection.");
+                toastMessage("No Internet Connection.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-//            showSnackBarMessage("Internal Server Error.");
+            toastMessage("Internal Server Error.");
         }
     }
-
-//    public void handleErrorDown(Throwable error) {
-//        Log.d("error", error.toString());
-//        try {
-//            if (error instanceof HttpException) {
-//                Gson gson = new GsonBuilder().setLenient().create();
-//                String errorBody = ((HttpException) error).response().errorBody().string();
-//                Response response = gson.fromJson(errorBody, Response.class);
-//                downSnackBarMessage(response.getMessage());
-//            } else {
-//                downSnackBarMessage("No Internet Connection.");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            downSnackBarMessage("Internal Server Error.");
-//        }
-//    }
-
-//    public static void handleErrorQuiet(Throwable error) {
-//        Log.d("error", error.toString());
-//        try {
-//            if (error instanceof HttpException) {
-//                Gson gson = new GsonBuilder().setLenient().create();
-//                String errorBody = ((HttpException) error).response().errorBody().string();
-//                Response response = gson.fromJson(errorBody, Response.class);
-//            } else {
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
 }
