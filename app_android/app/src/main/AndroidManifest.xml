@@ -29,6 +29,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.w8er.android.entry.EntryActivity"
+            android:windowSoftInputMode="adjustResize"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
