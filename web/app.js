@@ -8,31 +8,18 @@ let mongoose = require("mongoose");
 let config = require('./config/config');
 // mongoose.Promise = require("bluebird");
 
-
-let passport = require("passport");
-let passportService = require('./tools/passport');
-app.use(passport.initialize());
-app.use(passport.session());
-passportService.init();
-
+app.use(bodyParser.json());
 
 
 let authRouts = require("./routes/login_requests");
 
-
-
 app.use('/auth', authRouts);
 
 
-
-
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+mongoose.set('useCreateIndex', true);
 mongoose.connect(config.mongo.mongoDB, { useNewUrlParser: true },function (err,connection) {
     if (err){
         console.log('error in mongo connection:\n' + err);

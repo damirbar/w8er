@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
 
     phone_number: {type: Number, unique: true, required: true},
-    first_name: {type: String, required: true},
-    last_name: {type: String, required: true},
-    email: {type: String, unique: true, require: true},
+    first_name: {type: String, default: ""},
+    last_name:  {type: String, default: ""},
+    email:  {type: String, default: ""},
     password: {type: String, default: ""},
     about_me: {type: String, default: ""},
     events: [{
@@ -17,7 +17,12 @@ var UserSchema = new mongoose.Schema({
     is_admin: {type: Boolean, default: false},
     favorite_foods: [String],
     favorite_restaurants: [String],
-    accessToken: {type: String, default: ""}
+    tmp_password: {
+        pass: {type: String, default: ""},
+        time: {type: Date}
+    },
+    accessToken: {type: String, default: ""},
+    creation_date: {type: Date, default: Date.now()}
 
 });
 
