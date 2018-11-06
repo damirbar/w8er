@@ -3,62 +3,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/def_background">
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                app:ccp_countryPreference="us,in" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editText_carrierNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginRight="70dp"
-                android:ems="10"
-                android:inputType="phone" />
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginRight="70dp"
-                android:background="@drawable/entry_button_shape"
-                android:indeterminate="true"
-                android:theme="@style/AppTheme.WhiteAccent"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginRight="70dp"
-                android:layout_marginBottom="40dp"
-                android:background="@drawable/entry_button_shape"
-                android:foregroundGravity="center"
-                android:text="@string/next"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white" />
-
+                android:inputType="phone"
+                android:singleLine="true" />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/entry_button_shape"
+            android:indeterminate="true"
+            android:theme="@style/AppTheme.WhiteAccent"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/entry_button_shape"
+            android:foregroundGravity="center"
+            android:text="@string/next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="40dp"
+            android:gravity="end"
+            android:text="Sing in"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </ScrollView>

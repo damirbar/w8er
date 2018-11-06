@@ -1,9 +1,9 @@
 package com.w8er.android.network;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.devspark.appmsg.AppMsg;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.w8er.android.model.Response;
@@ -13,19 +13,17 @@ import retrofit2.adapter.rxjava.HttpException;
 
 public class ServerResponse {
 
-    private Context context;
+    private Activity activity;
 
-    public ServerResponse(Context context) {
-        this.context = context;
+    public ServerResponse(Activity activity) {
+        this.activity = activity;
     }
 
 
     private void toastMessage(String message) {
 
-        Toast.makeText(context , message, Toast.LENGTH_SHORT).show();
-
+        AppMsg.makeText(activity, message, AppMsg.STYLE_ALERT).show();
     }
-
 
     public void handleError(Throwable error) {
         Log.d("error", error.toString());

@@ -8,10 +8,7 @@ import com.w8er.android.R;
 
 public class EntryActivity extends AppCompatActivity  {
 
-    public static final String TAG = EntryActivity.class.getSimpleName();
-
     private LoginFragment mLoginFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
