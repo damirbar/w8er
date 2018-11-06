@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.hbb20.CountryCodePicker;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
+import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
@@ -43,7 +44,7 @@ public class PhoneLoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
         mSubscriptions = new CompositeSubscription();
-        mServerResponse = new ServerResponse(getActivity());
+        mServerResponse = new ServerResponse(view.findViewById(R.id.activity_comment));
         initViews(view);
         getData();
         return view;
@@ -56,13 +57,17 @@ public class PhoneLoginFragment extends Fragment {
         mBtLogin.setOnClickListener(view -> login());
         mProgressBar = v.findViewById(R.id.progress);
         ccp = v.findViewById(R.id.ccp);
+        ccp.registerCarrierNumberEditText(mPhoneNumber);
 
         ccp.setPhoneNumberValidityChangeListener(isValidNumber -> {
             if (isValidNumber) {
+                mProgressBar.setVisibility(View.GONE);
                 mBtLogin.setVisibility(View.VISIBLE);
                 singIn.setVisibility(View.GONE);
+
             } else {
                 mBtLogin.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
                 singIn.setVisibility(View.VISIBLE);
             }
         });
@@ -79,17 +84,20 @@ public class PhoneLoginFragment extends Fragment {
         }
     }
     private void login() {
+        ccp.setCcpClickable(false);
+        phone = ccp.getFullNumberWithPlus().trim();
 
-        phone = mPhoneNumber.getText().toString().trim();
+        User user = new User();
+        user.setPhone_number(phone);
 
-        loginProcess(phone);
+        loginProcess(user);
         mBtLogin.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
 
-    private void loginProcess(String phone) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().phoneLogin(phone)
+    private void loginProcess(User user) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().phoneLogin(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError));
@@ -112,6 +120,9 @@ public class PhoneLoginFragment extends Fragment {
         mServerResponse.handleError(error);
         mProgressBar.setVisibility(View.GONE);
         mBtLogin.setVisibility(View.VISIBLE);
+        ccp.setCcpClickable(true);
+
+
     }
 
     @Override

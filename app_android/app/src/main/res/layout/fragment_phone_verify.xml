@@ -60,11 +60,13 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar">
 
         <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
@@ -92,14 +94,20 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/pass"
+            <com.alimuzaffar.lib.pin.PinEntryEditText
+                android:id="@+id/txt_pin_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:ems="10"
-                android:inputType="numberPassword" />
+                android:cursorVisible="false"
+                android:digits="1234567890"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textIsSelectable="false"
+                android:textSize="22sp"
+                app:pinLineStroke="1dp"
+                app:pinLineStrokeSelected="1dp" />
 
         </LinearLayout>
 

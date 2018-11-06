@@ -7,6 +7,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alimuzaffar.lib.pin.PinEntryEditText;
+import com.androidadvance.topsnackbar.TSnackbar;
 import com.w8er.android.BaseActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.User;
@@ -32,7 +38,7 @@ public class PhoneVerifyFragment extends Fragment {
 
     public static final String TAG = PhoneLoginFragment.class.getSimpleName();
 
-    private EditText mNumber;
+    private PinEntryEditText pinEntry;
     private Button mBtLogin;
     private String phone;
     private CompositeSubscription mSubscriptions;
@@ -46,8 +52,9 @@ public class PhoneVerifyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_phone_verify, container, false);
         mSubscriptions = new CompositeSubscription();
-        mServerResponse = new ServerResponse(getActivity());
+        mServerResponse = new ServerResponse(view.findViewById(R.id.scroll_view));
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         getData();
         initViews(view);
         return view;
@@ -56,11 +63,18 @@ public class PhoneVerifyFragment extends Fragment {
     private void initViews(View v) {
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
-        mNumber = v.findViewById(R.id.pass);
+        pinEntry = v.findViewById(R.id.txt_pin_entry);
         mBtLogin = v.findViewById(R.id.next_button);
         mBtLogin.setOnClickListener(view -> VerifyPass());
         TextView textPhone = v.findViewById(R.id.phone_number);
         textPhone.setText(phone);
+
+        pinEntry.setOnPinEnteredListener(str -> {
+            if (str.toString().length() == getContext().getResources().getInteger(R.integer.phone_verify)) {
+                VerifyPass();
+            }
+        });
+
     }
 
     private void goBack() {
@@ -80,14 +94,17 @@ public class PhoneVerifyFragment extends Fragment {
 
     private void VerifyPass() {
 
-        String number = mNumber.getText().toString().trim();
+        String pass = pinEntry.getText().toString().trim();
 
-        verifyProcess(number);
+        User user = new User();
+        user.setPhone_number(phone);
+        user.setPassword(pass);
+        verifyProcess(user);
 
     }
 
-    private void verifyProcess(String pass) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().varify(phone, pass)
+    private void verifyProcess(User user) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().varify(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError));

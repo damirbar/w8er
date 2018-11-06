@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class User {
 
-    private int phone_number;
+    private String phone_number;
     private String first_name;
     private String last_name;
     private String email;
@@ -19,11 +19,11 @@ public class User {
     private String accessToken;
     private boolean is_admin;
 
-    public int getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(int phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 
