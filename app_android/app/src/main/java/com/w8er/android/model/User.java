@@ -9,6 +9,7 @@ public class User {
     private String first_name;
     private String last_name;
     private String email;
+    private String accessToken;
     private String password;
     private String about_me;
     private String type;
@@ -16,7 +17,6 @@ public class User {
     private String profile_img;
     private String[] favorite_foods;
     private String[] favorite_restaurants;
-    private String accessToken;
     private boolean is_admin;
 
     public String getPhone_number() {

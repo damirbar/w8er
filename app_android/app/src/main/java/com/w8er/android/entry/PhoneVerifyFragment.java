@@ -1,6 +1,5 @@
 package com.w8er.android.entry;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,23 +7,15 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
-import com.androidadvance.topsnackbar.TSnackbar;
 import com.w8er.android.BaseActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.User;
@@ -35,7 +26,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.w8er.android.utils.Constants.TOKEN;
 
 public class PhoneVerifyFragment extends Fragment {
@@ -44,11 +34,11 @@ public class PhoneVerifyFragment extends Fragment {
 
     private PinEntryEditText pinEntry;
     private Button mBtLogin;
-    private String phone;
+    private String FormattedFullNumber;
+    private String fullNumber;
     private CompositeSubscription mSubscriptions;
     private ServerResponse mServerResponse;
     private SharedPreferences mSharedPreferences;
-
 
     @Nullable
     @Override
@@ -71,7 +61,7 @@ public class PhoneVerifyFragment extends Fragment {
         mBtLogin = v.findViewById(R.id.next_button);
         mBtLogin.setOnClickListener(view -> VerifyPass());
         TextView textPhone = v.findViewById(R.id.phone_number);
-        textPhone.setText(phone);
+        textPhone.setText(FormattedFullNumber);
 
         pinEntry.setOnPinEnteredListener(str -> {
             if (str.toString().length() == getContext().getResources().getInteger(R.integer.phone_verify)) {
@@ -82,7 +72,13 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void goBack() {
+
+        String newPhone = FormattedFullNumber.substring(FormattedFullNumber.indexOf(" ")+1).trim();
+
+        Bundle i = new Bundle();
+        i.putString("phone", newPhone);
         PhoneLoginFragment fragment = new PhoneLoginFragment();
+        fragment.setArguments(i);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentFrame,fragment,PhoneLoginFragment.TAG).commit();
@@ -92,7 +88,9 @@ public class PhoneVerifyFragment extends Fragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            phone = bundle.getString("phone");
+            FormattedFullNumber = bundle.getString("phone");
+
+            fullNumber = "+" + FormattedFullNumber.replaceAll("[^0-9]", "");
         }
     }
 
@@ -101,7 +99,7 @@ public class PhoneVerifyFragment extends Fragment {
         String pass = pinEntry.getText().toString().trim();
 
         User user = new User();
-        user.setPhone_number(phone);
+        user.setPhone_number(fullNumber);
         user.setPassword(pass);
         verifyProcess(user);
 

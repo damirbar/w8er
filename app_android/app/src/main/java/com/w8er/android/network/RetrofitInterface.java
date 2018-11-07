@@ -15,7 +15,7 @@ public interface RetrofitInterface {
     @POST("auth/login-signup")
     Observable<Response> phoneLogin(@Body User user);
 
-    @POST("auth/varify")
+    @POST("auth/verify")
     Observable<User> varify(@Body User user);
 
 
