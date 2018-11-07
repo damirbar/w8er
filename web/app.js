@@ -12,8 +12,12 @@ app.use(bodyParser.json());
 
 
 let authRouts = require("./routes/login_requests");
+let mainRequests = require('./routes/main_route');
+let profileRequests = require('./routes/profile_requests');
 
+app.use('/', mainRequests);
 app.use('/auth', authRouts);
+app.use('/profile', profileRequests);
 
 
 app.use(express.static(path.join(__dirname, 'public')));
