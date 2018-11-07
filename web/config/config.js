@@ -12,7 +12,7 @@ const email = {
 cloudinary.config({
     cloud_name: "w8er",
     api_key: '181628352118733',
-    api_secret:  'YfpgjsJE6mmyim6un3vcMx1cn5g'
+    api_secret: 'YfpgjsJE6mmyim6un3vcMx1cn5g'
 });
 
 // const passport = {
@@ -29,8 +29,8 @@ cloudinary.config({
 
 const mongo = {
 
-     mongoDB:  'mongodb://damir:damiri@cluster0-shard-00-00-l6nle.mongodb.net:27017,cluster0-shard-00-01-l6nle.mongodb.net:27017,cluster0-shard-00-02-l6nle.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
-     // mongoDB:  'mongodb+srv://damir:damiri@cluster0-l6nle.mongodb.net/test?retryWrites=true'
+    mongoDB: 'mongodb://damir:damiri@cluster0-shard-00-00-l6nle.mongodb.net:27017,cluster0-shard-00-01-l6nle.mongodb.net:27017,cluster0-shard-00-02-l6nle.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
+    // mongoDB:  'mongodb+srv://damir:damiri@cluster0-l6nle.mongodb.net/test?retryWrites=true'
 
 };
 
@@ -42,8 +42,8 @@ const nexmo = new Nexmo({
 });
 
 
-// const ret = {cloudniary: cloudniary, email: email, mongo: mongo};
 const ret = {cloudniary: cloudinary, email: email, nexmo: nexmo, mongo: mongo};
+
 module.exports = ret;
 
 
