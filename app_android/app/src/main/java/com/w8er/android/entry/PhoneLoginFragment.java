@@ -1,5 +1,6 @@
 package com.w8er.android.entry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hbb20.CountryCodePicker;
+import com.w8er.android.BaseActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.User;
@@ -58,6 +61,11 @@ public class PhoneLoginFragment extends Fragment {
         mProgressBar = v.findViewById(R.id.progress);
         ccp = v.findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(mPhoneNumber);
+        TextView mCountryCode = v.findViewById(R.id.country_code);
+        mCountryCode.setOnClickListener(view -> ccp.launchCountrySelectionDialog());
+        ImageButton mCloseButton = v.findViewById(R.id.close_msg);
+        mCloseButton.setOnClickListener(view -> openBase());
+
 
         ccp.setPhoneNumberValidityChangeListener(isValidNumber -> {
             if (isValidNumber) {
@@ -73,6 +81,14 @@ public class PhoneLoginFragment extends Fragment {
         });
     }
 
+    private void openBase() {
+
+        Intent intent = new Intent(getActivity(), BaseActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+
+    }
+
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -85,10 +101,12 @@ public class PhoneLoginFragment extends Fragment {
     }
     private void login() {
         ccp.setCcpClickable(false);
-        phone = ccp.getFullNumberWithPlus().trim();
+        phone = ccp.getFullNumberWithPlus();
 
         User user = new User();
         user.setPhone_number(phone);
+
+        phone = ccp.getFormattedFullNumber();
 
         loginProcess(user);
         mBtLogin.setVisibility(View.GONE);

@@ -8,6 +8,7 @@
     <string name="sing_in">Sing in</string>
     <string name="please_confirm_phone_number">Please confirm your country code and enter your phone number</string>
     <string name="enter_the_code">Enter the code we just sent to</string>
+    <string name="change_country_code">Change country code</string>
 
 
 </resources>
