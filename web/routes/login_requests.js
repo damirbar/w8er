@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const User = require("../schemas/user");
-let randomstring = require("randomstring");
 let nexmo = require('../config/config').nexmo;
 let config = require('../config/config');
 let jwt = require('jsonwebtoken');
@@ -15,7 +14,8 @@ router.post('/login-signup', function (req, res) {
         else {
             if (user) {
                 //user exists
-                let random = randomstring.generate(6);
+                let random = generate(6);
+                // let random = randomstring.generate(6);
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
@@ -49,7 +49,8 @@ router.post('/login-signup', function (req, res) {
             }
             else {
                 //new user
-                let random = randomstring.generate(6);
+                let random = generate(6);
+                // let random = randomstring.generate(6);
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
@@ -137,5 +138,15 @@ router.post('/verify', function (req, res) {
         });
     }
 });
+
+
+function generate(length) {
+    let chars = '0123456789';
+    let result="";
+    for (var i = length; i > 0; --i)
+        result += chars[Math.round(Math.random() * (chars.length - 1))]
+    return result
+}
+
 
 module.exports = router;
