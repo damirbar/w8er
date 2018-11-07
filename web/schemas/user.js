@@ -20,7 +20,11 @@ var UserSchema = new mongoose.Schema({
     tmp_password:   {type: String, default: ""},
     tmp_time: {type: Date, default: Date.now()},
     accessToken: {type: String, default: ""},
-    creation_date: {type: Date, default: Date.now()}
+    creation_date: {type: Date, default: Date.now()},
+    last_modified: {type: Date, default: Date.now()},
+    address: {type: String, default: ""},
+    birthday: {type: Date},
+    gender: {type: String, default: ""},
 
 });
 

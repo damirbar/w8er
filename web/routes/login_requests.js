@@ -2,7 +2,8 @@ const router = require('express').Router();
 const User = require("../schemas/user");
 let randomstring = require("randomstring");
 let nexmo = require('../config/config').nexmo;
-
+let config = require('../config/config');
+let jwt = require('jsonwebtoken');
 
 router.post('/login-signup', function (req, res) {
     let phone_number = req.body.phone_number;
@@ -32,7 +33,7 @@ router.post('/login-signup', function (req, res) {
                             console.log(err, data)
                         });
 
-                        res.status(200).json({user})
+                        res.status(200).json({message: "verification sent"})
                     }
                 });
             }
@@ -42,10 +43,6 @@ router.post('/login-signup', function (req, res) {
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
-                let password = {
-                    pass: random,
-                    time: nowplus5,
-                };
                 const newUser = new User({
                     phone_number: phone_number,
                     tmp_password: random,
@@ -66,7 +63,7 @@ router.post('/login-signup', function (req, res) {
                             console.log(err, data)
                         });
 
-                        res.status(200).json({user})
+                        res.status(200).json({message: "verification sent"})
                     }
                 });
             }
@@ -75,7 +72,7 @@ router.post('/login-signup', function (req, res) {
 });
 
 
-router.post('/varify',function (req, res) {
+router.post('/verify',function (req, res) {
     if(!req.body.phone_number){
         res.status(404).json({message: 'no user found to varify'})
     }
@@ -89,10 +86,14 @@ router.post('/varify',function (req, res) {
                 if (user) {
                     if(req.body.password === user.tmp_password){
                         if(user.tmp_time >= new Date(Date.now())){
-                            res.status(200).json(user);
-                            user.updateOne({tmp_password: "", tmp_time: new Date(Date.now())},function (err,res) {
+                            const token = jwt.sign(user.phone_number, config.email.secret);
+                            user.updateOne({tmp_password: "", tmp_time: new Date(Date.now()), accessToken: token},function (err,usr) {
                                 if (err) {
                                     console.log("Error while uptading user in /varify");
+                                    res.status(500).json({message: err})
+                                }
+                                else{
+                                    res.status(200).json(user);
                                 }
                             })
                         }

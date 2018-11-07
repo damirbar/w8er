@@ -1,3 +1,5 @@
+const cloudinary = require('cloudinary');
+
 const email = {
 
     "name": "w8er Team",
@@ -7,13 +9,11 @@ const email = {
 
 };
 
-const cloudniary = {
-
+cloudinary.config({
     cloud_name: "w8er",
     api_key: '181628352118733',
-    api_secret: 'YfpgjsJE6mmyim6un3vcMx1cn5g'
-
-};
+    api_secret:  'YfpgjsJE6mmyim6un3vcMx1cn5g'
+});
 
 // const passport = {
 //
@@ -43,7 +43,7 @@ const nexmo = new Nexmo({
 
 
 // const ret = {cloudniary: cloudniary, email: email, mongo: mongo};
-const ret = {cloudniary: cloudniary, email: email, nexmo: nexmo, mongo: mongo};
+const ret = {cloudniary: cloudinary, email: email, nexmo: nexmo, mongo: mongo};
 module.exports = ret;
 
 
