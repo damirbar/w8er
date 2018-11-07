@@ -1,7 +1,9 @@
 package com.w8er.android.entry;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.utils.Constants.TOKEN;
+
 
 public class PhoneLoginFragment extends Fragment {
 
@@ -41,6 +45,10 @@ public class PhoneLoginFragment extends Fragment {
     private CompositeSubscription mSubscriptions;
     private ServerResponse mServerResponse;
 
+    private String mToken;
+    private SharedPreferences mSharedPreferences;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +56,10 @@ public class PhoneLoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(view.findViewById(R.id.activity_comment));
+
+        initSharedPreferences();
+        autoLogin();
+
         initViews(view);
         getData();
         return view;
@@ -80,6 +92,20 @@ public class PhoneLoginFragment extends Fragment {
             }
         });
     }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mToken = mSharedPreferences.getString(TOKEN,"");
+    }
+
+    private void autoLogin() {
+        if(!mToken.isEmpty()){
+            Intent intent = new Intent(getContext(), BaseActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+    }
+
 
     private void openBase() {
 
@@ -126,7 +152,7 @@ public class PhoneLoginFragment extends Fragment {
         mBtLogin.setVisibility(View.VISIBLE);
 
         Bundle i = new Bundle();
-        i.putString(phone, "phone");
+        i.putString("phone", phone);
         PhoneVerifyFragment fragment = new PhoneVerifyFragment();
         fragment.setArguments(i);
 
