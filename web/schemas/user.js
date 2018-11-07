@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
 
-    phone_number: {type: Number, unique: true, required: true},
+    phone_number: {type: String, unique: true, required: true},
     first_name: {type: String, default: ""},
     last_name:  {type: String, default: ""},
     email:  {type: String, default: ""},
@@ -17,10 +17,8 @@ var UserSchema = new mongoose.Schema({
     is_admin: {type: Boolean, default: false},
     favorite_foods: [String],
     favorite_restaurants: [String],
-    tmp_password: {
-        pass: {type: String, default: ""},
-        time: {type: Date}
-    },
+    tmp_password:   {type: String, default: ""},
+    tmp_time: {type: Date, default: Date.now()},
     accessToken: {type: String, default: ""},
     creation_date: {type: Date, default: Date.now()}
 
