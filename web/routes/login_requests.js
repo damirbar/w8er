@@ -15,7 +15,6 @@ router.post('/login-signup', function (req, res) {
             if (user) {
                 //user exists
                 let random = generate(6);
-                // let random = randomstring.generate(6);
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
@@ -50,7 +49,6 @@ router.post('/login-signup', function (req, res) {
             else {
                 //new user
                 let random = generate(6);
-                // let random = randomstring.generate(6);
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
@@ -95,7 +93,7 @@ router.post('/login-signup', function (req, res) {
 
 router.post('/verify', function (req, res) {
     if (!req.body.phone_number) {
-        res.status(404).json({message: 'no user found to varify'})
+        res.status(404).json({message: 'no user found to verify'})
     }
     else {
         User.findOne({phone_number: req.body.phone_number}, function (err, user) {
@@ -142,7 +140,7 @@ router.post('/verify', function (req, res) {
 
 function generate(length) {
     let chars = '0123456789';
-    let result="";
+    let result = "";
     for (var i = length; i > 0; --i)
         result += chars[Math.round(Math.random() * (chars.length - 1))]
     return result

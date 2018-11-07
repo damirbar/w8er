@@ -5,6 +5,7 @@ const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
+let fs = require('fs');
 
 router.get("/get-profile", function (req, res) {
     let phone_number = req.phone_number;
@@ -18,7 +19,7 @@ router.get("/get-profile", function (req, res) {
                 res.status(200).json(user);
             }
             else {
-                res.status(404).json({message: 'user' + req.body.phone_number + 'dose not exist'});
+                res.status(404).json({message: 'user ' + req.body.phone_number + ' dose not exist'});
             }
         }
     });
@@ -47,7 +48,7 @@ router.post("/edit-profile", function (req, res) {
                 return res.status(200).json(user);
             }
             else {
-                return res.status(404).json({message: 'user ' + req.phone_number + 'dose not exist sorry'});
+                return res.status(404).json({message: 'user ' + req.phone_number + ' dose not exist sorry'});
             }
         }
     });

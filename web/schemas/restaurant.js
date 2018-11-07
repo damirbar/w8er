@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 var RestaurantSchema = new mongoose.Schema({
 
-    name: {type: String, default: ""},
-    phone_number: {type: Number, unique: true, required: true},
+    name: {type: String, default: "", required: true},
+    phone_number: {type: String, required: true},
     location: {},
     menu: {},
     layout: {},
@@ -17,7 +17,7 @@ var RestaurantSchema = new mongoose.Schema({
     owner: {type: String, default: ""},
     tags: [String],
     pictures: [String],
-    rating: {type: Number, required: true, default: 0},
+    rating: {type: Number, default: 0},
     kosher: {type: Boolean, required: true, default: false},
     sessions: {}
 
