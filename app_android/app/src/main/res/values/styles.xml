@@ -10,7 +10,7 @@
 
     <!--Progress bar color-->
     <style name="AppTheme.WhiteAccent">
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
 
