@@ -18,12 +18,7 @@ router.post('/login-signup', function (req, res) {
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
-                let password = {
-                    pass: random,
-                    time: nowplus5,
-                };
-
-                user.updateOne({tmp_password: password}, function (err) {
+                user.updateOne({tmp_password: random, tmp_time: nowplus5}, function (err) {
                     if (err) {
                         console.log("Error while saving user in /login-signup");
                         res.status(500).json({message: err});
@@ -31,7 +26,7 @@ router.post('/login-signup', function (req, res) {
                     else {
                         //send tmp password to phone
                         const from = 'w8er';
-                        const to = '+972526071827';
+                        const to = phone_number;
                         const text = 'your code is: ' + random + '                     .\n';
                         nexmo.message.sendSms(from, to, text, (err, data) => {
                             console.log(err, data)
@@ -53,7 +48,8 @@ router.post('/login-signup', function (req, res) {
                 };
                 const newUser = new User({
                     phone_number: phone_number,
-                    tmp_password: password
+                    tmp_password: random,
+                    tmp_time: nowplus5
                 });
                 newUser.save(function (err, user) {
                     if(err){
@@ -64,7 +60,7 @@ router.post('/login-signup', function (req, res) {
                     else{
                         //send tmp password to phone
                         const from = 'w8er';
-                        const to = '+972526071827';
+                        const to = phone_number;
                         const text = 'your code is: ' + random + '                     .\n';
                         nexmo.message.sendSms(from, to, text, (err, data) => {
                             console.log(err, data)
@@ -91,14 +87,10 @@ router.post('/varify',function (req, res) {
             }
             else {
                 if (user) {
-                    if(req.body.password === user.tmp_password.pass){
-                        if(user.tmp_password.time >= new Date(Date.now())){
+                    if(req.body.password === user.tmp_password){
+                        if(user.tmp_time >= new Date(Date.now())){
                             res.status(200).json(user);
-                            let reset = {
-                                pass: "",
-                                time: new Date(Date.now())
-                            };
-                            user.updateOne({tmp_password: reset},function (err,res) {
+                            user.updateOne({tmp_password: "", tmp_time: new Date(Date.now())},function (err,res) {
                                 if (err) {
                                     console.log("Error while uptading user in /varify");
                                 }
