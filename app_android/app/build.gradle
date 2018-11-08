@@ -55,6 +55,7 @@ dependencies {
 
     }
 
+    //Navigation tab bar
     implementation 'devlight.io:navigationtabbar:1.2.5'
 
 

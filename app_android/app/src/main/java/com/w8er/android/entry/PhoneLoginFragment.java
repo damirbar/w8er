@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hbb20.CountryCodePicker;
-import com.w8er.android.BaseActivity;
+import com.w8er.android.base.BaseActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.User;

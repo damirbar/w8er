@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
-import com.w8er.android.BaseActivity;
+import com.w8er.android.base.BaseActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;

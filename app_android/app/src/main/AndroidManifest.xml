@@ -37,7 +37,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".BaseActivity"
+            android:name=".base.BaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
     </application>
