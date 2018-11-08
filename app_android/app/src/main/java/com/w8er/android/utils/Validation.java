@@ -2,6 +2,7 @@ package com.w8er.android.utils;
 
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 
 public class Validation {
 
@@ -27,6 +28,7 @@ public class Validation {
 
             return  true;
         }
+
     }
 
 }

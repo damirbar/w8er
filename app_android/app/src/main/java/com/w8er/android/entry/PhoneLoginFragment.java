@@ -23,6 +23,7 @@ import com.w8er.android.model.Response;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.SoftKeyboard;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -156,6 +157,9 @@ public class PhoneLoginFragment extends Fragment {
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentFrame,fragment,PhoneVerifyFragment.TAG).commit();
+
+        new SoftKeyboard(getActivity()).hideSoftKeyboard();
+
     }
 
     public void handleError(Throwable error) {

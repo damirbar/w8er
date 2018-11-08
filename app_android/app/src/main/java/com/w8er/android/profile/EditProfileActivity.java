@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ import static com.w8er.android.utils.Validation.validateFields;
 public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener
     ,GenderDialog.OnCallbackGender{
 
+    private ProgressBar mProgressBar;
     private EditText mETFirstName;
     private EditText mETLastName;
     private EditText mETDisplayName;
@@ -71,6 +74,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private String imagePath;
     private int actions;
     private User startUser;
+    private Button mBSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +93,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void initViews() {
+        mProgressBar = findViewById(R.id.progress);
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);
         mETGender = (EditText) findViewById(R.id.eTGender);
@@ -99,7 +104,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
         mProfileChange = (TextView) findViewById(R.id.user_profile_change);
         image = (ImageView) findViewById(R.id.user_profile_photo);
-        Button mBSave = (Button) findViewById(R.id.save_button);
+        mBSave = (Button) findViewById(R.id.save_button);
         Button mBCancel = (Button) findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
@@ -273,8 +278,12 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 e.printStackTrace();
             }
         }
-        if (newUser)
+        if (newUser){
             updateProfile(user);
+            mBSave.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+
+        }
 
         if (actions == 0)
             finish();
@@ -337,7 +346,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().updateProfile(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUpdate, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseUpdate, this::handleError));
     }
 
     private void handleResponseUpdate(Response response) {
@@ -347,6 +356,14 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             actions -= 1;
     }
 
+    public void handleError(Throwable error) {
+        mProgressBar.setVisibility(View.GONE);
+        mBSave.setVisibility(View.VISIBLE);
+
+        mServerResponse.handleError(error);
+    }
+
+
     private void tryUploadPic(byte[] bytes) {
         String filename = imagePath.substring(imagePath.lastIndexOf("/") + 1);
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), bytes);
@@ -354,7 +371,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImage(body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUpdate, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseUpdate, this::handleError));
     }
 
     public void Update(String date) {

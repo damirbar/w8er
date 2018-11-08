@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <integer name="phone_verify">6</integer>
     <integer name="start_nav_Bar">0</integer>
     <integer name="bio_max">300</integer>
-
     <integer name="def_max">100</integer>
     <integer name="feedback_max">500</integer>
-
 
 </resources>

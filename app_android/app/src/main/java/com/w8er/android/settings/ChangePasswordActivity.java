@@ -1,10 +1,11 @@
 package com.w8er.android.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
@@ -12,14 +13,13 @@ import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Validation.validateFields;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
+    private ProgressBar mProgressBar;
     private EditText mEtOldPassword;
     private EditText mEtNewPassword;
     private EditText mEtNewPassword2;
@@ -27,6 +27,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String mPass;
+    private Button mBSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        Button mBSave = findViewById(R.id.save_button);
+        mProgressBar = findViewById(R.id.progress);
+        mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mEtOldPassword = findViewById(R.id.et_old_password);
         mEtNewPassword = findViewById(R.id.et_new_password);
@@ -61,30 +63,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
             return;
-        }
-
-        else if (!validateFields(newPassword2)) {
+        } else if (!validateFields(newPassword2)) {
 
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
             return;
 
-        }
-
-        else if (!newPassword.equals(newPassword2)) {
+        } else if (!newPassword.equals(newPassword2)) {
 
             mServerResponse.showSnackBarMessage(getString(R.string.passwords_dont_match));
             return;
 
-        }
-
-        else if (!validateFields(oldPassword)) {
+        } else if (!validateFields(oldPassword)) {
 
             mServerResponse.showSnackBarMessage(getString(R.string.password_should_not_be_empty));
             return;
 
-        }
-
-        else if (newPassword2.length() < 6 || newPassword.length() < 6) {
+        } else if (newPassword2.length() < 6 || newPassword.length() < 6) {
 
             mServerResponse.showSnackBarMessage(getString(R.string.password_must_be_at_least_6_characters));
             return;
@@ -93,10 +87,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
         mPass = newPassword;
-            User user = new User();
-            user.setPassword(oldPassword);
-            user.setNew_password(newPassword);
-            changePasswordProgress(user);
+        User user = new User();
+        user.setPassword(oldPassword);
+        user.setNew_password(newPassword);
+        changePasswordProgress(user);
+
+        mBSave.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -105,7 +103,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 //        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().changePassword(user)
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponse,i -> mServerResponse.handleError(i)));
+//                .subscribe(this::handleResponse, this::handleError));
     }
 
 
@@ -115,6 +113,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
 //        editor.putString(PASS,mPass);
 //        editor.apply();
         finish();
+    }
+
+    public void handleError(Throwable error) {
+        mProgressBar.setVisibility(View.GONE);
+        mBSave.setVisibility(View.VISIBLE);
+
+        mServerResponse.handleError(error);
     }
 
 

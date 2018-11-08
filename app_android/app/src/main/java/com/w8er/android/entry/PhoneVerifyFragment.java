@@ -13,14 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
-import com.w8er.android.base.BaseActivity;
 import com.w8er.android.R;
+import com.w8er.android.base.BaseActivity;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.SoftKeyboard;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,6 +38,7 @@ public class PhoneVerifyFragment extends Fragment {
     private PinEntryEditText pinEntry;
     private Button mBtLogin;
     private String FormattedFullNumber;
+    private ProgressBar mProgressBar;
     private String fullNumber;
     private CompositeSubscription mSubscriptions;
     private ServerResponse mServerResponse;
@@ -56,6 +59,7 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        mProgressBar = v.findViewById(R.id.progress);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());
         pinEntry = v.findViewById(R.id.txt_pin_entry);
@@ -73,6 +77,8 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void goBack() {
+
+        new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
         String newPhone = FormattedFullNumber.substring(FormattedFullNumber.indexOf(" ")+1).trim();
 
@@ -104,6 +110,10 @@ public class PhoneVerifyFragment extends Fragment {
         user.setPassword(pass);
         verifyProcess(user);
 
+        mBtLogin.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+
     }
 
     private void verifyProcess(User user) {
@@ -121,13 +131,16 @@ public class PhoneVerifyFragment extends Fragment {
 
         editor.apply();
 
-        Intent EntryActivity = new Intent(getContext(), EntryActivity.class);
-        EntryActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(EntryActivity);
+        Intent BaseActivity = new Intent(getContext(), BaseActivity.class);
+        BaseActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(BaseActivity);
 
     }
 
     public void handleError(Throwable error) {
+        mProgressBar.setVisibility(View.GONE);
+        mBtLogin.setVisibility(View.VISIBLE);
+
         mServerResponse.handleError(error);
     }
 
@@ -153,5 +166,7 @@ public class PhoneVerifyFragment extends Fragment {
             return false;
         });
     }
+
+
 
 }

@@ -90,9 +90,9 @@ public class SettingsFragment extends Fragment {
         editor.putString(TOKEN, "");
         editor.apply();
 
-        Intent EntryActivity = new Intent(getActivity(), BaseActivity.class);
-        EntryActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(EntryActivity);
+        Intent BaseActivity = new Intent(getActivity(), BaseActivity.class);
+        BaseActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(BaseActivity);
 
         Intent intent = new Intent(getContext(), EntryActivity.class);
         this.startActivity(intent);
