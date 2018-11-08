@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.w8er.android.entry.PhoneVerifyFragment;
+import com.w8er.android.settings.SettingsFragment;
 
 public class BasePagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -37,7 +38,7 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
                 return new PhoneVerifyFragment();
             case 4: // Fragment # 4 - This will show FifthFragment
 
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
             default:
                 return new PhoneVerifyFragment();
         }

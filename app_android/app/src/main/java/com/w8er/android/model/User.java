@@ -17,7 +17,43 @@ public class User {
     private String profile_img;
     private String[] favorite_foods;
     private String[] favorite_restaurants;
+    private String new_password;
     private boolean is_admin;
+    private String gender;
+    private Date birthday;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getNew_password() {
+        return new_password;
+    }
+
+    public void setNew_password(String new_password) {
+        this.new_password = new_password;
+    }
 
     public String getPhone_number() {
         return phone_number;

@@ -58,6 +58,15 @@ dependencies {
     //Navigation tab bar
     implementation 'devlight.io:navigationtabbar:1.2.5'
 
+    //circle image view
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //photo crop
+    implementation 'com.albinmathew:photo-crop-library:1.0.3'
+
+    //image downloader
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
 
 
 

@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -106,5 +110,18 @@ public class RetrofitRequests {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitInterface.class);
     }
+
+    public static byte[] getBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
+        int buffSize = 1024;
+        byte[] buff = new byte[buffSize];
+
+        int len;
+        while ((len = is.read(buff)) != -1) {
+            byteBuff.write(buff, 0, len);
+        }
+        return byteBuff.toByteArray();
+    }
+
 
 }

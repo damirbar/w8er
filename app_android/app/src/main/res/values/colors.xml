@@ -13,6 +13,11 @@
     <color name="background">#fdfdfe</color>
     <color name="edit_text">#dbdbdb</color>
     <color name="grey">#888b8e</color>
+    <color name="primary_text">#ff222222</color>
+    <color name="account_status_bar">#f0f2f5</color>
+    <color name="ultra_dark">#29303f</color>
+    <color name="default_circle_indicator_page_color">#3e4a5b</color>
+    <color name="dialog_color">#009688</color>
 
 
 
