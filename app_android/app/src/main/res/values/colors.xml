@@ -8,8 +8,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#df5a55</color>
-
-
     <color name="background">#fdfdfe</color>
     <color name="edit_text">#dbdbdb</color>
     <color name="grey">#888b8e</color>
@@ -19,12 +17,10 @@
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="dialog_color">#009688</color>
     <color name="purple">#7D68A6</color>
+    <color name="highlight_blue_color">#81a6d2</color>
 
 
 
-
-
-    <!--<color name="highlight_default_color">#2196f3</color>-->
     <!--<color name="secondary_post_text">#989898</color>-->
     <!--<color name="secondary_comment_text">#ff727272</color>-->
     <!--<color name="text_dis">#e7dada</color>-->

@@ -1,6 +1,7 @@
 package com.w8er.android.network;
 
 import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -30,13 +31,14 @@ public class ServerResponse {
     }
 
     public void showSnackBarMessage(String message) {
+
         TSnackbar snackBar = TSnackbar.make(layout, message, TSnackbar.LENGTH_LONG);
         View snackBarView = snackBar.getView();
         snackBarView.setBackgroundColor(Color.parseColor("#3e4a5b"));
         TextView textView = (TextView) snackBarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);
         snackBar.show();
-    }
+        }
 
     public void handleError(Throwable error) {
         Log.d("error", error.toString());

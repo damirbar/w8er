@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -93,6 +95,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
     private void initViews() {
+
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
+
         mProgressBar = findViewById(R.id.progress);
         mETFirstName = (EditText) findViewById(R.id.eTFirstName);
         mETLastName = (EditText) findViewById(R.id.eTLastName);

@@ -67,7 +67,8 @@ dependencies {
     //image downloader
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-
+    //over-scrolling effect
+    implementation 'me.everything:overscroll-decor-android:1.0.4'
 
 
 }

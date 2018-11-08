@@ -68,62 +68,69 @@
                 android:visibility="gone" />
 
 
-
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar">
 
-        <LinearLayout
-            android:id="@+id/linear_layout"
+
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tool_bar">
 
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:text="@string/enter_the_code"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="30dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
 
-            <com.alimuzaffar.lib.pin.PinEntryEditText
-                android:id="@+id/txt_pin_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:cursorVisible="false"
-                android:digits="1234567890"
-                android:inputType="number"
-                android:maxLength="6"
-                android:textIsSelectable="false"
-                android:textSize="22sp"
-                app:pinLineStroke="1dp"
-                app:pinLineStrokeSelected="1dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/enter_the_code"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
-    </ScrollView>
+                <com.alimuzaffar.lib.pin.PinEntryEditText
+                    android:id="@+id/txt_pin_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:cursorVisible="false"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:textIsSelectable="false"
+                    android:textSize="22sp"
+                    app:pinLineStroke="1dp"
+                    app:pinLineStrokeSelected="1dp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
 
 </RelativeLayout>
 

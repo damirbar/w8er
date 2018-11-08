@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
@@ -24,6 +25,7 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -59,6 +61,9 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        ScrollView scrollView = v.findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
         mProgressBar = v.findViewById(R.id.progress);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> goBack());

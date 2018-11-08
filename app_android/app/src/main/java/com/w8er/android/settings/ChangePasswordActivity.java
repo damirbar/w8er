@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
@@ -13,6 +14,7 @@ import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Validation.validateFields;
@@ -41,6 +43,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
         mProgressBar = findViewById(R.id.progress);
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
