@@ -36,6 +36,8 @@
     <string name="save">Save</string>
     <string name="about_me">About me</string>
     <string name="ok">OK</string>
+    <string name="logout">Logout</string>
+
 
 
 </resources>

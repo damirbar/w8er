@@ -26,21 +26,21 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
 
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
             case 1: // Fragment # 1 - This will show SecondFragment
 
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
             case 2: // Fragment # 2 - This will show ThirdFragment
 
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
             case 3: // Fragment # 3 - This will show FourthFragment
 
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
             case 4: // Fragment # 4 - This will show FifthFragment
 
                 return new SettingsFragment();
             default:
-                return new PhoneVerifyFragment();
+                return new SettingsFragment();
         }
     }
 

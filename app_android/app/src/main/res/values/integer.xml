@@ -6,7 +6,6 @@
 
     <integer name="def_max">100</integer>
     <integer name="feedback_max">500</integer>
-    <integer name="bio_count_max">100</integer>
 
 
 </resources>

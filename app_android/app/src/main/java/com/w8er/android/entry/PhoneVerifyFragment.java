@@ -26,6 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
 
 public class PhoneVerifyFragment extends Fragment {
@@ -116,12 +117,13 @@ public class PhoneVerifyFragment extends Fragment {
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(TOKEN,user.getAccessToken());
+        editor.putString(PHONE,user.getPhone_number());
 
         editor.apply();
 
-        Intent intent = new Intent(getActivity(), BaseActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        Intent EntryActivity = new Intent(getContext(), EntryActivity.class);
+        EntryActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(EntryActivity);
 
     }
 

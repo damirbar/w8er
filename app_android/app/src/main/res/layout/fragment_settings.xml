@@ -9,16 +9,16 @@
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
-        app:layout_scrollFlags="enterAlways|scroll"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
         app:contentInsetRight="0dp"
-        app:contentInsetEnd="0dp">
+        app:contentInsetStart="0dp"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -155,8 +155,23 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:background="?attr/colorButtonNormal"
-                android:visibility="gone" />
+                android:background="?attr/colorButtonNormal"/>
+
+            <Button
+                android:id="@+id/logout"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:drawableEnd="@drawable/expand_arrow"
+                android:drawableRight="@drawable/expand_arrow"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center"
+                android:text="@string/logout"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
 
 
         </LinearLayout>

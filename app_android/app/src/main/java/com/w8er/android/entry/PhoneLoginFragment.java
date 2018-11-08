@@ -109,8 +109,6 @@ public class PhoneLoginFragment extends Fragment {
 
     private void openBase() {
 
-        Intent intent = new Intent(getActivity(), BaseActivity.class);
-        startActivity(intent);
         getActivity().finish();
 
     }

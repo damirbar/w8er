@@ -18,7 +18,7 @@ public class BioActivity extends AppCompatActivity {
     private EditText mBioText;
     private Button mBSave;
     private TextView mTextCount;
-    private final int MAX_COUNT = getResources().getInteger(R.integer.bio_count_max);
+    private final int MAX_COUNT = 150;
 
 
     @Override
@@ -74,13 +74,13 @@ public class BioActivity extends AppCompatActivity {
             mTextCount.setText(String.valueOf(num));
             if (num < 0) {
                 mBSave.setEnabled(false);
-                mBSave.setTextColor(Color.parseColor("#e7dada"));
+                mBSave.setTextColor(Color.WHITE);
                 mTextCount.setTextColor(Color.RED);
             }
             else{
                 mBSave.setEnabled(true);
                 mTextCount.setTextColor(Color.parseColor("#808080"));
-                mBSave.setTextColor(Color.WHITE);
+                mBSave.setTextColor(Color.BLACK);
             }
         }
         public void afterTextChanged(Editable s) {
