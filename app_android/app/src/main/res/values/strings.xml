@@ -1,6 +1,7 @@
 <resources>
 
-=    <string name="app_name">W8er</string>
+    =
+    <string name="app_name">W8er</string>
     <string name="next">Next</string>
     <string name="sing_in">Sing in</string>
     <string name="please_confirm_phone_number">Please confirm your country code and enter your phone number</string>

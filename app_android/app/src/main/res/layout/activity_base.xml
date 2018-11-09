@@ -19,11 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"
-        app:ntb_badge_bg_color="@color/red"
-        app:ntb_badge_gravity="top"
-        app:ntb_badge_position="left"
-        app:ntb_badge_size="12sp"
-        app:ntb_badge_title_color="@color/white"
         app:ntb_bg_color="@color/colorAccent"
         app:ntb_inactive_color="@color/grey"/>
 

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.w8er.android.HomeFragment;
+import com.w8er.android.MapsFragment;
 import com.w8er.android.settings.SettingsFragment;
 
 public class BasePagerAdapter extends FragmentStatePagerAdapter {
@@ -29,7 +30,7 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
                 return new HomeFragment();
             case 1: // Fragment # 1 - This will show SecondFragment
 
-                return new SettingsFragment();
+                return new MapsFragment();
             case 2: // Fragment # 2 - This will show ThirdFragment
 
                 return new SettingsFragment();
