@@ -2,19 +2,15 @@ package com.w8er.android.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,6 +25,7 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.profile.EditProfileActivity;
 
+import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,6 +33,10 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
 public class SettingsFragment extends Fragment {
 
@@ -44,9 +45,6 @@ public class SettingsFragment extends Fragment {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String phone;
-
-    Toolbar toolbar;
-
 
     @Nullable
     @Override
@@ -63,9 +61,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initViews(View v) {
-        ScrollView scrollView = v.findViewById(R.id.scroll_view);
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-
         image = v.findViewById(R.id.user_profile_photo);
         TextView ver = v.findViewById(R.id.version);
         ver.setText(BuildConfig.VERSION_NAME);
@@ -84,6 +79,32 @@ public class SettingsFragment extends Fragment {
             logoutBtn.setVisibility(View.VISIBLE);
             editProfileBtn.setText(getResources().getString(R.string.edit_profile));
         }
+
+        ScrollView scrollView = v.findViewById(R.id.scroll_view);
+        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+        decor.setOverScrollStateListener((decor1, oldState, newState) -> {
+            switch (newState) {
+                case STATE_IDLE:
+                    // No over-scroll is in effect.
+                    break;
+                case STATE_DRAG_START_SIDE:
+                    // Dragging started at the left-end.
+                    break;
+                case STATE_DRAG_END_SIDE:
+                    break;
+                case STATE_BOUNCE_BACK:
+
+                    if (oldState == STATE_DRAG_START_SIDE && !mRetrofitRequests.getToken().isEmpty()) {
+                        loadProfile();
+                        // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
+                    }
+//                    else { // i.e. (oldState == STATE_DRAG_END_SIDE)
+//                        // View is starting to bounce back from the *right-end*.
+//                    }
+                    break;
+            }
+        });
+
     }
 
     public void onLogoutMenuSelected() {

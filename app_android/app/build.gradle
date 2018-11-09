@@ -70,5 +70,4 @@ dependencies {
     //over-scrolling effect
     implementation 'me.everything:overscroll-decor-android:1.0.4'
 
-
 }

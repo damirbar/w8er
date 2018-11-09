@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.w8er.android.entry.PhoneVerifyFragment;
+import com.w8er.android.HomeFragment;
 import com.w8er.android.settings.SettingsFragment;
 
 public class BasePagerAdapter extends FragmentStatePagerAdapter {
@@ -26,7 +26,7 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
 
-                return new SettingsFragment();
+                return new HomeFragment();
             case 1: // Fragment # 1 - This will show SecondFragment
 
                 return new SettingsFragment();
@@ -49,5 +49,4 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return "Page" + position;
     }
-
 }

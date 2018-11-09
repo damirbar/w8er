@@ -127,11 +127,11 @@ public class ImageCropActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         mContentResolver = getContentResolver();
-        mImageView = (PhotoView) findViewById(R.id.iv_photo);
-        mCropOverlayView = (CropOverlayView) findViewById(R.id.crop_overlay);
-        btnSend = (Button) findViewById(R.id.save_button);
+        mImageView = findViewById(R.id.iv_photo);
+        mCropOverlayView = findViewById(R.id.crop_overlay);
+        btnSend = findViewById(R.id.save_button);
         btnSend.setOnClickListener(btnSendListener);
-        btnCancel = (Button) findViewById(R.id.cancel_button);
+        btnCancel = findViewById(R.id.cancel_button);
         btnCancel.setOnClickListener(btnCancelListener);
 
         mImageView.addListener(new PhotoViewAttacher.IGetImageBounds() {

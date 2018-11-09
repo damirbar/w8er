@@ -26,7 +26,7 @@ public class TableSelectionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tableLayout = (TableLayout) findViewById(R.id.tablesLayout);
+        tableLayout = findViewById(R.id.tablesLayout);
     }
 
 

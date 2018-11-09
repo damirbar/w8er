@@ -23,7 +23,7 @@ import java.util.Date;
 public class MyDateDialog extends BottomSheetDialogFragment {
 
     public interface OnCallbackReceived {
-        public void Update(String date);
+        void Update(String date);
     }
 
     public static final String TAG = MyDateDialog.class.getSimpleName();

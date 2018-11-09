@@ -17,7 +17,7 @@ import com.w8er.android.R;
 public class GenderDialog extends BottomSheetDialogFragment {
 
     public interface OnCallbackGender {
-        public void UpdateGender(String gender);
+        void UpdateGender(String gender);
     }
 
     public static final String TAG = GenderDialog.class.getSimpleName();

@@ -27,7 +27,6 @@ import com.w8er.android.model.Response;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
-import com.w8er.android.utils.Constants;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -77,6 +76,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private int actions;
     private User startUser;
     private Button mBSave;
+    private ImageView mReload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,20 +99,21 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         ScrollView scrollView = findViewById(R.id.scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
-
+        mReload = findViewById(R.id.image_reload);
+        mReload.setOnClickListener(view -> loadProfile());
         mProgressBar = findViewById(R.id.progress);
-        mETFirstName = (EditText) findViewById(R.id.eTFirstName);
-        mETLastName = (EditText) findViewById(R.id.eTLastName);
-        mETGender = (EditText) findViewById(R.id.eTGender);
-        mETDisplayName = (EditText) findViewById(R.id.eTDisplay_Name);
-        mETCountry = (EditText) findViewById(R.id.eTCountry);
-        mETAddress = (EditText) findViewById(R.id.eTAddress);
-        mETAge = (EditText) findViewById(R.id.eTAge);
-        mETAboutMe = (EditText) findViewById(R.id.eTAboutMe);
-        mProfileChange = (TextView) findViewById(R.id.user_profile_change);
-        image = (ImageView) findViewById(R.id.user_profile_photo);
-        mBSave = (Button) findViewById(R.id.save_button);
-        Button mBCancel = (Button) findViewById(R.id.cancel_button);
+        mETFirstName = findViewById(R.id.eTFirstName);
+        mETLastName = findViewById(R.id.eTLastName);
+        mETGender = findViewById(R.id.eTGender);
+        mETDisplayName = findViewById(R.id.eTDisplay_Name);
+        mETCountry = findViewById(R.id.eTCountry);
+        mETAddress = findViewById(R.id.eTAddress);
+        mETAge = findViewById(R.id.eTAge);
+        mETAboutMe = findViewById(R.id.eTAboutMe);
+        mProfileChange = findViewById(R.id.user_profile_change);
+        image = findViewById(R.id.user_profile_photo);
+        mBSave = findViewById(R.id.save_button);
+        Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
         mETGender.setOnClickListener(view -> genderViewClick());
@@ -149,9 +150,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
 
-            } else if (resultCode == RESULT_CANCELED) {
-
-            } else {
+            }
+//            else if (resultCode == RESULT_CANCELED) { }
+            else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
@@ -161,9 +162,10 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 Bundle extra = result.getExtras();
                 String bio = extra.getString("bio");
                 mETAboutMe.setText(bio);
-            } else if (resultCode == RESULT_CANCELED) {
+            }
+//            else if (resultCode == RESULT_CANCELED) { }
 
-            } else {
+            else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
@@ -298,11 +300,23 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
 
     private void loadProfile() {
+        mBSave.setVisibility(View.GONE);
+        mReload.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mPhone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseProfile, this::handleErrorLoadProfile));
     }
+
+    public void handleErrorLoadProfile(Throwable error) {
+        mProgressBar.setVisibility(View.GONE);
+        mBSave.setVisibility(View.GONE);
+        mReload.setVisibility(View.VISIBLE);
+        mServerResponse.handleError(error);
+    }
+
 
     private void handleResponseProfile(User user) {
 
@@ -347,13 +361,17 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                     .into(image);
 
         startUser = user;
+
+        mProgressBar.setVisibility(View.GONE);
+        mReload.setVisibility(View.GONE);
+        mBSave.setVisibility(View.VISIBLE);
     }
 
     private void updateProfile(User user) {
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().updateProfile(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUpdate, this::handleError));
+                .subscribe(this::handleResponseUpdate, this::handleErrorUpdateProfile));
     }
 
     private void handleResponseUpdate(Response response) {
@@ -363,7 +381,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
             actions -= 1;
     }
 
-    public void handleError(Throwable error) {
+    public void handleErrorUpdateProfile(Throwable error) {
         mProgressBar.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
 
@@ -378,7 +396,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImage(body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseUpdate, this::handleError));
+                .subscribe(this::handleResponseUpdate, this::handleErrorUpdateProfile));
     }
 
     public void Update(String date) {

@@ -25,39 +25,33 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        pager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
-        navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
+        pager = findViewById(R.id.vp_horizontal_ntb);
+        navigationTabBar = findViewById(R.id.ntb_horizontal);
     }
 
     private void initNavigationTabBar() {
 
         final int color =  getResources().getColor(R.color.red);
 
-
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_first),
+                        getResources().getDrawable(R.drawable.home),
                         color).build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_second),
+                        getResources().getDrawable(R.drawable.gps),
                         color).build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_third),
+                        getResources().getDrawable(R.drawable.wallet),
                         color).build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fourth),
-                        color).build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fifth),
+                        getResources().getDrawable(R.drawable.settings),
                         color).build()
         );
 

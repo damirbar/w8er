@@ -16,11 +16,9 @@
     <color name="ultra_dark">#29303f</color>
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
     <color name="dialog_color">#009688</color>
-    <color name="purple">#7D68A6</color>
     <color name="highlight_blue_color">#81a6d2</color>
 
-
-
+    <!--<color name="purple">#7D68A6</color>-->
     <!--<color name="secondary_post_text">#989898</color>-->
     <!--<color name="secondary_comment_text">#ff727272</color>-->
     <!--<color name="text_dis">#e7dada</color>-->
@@ -30,7 +28,5 @@
     <!--<color name="white3">#fafafa</color>-->
     <!--<color name="post_shimmer">#f6f5f6</color>-->
     <!--<color name="bac_def2">#f6f8f9</color>-->
-
-
 
 </resources>
