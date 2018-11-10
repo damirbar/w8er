@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -13,7 +12,6 @@ import com.ncapdevi.fragnav.FragNavController;
 import com.ncapdevi.fragnav.FragNavSwitchController;
 import com.ncapdevi.fragnav.FragNavTransactionOptions;
 import com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController;
-import com.w8er.android.adapters.BasePagerAdapter;
 import com.w8er.android.fragments.MapsFragment;
 import com.w8er.android.R;
 import com.w8er.android.entry.EntryActivity;
@@ -30,7 +28,6 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
 
     private NavigationTabBar navigationTabBar;
     private FragNavController mNavController;
-    private ViewPager pager;
 
     private final int INDEX_HOME = FragNavController.TAB1;
     private final int INDEX_MAP = FragNavController.TAB2;
@@ -42,14 +39,14 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_bar);
+        boolean initial = savedInstanceState == null;
         initViews();
-        initNavigationTabBar(savedInstanceState);
+        initNavigationTabBar(initial, savedInstanceState);
         firstTime();
     }
 
     private void initViews() {
         navigationTabBar = findViewById(R.id.ntb_horizontal);
-        pager = findViewById(R.id.container);
     }
 
     private void firstTime() {
@@ -66,7 +63,8 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
         }
     }
 
-    private void initNavigationTabBar(Bundle savedInstanceState) {
+
+    private void initNavigationTabBar(boolean initial, Bundle savedInstanceState) {
 
         final int color =  getResources().getColor(R.color.red);
 
@@ -87,12 +85,10 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
                         color).build()
         );
 
-        pager.setOffscreenPageLimit(models.size()); // How much pages you have
-        pager.setCurrentItem(getResources().getInteger(R.integer.start_nav_Bar)); // Returns to First Fragment
-        pager.setAdapter(new BasePagerAdapter(getSupportFragmentManager(),models.size()));
-
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(pager, getResources().getInteger(R.integer.start_nav_Bar));
+        if (initial) {
+            navigationTabBar.setModelIndex(0);
+        }
 
         mNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
                 .transactionListener(this)

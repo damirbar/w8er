@@ -19,8 +19,6 @@ import com.w8er.android.restaurantPage.RestaurantActivity;
 
 import java.util.ArrayList;
 
-import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
-
 public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
 
     private RestaurantsAdapter adapter;
@@ -33,7 +31,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Log.d(TAG, "111111111111111111111111111111111111111111111111111111111111111111111111111");
         initViews(view);
 
         ArrayList<String> animalNames = new ArrayList<>();
@@ -57,6 +54,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
+
         return view;
     }
 
@@ -66,10 +64,10 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
 
     }
 
+
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(getContext(), RestaurantActivity.class);
         startActivity(intent);
     }
-
 }

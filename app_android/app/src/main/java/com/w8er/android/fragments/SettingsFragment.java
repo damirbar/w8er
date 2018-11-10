@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
@@ -161,13 +159,8 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void OpenReport() {
-
-        if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(new SettingsFragment());
-        }
-
-//        Intent i = new Intent(getContext(), FeedbackActivity.class);
-//        startActivity(i);
+        Intent i = new Intent(getContext(), FeedbackActivity.class);
+        startActivity(i);
     }
 
     private void loadProfile() {
