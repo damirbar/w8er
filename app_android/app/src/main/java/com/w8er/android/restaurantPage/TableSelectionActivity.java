@@ -1,9 +1,10 @@
-package com.w8er.android;
+package com.w8er.android.restaurantPage;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TableLayout;
 
+import com.w8er.android.R;
 import com.w8er.android.view.ResLayout;
 
 import java.util.ArrayList;

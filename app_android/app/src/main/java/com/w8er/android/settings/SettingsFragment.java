@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment {
         logoutBtn.setOnClickListener(view -> onLogoutMenuSelected());
         if(mRetrofitRequests.getToken().isEmpty()){
             logoutBtn.setVisibility(View.GONE);
-            editProfileBtn.setText(getResources().getString(R.string.sing_in));
+            editProfileBtn.setText(getResources().getString(R.string.sing_up_or_log_in));
         }
         else{
             logoutBtn.setVisibility(View.VISIBLE);

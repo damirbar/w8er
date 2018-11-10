@@ -15,9 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
+
         android:usesCleartextTraffic="true"
-        tools:replace="android:supportsRtl"
-        tools:targetApi="m">
+        tools:targetApi="m"
+
+        tools:replace="android:supportsRtl">
         <activity
             android:name=".SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -40,9 +42,14 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <!--Change Password Activity If Needed-->
+        <activity
+            android:name=".settings.ChangePasswordActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
 
         <activity
-            android:name=".TableSelectionActivity"
+            android:name=".restaurantPage.TableSelectionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
@@ -59,10 +66,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.ChangePasswordActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".settings.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
@@ -73,6 +76,10 @@
         <activity
             android:name=".profile.BioActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".restaurantPage.RestaurantActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
     </application>

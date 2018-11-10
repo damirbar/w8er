@@ -1,4 +1,4 @@
-package com.w8er.android;
+package com.w8er.android.restaurantPage;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,23 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomeFragment extends Fragment {
+import com.w8er.android.R;
+
+public class RestaurantInfoFragment extends Fragment {
+
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_restaurant_info, container, false);
         initViews(view);
+
 
         return view;
     }
 
     private void initViews(View v) {
-
     }
-
 
 
 }

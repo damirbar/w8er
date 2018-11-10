@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.w8er.android.HomeFragment;
+import com.w8er.android.home.HomeFragment;
 import com.w8er.android.MapsFragment;
 import com.w8er.android.settings.SettingsFragment;
 
@@ -34,14 +34,8 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
             case 2: // Fragment # 2 - This will show ThirdFragment
 
                 return new SettingsFragment();
-            case 3: // Fragment # 3 - This will show FourthFragment
-
-                return new SettingsFragment();
-            case 4: // Fragment # 4 - This will show FifthFragment
-
-                return new SettingsFragment();
             default:
-                return new SettingsFragment();
+                return new HomeFragment();
         }
     }
 

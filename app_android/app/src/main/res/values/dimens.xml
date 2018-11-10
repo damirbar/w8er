@@ -2,5 +2,8 @@
 
     <dimen name="activity_vertical_margin">16.0dip</dimen>
     <dimen name="activity_horizontal_margin">16.0dip</dimen>
+    <dimen name="box_name_size">18.0sp</dimen>
+    <dimen name="box_feed_text_offset">16.0dip</dimen>
+    <dimen name="box_space">2.0dip</dimen>
 
 </resources>

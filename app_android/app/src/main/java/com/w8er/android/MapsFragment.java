@@ -30,7 +30,7 @@ public class MapsFragment extends Fragment {
 
     private MapView mMapView;
     private GoogleMap googleMap;
-    private final int REQ_PERMISSION = 100;
+    private final int REQ_PERMISSION = 888;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,44 +55,45 @@ public class MapsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
             // For showing a move to my location button
-            if (checkPermission()){
+            if (checkPermission()) {
                 googleMap.setMyLocationEnabled(true);
+                myLocation();
+            } else askPermission();
 
-                LocationManager locationManager = (LocationManager)
-                        getActivity().getSystemService(getContext().LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                Location location = locationManager.getLastKnownLocation(locationManager
-                        .getBestProvider(criteria, false));
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                goToLocation(new LatLng(latitude, longitude));
-
-                addMapMarker(new LatLng(latitude + 0.005, longitude + 0.005), "PizzaHut", "Closed");
-
-                addMapMarker(new LatLng(latitude - 0.003, longitude - 0.005), "McDonald's'", "Open");
-
-                addMapMarker(new LatLng(latitude - 0.007, longitude - 0.002), "BBB", "Open");
-
-            }
-            else askPermission();
 
         });
     }
 
-    private void goToLocation(LatLng latLng) {
+    private void myLocation() {
+        if (checkPermission()) {
+            LocationManager locationManager = (LocationManager)
+                    getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            goToLocation(new LatLng(latitude, longitude));
 
+            addMapMarker(new LatLng(latitude + 0.005, longitude + 0.005), "PizzaHut", "Closed");
+
+            addMapMarker(new LatLng(latitude - 0.003, longitude - 0.005), "McDonald's'", "Open");
+
+            addMapMarker(new LatLng(latitude - 0.007, longitude - 0.002), "BBB", "Open");
+        }
+    }
+
+    private void goToLocation(LatLng latLng) {
         // For zooming automatically to the location of the marker
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     private void addMapMarker(LatLng latLng, String Title, String Description) {
-
         // For zooming automatically to the location of the marker
         googleMap.addMarker(new MarkerOptions().position(latLng).title(Title).snippet(Description))
                 .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
@@ -111,11 +112,7 @@ public class MapsFragment extends Fragment {
     // Asks for permission
     private void askPermission() {
         Log.d(TAG, "askPermission()");
-        ActivityCompat.requestPermissions(
-                getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQ_PERMISSION
-        );
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION }, REQ_PERMISSION);  //request permission
     }
 
     @Override
@@ -127,12 +124,12 @@ public class MapsFragment extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    if (checkPermission())
+                    if (checkPermission()) {
                         googleMap.setMyLocationEnabled(true);
-
+                        myLocation();
+                    }
                 } else {
                     // Permission denied
-
                 }
                 break;
             }
