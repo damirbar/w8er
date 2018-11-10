@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.w8er.android.R;
-import com.w8er.android.base.BaseActivity;
+import com.w8er.android.activities.NavBarActivity;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -136,7 +136,7 @@ public class PhoneVerifyFragment extends Fragment {
 
         editor.apply();
 
-        Intent BaseActivity = new Intent(getContext(), BaseActivity.class);
+        Intent BaseActivity = new Intent(getContext(), NavBarActivity.class);
         BaseActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(BaseActivity);
 

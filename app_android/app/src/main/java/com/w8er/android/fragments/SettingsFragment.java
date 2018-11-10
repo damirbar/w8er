@@ -1,11 +1,10 @@
-package com.w8er.android.settings;
+package com.w8er.android.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +17,13 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.BuildConfig;
 import com.w8er.android.R;
-import com.w8er.android.base.BaseActivity;
+import com.w8er.android.activities.FeedbackActivity;
+import com.w8er.android.activities.NavBarActivity;
 import com.w8er.android.entry.EntryActivity;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
-import com.w8er.android.profile.EditProfileActivity;
+import com.w8er.android.activities.EditProfileActivity;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -38,7 +38,7 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_EN
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends BaseFragment {
 
     private ImageView image;
     private CompositeSubscription mSubscriptions;
@@ -56,6 +56,12 @@ public class SettingsFragment extends Fragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.tool_bar));
         initSharedPreferences();
         initViews(view);
+
+        //NEED TO BE REMOVED//
+//        if (mFragmentNavigation != null) {
+//            mFragmentNavigation.pushFragment(new SettingsFragment());
+//        }
+
 
         return view;
     }
@@ -125,7 +131,7 @@ public class SettingsFragment extends Fragment {
         editor.putString(TOKEN, "");
         editor.apply();
 
-        Intent BaseActivity = new Intent(getActivity(), BaseActivity.class);
+        Intent BaseActivity = new Intent(getActivity(), NavBarActivity.class);
         BaseActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(BaseActivity);
 
@@ -153,6 +159,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void OpenReport() {
+
         Intent i = new Intent(getContext(), FeedbackActivity.class);
         startActivity(i);
     }

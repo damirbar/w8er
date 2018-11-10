@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 
-import com.w8er.android.profile.EditProfileActivity;
+import com.w8er.android.activities.EditProfileActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

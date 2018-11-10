@@ -1,4 +1,4 @@
-package com.w8er.android.home;
+package com.w8er.android.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +18,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RestaurantsAdapter(Context context, List<String> data) {
+    public RestaurantsAdapter(Context context, List<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -66,7 +66,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

@@ -1,4 +1,4 @@
-package com.w8er.android.profile;
+package com.w8er.android.activities;
 
 import android.app.Activity;
 import android.content.Intent;

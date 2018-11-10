@@ -21,7 +21,7 @@
 
         tools:replace="android:supportsRtl">
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -44,7 +44,7 @@
 
         <!--Change Password Activity If Needed-->
         <activity
-            android:name=".settings.ChangePasswordActivity"
+            android:name=".activities.ChangePasswordActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
 
@@ -57,7 +57,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".base.BaseActivity"
+            android:name=".activities.NavBarActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
@@ -66,15 +66,15 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.FeedbackActivity"
+            android:name=".activities.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.EditProfileActivity"
+            android:name=".activities.EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.BioActivity"
+            android:name=".activities.BioActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity

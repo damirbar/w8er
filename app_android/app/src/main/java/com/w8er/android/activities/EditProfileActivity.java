@@ -1,4 +1,4 @@
-package com.w8er.android.profile;
+package com.w8er.android.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

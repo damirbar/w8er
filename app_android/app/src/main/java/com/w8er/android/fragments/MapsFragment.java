@@ -1,4 +1,4 @@
-package com.w8er.android;
+package com.w8er.android.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,8 +7,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +21,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.w8er.android.R;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends BaseFragment {
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -38,7 +37,6 @@ public class MapsFragment extends Fragment {
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
         initMap();
-
         return rootView;
     }
 

@@ -1,4 +1,4 @@
-package com.w8er.android.restaurantPage;
+package com.w8er.android.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

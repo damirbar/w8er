@@ -1,8 +1,10 @@
-package com.w8er.android.restaurantPage;
+package com.w8er.android.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.w8er.android.restaurantPage.RestaurantInfoFragment;
 
 public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;

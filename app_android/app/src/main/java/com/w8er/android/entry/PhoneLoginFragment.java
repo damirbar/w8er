@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hbb20.CountryCodePicker;
-import com.w8er.android.base.BaseActivity;
+import com.w8er.android.activities.NavBarActivity;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.User;
@@ -101,7 +101,7 @@ public class PhoneLoginFragment extends Fragment {
 
     private void autoLogin() {
         if(!mToken.isEmpty()){
-            Intent intent = new Intent(getContext(), BaseActivity.class);
+            Intent intent = new Intent(getContext(), NavBarActivity.class);
             startActivity(intent);
             getActivity().finish();
         }

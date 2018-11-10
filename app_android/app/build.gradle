@@ -84,4 +84,6 @@ dependencies {
     //rating bar(minSdkVersion=16)
     implementation 'com.aurelhubert:simpleratingbar:0.1.5'
 
+    implementation 'com.ncapdevi:frag-nav:2.4.0'
+
 }
