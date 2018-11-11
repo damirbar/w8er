@@ -35,6 +35,12 @@ mongoose.connect(config.mongo.mongoDB, { useNewUrlParser: true },function (err,c
     }
 });
 
+let geocoder = require('./config/config').geocoder;
+geocoder.geocode('Your adress')
+    .then(function(result) {
+        console.log(result);
+    });
+
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
