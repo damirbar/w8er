@@ -31,7 +31,7 @@ mongoose.connect(config.mongo.mongoDB, { useNewUrlParser: true },function (err,c
         console.log('error in mongo connection:\n' + err);
     }
     else{
-        console.log('successfully connected to mongoDB');
+        console.log('successfully connected to mongoDB'); 
     }
 });
 
