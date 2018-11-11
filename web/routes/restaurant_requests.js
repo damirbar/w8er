@@ -7,6 +7,8 @@ const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
 let fs = require('fs');
 
+const MAX_PICTURES_PER_RESTAURANT = 5;
+
 router.post('/create',function (req,res) {
     let phone_number = req.phone_number;
     User.findOne({phone_number: phone_number}, function (err, user) {
@@ -68,8 +70,7 @@ router.post('/add-pic', type, function (req, res) {
                 }
                 else {
                     if (rest) {
-                        //max pictures per restaurant
-                        if(rest.pictures.length >= 5){
+                        if(rest.pictures.length >= MAX_PICTURES_PER_RESTAURANT){
                             res.status(200).json({message: "to many pictures"})
                         }
                         else {
