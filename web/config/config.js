@@ -1,4 +1,10 @@
 const cloudinary = require('cloudinary');
+var NodeGeocoder = require('node-geocoder');
+
+var geocoder = NodeGeocoder({
+    provider: 'google',
+    apiKey: 'AIzaSyD5l3dAn7MI_A102Q_WfHFG7yss6vDP_FI'
+});
 
 const email = {
 
@@ -42,7 +48,7 @@ const nexmo = new Nexmo({
 });
 
 
-const ret = {cloudniary: cloudinary, email: email, nexmo: nexmo, mongo: mongo};
+const ret = {cloudniary: cloudinary, email: email, nexmo: nexmo, mongo: mongo, geocoder: geocoder};
 
 module.exports = ret;
 
