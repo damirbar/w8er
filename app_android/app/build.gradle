@@ -42,9 +42,6 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.2.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
 
-    //In-layout notifications
-    implementation 'com.androidadvance:topsnackbar:1.1.1'
-
     //Country Code Picker
     implementation 'com.hbb20:ccp:2.2.3'
 
@@ -74,6 +71,7 @@ dependencies {
 
     //google maps
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     //Pull Refresh Layout
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'

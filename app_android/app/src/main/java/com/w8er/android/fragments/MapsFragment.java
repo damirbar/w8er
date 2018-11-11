@@ -1,6 +1,7 @@
 package com.w8er.android.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,25 +45,28 @@ public class MapsFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("MissingPermission")
     private void initMap() {
-        mMapView.onResume(); // needed to get the map to display immediately
-
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mMapView.getMapAsync(mMap -> {
-            googleMap = mMap;
-
-            // For showing a move to my location button
-            if (checkPermission()) {
-                googleMap.setMyLocationEnabled(true);
-                myLocation();
-            } else askPermission();
+//        mMapView.onResume(); // needed to get the map to display immediately
+//
+//        try {
+//            MapsInitializer.initialize(getActivity().getApplicationContext());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
-        });
+//        mMapView.getMapAsync(mMap -> {
+//            googleMap = mMap;
+//
+//            // For showing a move to my location button
+//            if (checkPermission()) {
+//                googleMap.setMyLocationEnabled(true);
+////                myLocation();
+//            } else askPermission();
+//
+//
+//        });
     }
 
     private void myLocation() {
@@ -124,7 +127,7 @@ public class MapsFragment extends BaseFragment {
                     // Permission granted
                     if (checkPermission()) {
                         googleMap.setMyLocationEnabled(true);
-                        myLocation();
+//                        myLocation();
                     }
                 } else {
                     // Permission denied

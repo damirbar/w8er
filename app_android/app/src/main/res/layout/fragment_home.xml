@@ -17,8 +17,8 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collaptoolbar"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/cartoon_food"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimaryDark"
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="exitUntilCollapsed|scroll">
 
@@ -36,10 +36,9 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorAccent"
+            app:contentScrim="@color/colorPrimaryDark"
             app:expandedTitleTextAppearance="@null"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
