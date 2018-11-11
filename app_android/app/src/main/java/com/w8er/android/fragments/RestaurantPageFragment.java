@@ -117,6 +117,13 @@ public class RestaurantPageFragment extends BaseFragment {
 
     }
 
+    private void goToMap() {
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(new MapsFragment());
+        }
+
+    }
+
     private void initMap() {
 
 
@@ -139,9 +146,20 @@ public class RestaurantPageFragment extends BaseFragment {
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+                    goToMap();
                     return true;
                 }
             });
+
+
+
+            mMap.setOnMapClickListener(view -> goToMap());
+            mMap.setOnMarkerClickListener(view -> {
+                goToMap();
+                return  true;
+            });
+
+
 
 
 
