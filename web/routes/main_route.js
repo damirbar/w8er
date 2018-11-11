@@ -5,7 +5,8 @@ let config = require('../config/config');
 
 router.all("*", function (req, res, next) {
 
-    if (req.url === '/' || req.url === '/favicon.ico'
+    if (true
+        || req.url === '/' || req.url === '/favicon.ico'
         || req.url.includes('/auth/login-signup')
         || req.url.includes('/auth/verify')) {
 
