@@ -57,12 +57,6 @@ public class SettingsFragment extends BaseFragment {
         initSharedPreferences();
         initViews(view);
 
-        //NEED TO BE REMOVED//
-//        if (mFragmentNavigation != null) {
-//            mFragmentNavigation.pushFragment(new SettingsFragment());
-//        }
-
-
         return view;
     }
 
