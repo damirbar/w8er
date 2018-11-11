@@ -37,14 +37,16 @@ router.post("/edit-profile", function (req, res) {
                 let updatedUser = req.body;
                 user.first_name = updatedUser.first_name ? updatedUser.first_name : user.first_name;
                 user.last_name = updatedUser.last_name ? updatedUser.last_name : user.last_name;
-                user.country = updatedUser.country ? updatedUser.country : user.country;
-                user.address = updatedUser.address ? updatedUser.address : user.address;
                 user.birthday = updatedUser.birthday ? updatedUser.birthday : user.birthday;
                 user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
                 user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
                 user.email = updatedUser.email ? updatedUser.email : user.email;
                 user.last_modified = Date.now();
                 user.save();
+                // address: {type: String, default: ""}
+                // favorite_foods: [String]
+                // favorite_restaurants: [String]
+
                 return res.status(200).json(user);
             }
             else {
