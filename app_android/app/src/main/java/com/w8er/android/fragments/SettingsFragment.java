@@ -57,12 +57,6 @@ public class SettingsFragment extends BaseFragment {
         initSharedPreferences();
         initViews(view);
 
-        //NEED TO BE REMOVED//
-//        if (mFragmentNavigation != null) {
-//            mFragmentNavigation.pushFragment(new SettingsFragment());
-//        }
-
-
         return view;
     }
 
@@ -104,9 +98,9 @@ public class SettingsFragment extends BaseFragment {
                         loadProfile();
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
                     }
-//                    else { // i.e. (oldState == STATE_DRAG_END_SIDE)
-//                        // View is starting to bounce back from the *right-end*.
-//                    }
+                    else { // i.e. (oldState == STATE_DRAG_END_SIDE)
+                        // View is starting to bounce back from the *right-end*.
+                    }
                     break;
             }
         });

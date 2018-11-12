@@ -25,7 +25,7 @@
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:layout_marginLeft="30dp"
                 android:orientation="vertical">
 
@@ -58,7 +58,19 @@
                     app:drawablePadding="4dp"
                     app:enable="false"
                     app:maxRating="5"
-                    app:rating="0" />
+                    app:rating="4" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginBottom="7dp"
+                    android:text="•Pizza •Pasta" />
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -82,7 +94,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/book_table_button_shape"
         android:fontFamily="sans-serif"
         android:text="Get a table"

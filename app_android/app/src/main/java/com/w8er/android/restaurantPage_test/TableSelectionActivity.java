@@ -1,4 +1,4 @@
-package com.w8er.android.restaurantPage;
+package com.w8er.android.restaurantPage_test;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

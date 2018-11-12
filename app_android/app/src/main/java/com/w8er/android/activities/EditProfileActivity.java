@@ -151,7 +151,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 showCroppedImage(imagePath);
 
             }
-//            else if (resultCode == RESULT_CANCELED) { }
+            else if (resultCode == RESULT_CANCELED) { }
             else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
@@ -163,7 +163,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 String bio = extra.getString("bio");
                 mETAboutMe.setText(bio);
             }
-//            else if (resultCode == RESULT_CANCELED) { }
+            else if (resultCode == RESULT_CANCELED) { }
 
             else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
