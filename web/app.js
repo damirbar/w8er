@@ -30,16 +30,13 @@ mongoose.connect(config.mongo.mongoDB, { useNewUrlParser: true },function (err,c
     if (err){
         console.log('error in mongo connection:\n' + err);
     }
-    else{
-        console.log('successfully connected to mongoDB');
-    }
 });
 
-let geocoder = require('./config/config').geocoder;
-geocoder.geocode('Your adress')
-    .then(function(result) {
-        console.log(result);
-    });
+// let geocoder = require('./config/config').geocoder;
+// geocoder.geocode('Your adress')
+//     .then(function(result) {
+//         console.log(result);
+//     });
 
 
 let db = mongoose.connection;
