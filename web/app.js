@@ -15,11 +15,13 @@ let authRouts = require("./routes/login_requests");
 let mainRequests = require('./routes/main_route');
 let profileRequests = require('./routes/profile_requests');
 let restaurantRequests = require('./routes/restaurant_requests');
+let searchRequests = require('./routes/search_requests');
 
 app.use('/', mainRequests);
 app.use('/auth', authRouts);
 app.use('/profile', profileRequests);
 app.use('/rest', restaurantRequests);
+app.use('/search', searchRequests);
 
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,7 +39,6 @@ mongoose.connect(config.mongo.mongoDB, {useNewUrlParser: true}, function (err, c
 // geocoder.reverse({lat:45.767, lon:4.833}, function(err, res) {
 //     console.log(res);
 // });
-
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));

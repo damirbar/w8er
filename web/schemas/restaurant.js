@@ -34,4 +34,15 @@ var RestaurantSchema = new mongoose.Schema({
 
 }, {usePushEach: true});
 
+RestaurantSchema.index({
+        name: "text",
+        tags: "text",
+    },
+    {
+        weights: {
+            name: 10,
+            tags: 5
+        },
+        name: "TextIndex"
+    });
 module.exports = mongoose.model('Restaurant', RestaurantSchema);
