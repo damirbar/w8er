@@ -26,17 +26,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(config.mongo.mongoDB, { useNewUrlParser: true },function (err,connection) {
-    if (err){
+mongoose.connect(config.mongo.mongoDB, {useNewUrlParser: true}, function (err, connection) {
+    if (err) {
         console.log('error in mongo connection:\n' + err);
     }
 });
 
 // let geocoder = require('./config/config').geocoder;
-// geocoder.geocode('Your adress')
-//     .then(function(result) {
-//         console.log(result);
-//     });
+//
+// geocoder.reverse({lat:45.767, lon:4.833}, function(err, res) {
+//     console.log(res);
+// });
 
 
 let db = mongoose.connection;

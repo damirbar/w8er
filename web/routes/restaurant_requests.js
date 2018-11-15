@@ -1,53 +1,87 @@
 const router = require('express').Router();
 let Restaurant = require('../schemas/restaurant');
-let User = require('../schemas/user');
+let Item = require('../schemas/item');
 const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
+let geocoder = require('../config/config').geocoder;
 let fs = require('fs');
 
 const MAX_PICTURES_PER_RESTAURANT = 5;
 
-router.post('/create',function (req,res) {
-    let phone_number = req.phone_number;
-    User.findOne({phone_number: phone_number}, function (err, user) {
-        if (err) {
-            console.log(err);
-            res.status(500).json({message: err});
+router.post('/create', function (req, res) {
+    let rest = new Restaurant({
+        name: req.body.name,
+        phone_number: req.phone_number,
+        owner: req.user.id,
+        tags: req.body.tags,
+        kosher: req.body.kosher
+    });
+    geocoder.geocode(req.body.address).then(function (result) {
+        if (result.raw.status === "OK") {
+            rest.address.lat = result[0].latitude;
+            rest.address.lng = result[0].longitude;
+            rest.save(function (err, rest) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({message: err});
+                }
+                else {
+                    res.status(200).json(rest);
+                }
+            });
         }
         else {
-            if(user){
-                if(user.is_admin){
-                    let rest = new Restaurant({
-                        name: req.body.name,
-                        phone_number: req.phone_number,
-                        owner: user.id,
-                        tags: req.body.tags,
-                        kosher: req.body.kosher
-                    });
-
-                    rest.save(function (err,rest) {
-                        if(err){
-                            console.log(err);
-                            res.status(500).json({message: err});
-                        }
-                        else{
-                            res.status(200).json(rest);
-                        }
-                    })
-                }
-                else{
-                    res.status(404).json({message: 'user ' + req.phone_number + ' not admin'});
-                }
-            }
-            else{
-                res.status(404).json({message: 'user ' + req.body.phone_number + ' dose not exist'});
-            }
+            console.log("something went wrong in create restaurant with geocoder");
+            console.log(result);
+            return res.status(404).json({message: "problem with address"});
         }
+    }).catch(function (e) {
+        console.log("problem with geocoder in create restaurant:");
+        console.error(e.message);
+        return res.status(404).json({message: "problem with address"});
     });
 });
 
+router.post("/edit-rest", function (req, res) {
+    Restaurant.findOne({phone_number: req.phone_number}, function (err, rest) {
+        if (err) {
+            console.log("error in /edit-rest");
+            res.status(500).json({message: err});
+        }
+        else {
+            if (rest) {
+                let updatedUser = req.body;
+                rest.name = updatedUser.name ? updatedUser.name : rest.name;
+                rest.tags = updatedUser.tags ? updatedUser.tags : rest.tags;
+                rest.kosher = updatedUser.kosher ? updatedUser.kosher : rest.kosher;
+                rest.last_modified = Date.now();
+                geocoder.geocode(updatedUser.address).then(function (result) {
+                    if (result.raw.status === "OK") {
+                        rest.address.lat = result[0].latitude;
+                        rest.address.lng = result[0].longitude;
+                        rest.save();
+                        return res.status(200).json(rest);
+                    }
+                    else {
+                        console.log("something went wrong in edit profile with geocoder");
+                        console.log(result);
+                        return res.status(404).json({message: "problem with address"});
+                    }
+                }).catch(function (e) {
+                    console.log("problem with geocoder in edit profile:");
+                    console.error(e.message);
+                    return res.status(404).json({message: "problem with address"});
+                });
+            }
+            else {
+                return res.status(404).json({message: 'no restaurant under this name'});
+            }
+        }
+    });
+})
+;
 
 router.post('/add-pic', type, function (req, res) {
     if (!req.file) {
@@ -70,7 +104,7 @@ router.post('/add-pic', type, function (req, res) {
                 }
                 else {
                     if (rest) {
-                        if(rest.pictures.length >= MAX_PICTURES_PER_RESTAURANT){
+                        if (rest.pictures.length >= MAX_PICTURES_PER_RESTAURANT) {
                             res.status(200).json({message: "to many pictures"})
                         }
                         else {
@@ -79,12 +113,147 @@ router.post('/add-pic', type, function (req, res) {
                     }
                     else {
                         fs.unlinkSync(path);
-                        res.status(404).json({message: 'no such user ' + req.phone_number})
+                        res.status(404).json({message: 'no such restaurant '})
                     }
                 }
             });
         }
     }
+});
+
+
+router.post("/add-item", function (req, res) {
+    Restaurant.findOne({phone_number: req.phone_number}, function (err, rest) {
+        if (err) {
+            console.log("error in /add-item-to-menu");
+            res.status(500).json({message: err});
+        }
+        else {
+            if (rest) {
+                let type = req.body.type;
+                if (type === "appetizer" || type === "main_course" || type === "dessert" || type === "drinks" || type === "deals" || type === "specials") {
+                    let item = new Item({
+                        name: req.body.name,
+                        description: req.body.description,
+                        price: req.body.price,
+                        available: req.body.available,
+                        tags: req.body.tags,
+                        picture: req.body.picture
+                    });
+                    item.save(function (err, i) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).json({message: err});
+                        }
+                        else {
+                            let query = {$push: {}};
+                            query['$push']['menu.' + type] = i.id;
+                            rest.updateOne(query, function (err, rest) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500).json({message: err});
+                                }
+                                else {
+                                    res.status(200).json({message: 'added item to menu'});
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    res.status(404).json({message: 'wrong type'});
+                }
+            }
+            else {
+                return res.status(404).json({message: 'no restaurant under this name'});
+            }
+        }
+    });
+});
+
+
+router.post('/edit-item', function (req, res) {
+    Item.findOne({id: req.id}, function (err, item) {
+        if (err) {
+            console.log("error in /edit-item");
+            res.status(500).json({message: err});
+        }
+        else {
+            if (item) {
+                item.name = req.body.name ? req.body.name : item.name;
+                item.description = req.body.description ? req.body.description : item.description;
+                item.price = req.body.price ? req.body.price : item.price;
+                item.available = req.body.available ? req.body.available : item.available;
+                item.tags = req.body.tags ? req.body.tags : item.tags;
+                item.picture = req.body.picture ? req.body.picture : item.picture;
+                item.save(function (err, item) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({message: err});
+                    }
+                    else {
+                        res.status(200).json({message: 'item edited'});
+                    }
+                })
+            }
+            else {
+                return res.status(404).json({message: 'no such item'});
+            }
+        }
+    });
+});
+
+
+router.post('/remove-item', function (req, res) {
+    Item.findOne({_id: req.body.id}, function (err, item) {
+        if (err) {
+            console.log("error in /remove-item");
+            res.status(500).json({message: err});
+        }
+        else {
+            if (item) {
+                Restaurant.findOne({phone_number: req.phone_number}, function (err, rest) {
+                    if (err) {
+                        console.log("error in /remove-item");
+                        res.status(500).json({message: err});
+                    }
+                    else {
+                        if (rest) {
+                            let type = req.body.type;
+                            if (rest.menu[type].includes(item.id)) {
+                                let query = {$pull: {}};
+                                query['$pull']['menu.' + type] = item.id;
+                                rest.updateOne(query, function (err, rest) {
+                                    if (err) {
+                                        console.log(err);
+                                        res.status(500).json({message: err});
+                                    }
+                                    else {
+                                        res.status(200).json({message: 'removed item from menu'});
+                                        item.remove(function (err, item) {
+                                            if (err) {
+                                                console.log('error in removing item ' + item.id);
+                                                console.log('the error is in /remove-item');
+                                            }
+                                        })
+                                    }
+                                });
+                            }
+                            else {
+                                return res.status(404).json({message: 'item not in restaurant'});
+                            }
+                        }
+                        else {
+                            return res.status(404).json({message: 'no restaurant under this name'});
+                        }
+                    }
+                });
+            }
+            else {
+                return res.status(404).json({message: 'no such item'});
+            }
+        }
+    });
 });
 
 module.exports = router;

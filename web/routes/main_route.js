@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let jwt = require('jsonwebtoken');
 let config = require('../config/config');
+let User = require('../schemas/user');
 
 router.all("*", function (req, res, next) {
 
@@ -25,7 +26,31 @@ router.all("*", function (req, res, next) {
             }
             else {
                 req.phone_number = decoded;
-                return next();
+                if (req.url.includes('/rest/')) {
+                    User.findOne({phone_number: decoded}, function (err, user) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).json({message: err});
+                        }
+                        else {
+                            if (user) {
+                                if (user.is_admin) {
+                                    req.user = user;
+                                    return next();
+                                }
+                                else {
+                                    res.status(404).json({message: 'user ' + req.phone_number + ' not admin'});
+                                }
+                            }
+                            else {
+                                res.status(404).json({message: 'user ' + req.body.phone_number + ' dose not exist'});
+                            }
+                        }
+                    });
+                }
+                else {
+                    return next();
+                }
             }
         });
     }

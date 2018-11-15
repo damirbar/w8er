@@ -1,9 +1,12 @@
 const cloudinary = require('cloudinary');
-var NodeGeocoder = require('node-geocoder');
+const NodeGeocoder = require('node-geocoder');
+const Nexmo = require('nexmo');
 
-var geocoder = NodeGeocoder({
+const geocoder = NodeGeocoder({
+
     provider: 'google',
     apiKey: 'AIzaSyDgeD52T0OSxhoQ4K0_75-FDIKdACGg3pk'
+
 });
 
 const email = {
@@ -16,9 +19,11 @@ const email = {
 };
 
 cloudinary.config({
+
     cloud_name: "w8er",
     api_key: '181628352118733',
     api_secret: 'YfpgjsJE6mmyim6un3vcMx1cn5g'
+
 });
 
 // const passport = {
@@ -40,11 +45,11 @@ const mongo = {
 
 };
 
-
-const Nexmo = require('nexmo');
 const nexmo = new Nexmo({
+
     apiKey: '607aea48',
     apiSecret: '34JuosavLgfWwDI3'
+
 });
 
 

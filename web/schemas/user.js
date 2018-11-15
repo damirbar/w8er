@@ -9,7 +9,6 @@ var UserSchema = new mongoose.Schema({
     about_me: {type: String, default: ""},
     profile_img: {type: String, default: "https://res.cloudinary.com/w8er/image/upload/v1541594267/w8er/default.png"},
     is_admin: {type: Boolean, default: false},
-    address: {type: String, default: ""},
     birthday: {type: Date},
     gender: {type: String, default: ""},
     favorite_foods: [String],
@@ -24,6 +23,10 @@ var UserSchema = new mongoose.Schema({
         event: {type: String, default: ""},
         date: {type: Date, default: Date.now()}
     }],
+    address: {
+        lat: {type: String, default: ""},
+        lng: {type: String, default: ""}
+    }
 
 });
 

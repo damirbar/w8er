@@ -6,6 +6,7 @@ const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
 let fs = require('fs');
+let geocoder = require('../config/config').geocoder;
 
 router.get("/get-profile", function (req, res) {
     let phone_number = req.phone_number;
@@ -27,6 +28,7 @@ router.get("/get-profile", function (req, res) {
 
 router.post("/edit-profile", function (req, res) {
     let phone_number = req.phone_number;
+    // let phone_number = "+972526071827";
     User.findOne({phone_number: phone_number}, function (err, user) {
         if (err) {
             console.log("error in /edit-profile");
@@ -42,12 +44,25 @@ router.post("/edit-profile", function (req, res) {
                 user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
                 user.email = updatedUser.email ? updatedUser.email : user.email;
                 user.last_modified = Date.now();
-                user.save();
-                // address: {type: String, default: ""}
+                geocoder.geocode(updatedUser.address).then(function (result) {
+                    if (result.raw.status === "OK") {
+                        user.address.lat = result[0].latitude;
+                        user.address.lng = result[0].longitude;
+                        user.save();
+                        return res.status(200).json(user);
+                    }
+                    else {
+                        console.log("something went wrong in edit profile with geocoder");
+                        console.log(result);
+                        return res.status(404).json({message: "problem with address"});
+                    }
+                }).catch(function (e) {
+                    console.log("problem with geocoder in edit profile:");
+                    console.error(e.message);
+                    return res.status(404).json({message: "problem with address"});
+                });
                 // favorite_foods: [String]
                 // favorite_restaurants: [String]
-
-                return res.status(200).json(user);
             }
             else {
                 return res.status(404).json({message: 'user ' + req.phone_number + ' dose not exist sorry'});
