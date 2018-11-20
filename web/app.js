@@ -16,12 +16,14 @@ let mainRequests = require('./routes/main_route');
 let profileRequests = require('./routes/profile_requests');
 let restaurantRequests = require('./routes/restaurant_requests');
 let searchRequests = require('./routes/search_requests');
+let toolRequests = require('./routes/tool_routs');
 
 app.use('/', mainRequests);
 app.use('/auth', authRouts);
 app.use('/profile', profileRequests);
 app.use('/rest', restaurantRequests);
 app.use('/search', searchRequests);
+app.use('/tool', toolRequests);
 
 
 app.use(express.static(path.join(__dirname, 'public')));

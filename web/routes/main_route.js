@@ -6,8 +6,7 @@ let User = require('../schemas/user');
 
 router.all("*", function (req, res, next) {
 
-    if (true
-        || req.url === '/' || req.url === '/favicon.ico'
+    if (req.url === '/' || req.url === '/favicon.ico'
         || req.url.includes('/auth/login-signup')
         || req.url.includes('/auth/verify')) {
 
