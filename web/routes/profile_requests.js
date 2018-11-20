@@ -20,7 +20,7 @@ router.get("/get-profile", function (req, res) {
                 res.status(200).json(user);
             }
             else {
-                res.status(404).json({message: 'user ' + req.body.phone_number + ' dose not exist'});
+                res.status(404).json({message: 'user ' + req.phone_number + ' dose not exist'});
             }
         }
     });

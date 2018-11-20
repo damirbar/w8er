@@ -44,6 +44,25 @@ router.post('/create', function (req, res) {
     });
 });
 
+
+router.get('/get-rest',function (req, res) {
+    Restaurant.findOne({id:req.query.id},function (err, rest) {
+        if (err) {
+            console.log("error in /get-rest");
+            res.status(500).json({message: err});
+        }
+        else{
+            if(rest) {
+                res.status(200).json(rest);
+            }
+            else{
+                res.status(404).json({message: 'restaurant ' + req.query.id + ' dose not exist'});
+            }
+        }
+    })
+});
+
+
 router.post("/edit-rest", function (req, res) {
     Restaurant.findOne({phone_number: req.phone_number}, function (err, rest) {
         if (err) {
