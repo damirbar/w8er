@@ -5,7 +5,6 @@ const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
-let geocoder = require('../config/config').geocoder;
 let fs = require('fs');
 
 const MAX_PICTURES_PER_RESTAURANT = 5;
@@ -16,46 +15,35 @@ router.post('/create', function (req, res) {
         phone_number: req.phone_number,
         owner: req.user.id,
         tags: req.body.tags,
-        kosher: req.body.kosher
+        kosher: req.body.kosher,
+        address: {
+            lat: req.body.address.lat,
+            lng: req.body.address.lng
+        }
     });
-    geocoder.geocode(req.body.address).then(function (result) {
-        if (result.raw.status === "OK") {
-            rest.address.lat = result[0].latitude;
-            rest.address.lng = result[0].longitude;
-            rest.save(function (err, rest) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).json({message: err});
-                }
-                else {
-                    res.status(200).json(rest);
-                }
-            });
+    rest.save(function (err, rest) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
         }
         else {
-            console.log("something went wrong in create restaurant with geocoder");
-            console.log(result);
-            return res.status(404).json({message: "problem with address"});
+            res.status(200).json(rest);
         }
-    }).catch(function (e) {
-        console.log("problem with geocoder in create restaurant:");
-        console.error(e.message);
-        return res.status(404).json({message: "problem with address"});
     });
 });
 
 
-router.get('/get-rest',function (req, res) {
-    Restaurant.findOne({id:req.query.id},function (err, rest) {
+router.get('/get-rest', function (req, res) {
+    Restaurant.findOne({id: req.query.id}, function (err, rest) {
         if (err) {
             console.log("error in /get-rest");
             res.status(500).json({message: err});
         }
-        else{
-            if(rest) {
+        else {
+            if (rest) {
                 res.status(200).json(rest);
             }
-            else{
+            else {
                 res.status(404).json({message: 'restaurant ' + req.query.id + ' dose not exist'});
             }
         }
@@ -75,23 +63,17 @@ router.post("/edit-rest", function (req, res) {
                 rest.name = updatedUser.name ? updatedUser.name : rest.name;
                 rest.tags = updatedUser.tags ? updatedUser.tags : rest.tags;
                 rest.kosher = updatedUser.kosher ? updatedUser.kosher : rest.kosher;
+                rest.address.lat = updatedUser.address.lat ? updatedUser.address.lat : rest.address.lat;
+                rest.address.lng = updatedUser.address.lng ? updatedUser.address.lng : rest.address.lng;
                 rest.last_modified = Date.now();
-                geocoder.geocode(updatedUser.address).then(function (result) {
-                    if (result.raw.status === "OK") {
-                        rest.address.lat = result[0].latitude;
-                        rest.address.lng = result[0].longitude;
-                        rest.save();
-                        return res.status(200).json(rest);
+                rest.save(function (err, rest) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({message: err});
                     }
                     else {
-                        console.log("something went wrong in edit profile with geocoder");
-                        console.log(result);
-                        return res.status(404).json({message: "problem with address"});
+                        res.status(200).json(rest);
                     }
-                }).catch(function (e) {
-                    console.log("problem with geocoder in edit profile:");
-                    console.error(e.message);
-                    return res.status(404).json({message: "problem with address"});
                 });
             }
             else {
