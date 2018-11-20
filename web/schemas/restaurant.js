@@ -13,7 +13,8 @@ var RestaurantSchema = new mongoose.Schema({
     rating: {type: Number, default: 0},
     kosher: {type: Boolean, required: true, default: false},
     sessions: {},
-    address: {
+    address: {type: String, default: ""},
+    coordinates: {
         lat: {type: String, default: ""},
         lng: {type: String, default: ""}
     },

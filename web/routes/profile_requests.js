@@ -42,9 +42,10 @@ router.post("/edit-profile", function (req, res) {
                 user.gender = updatedUser.gender ? updatedUser.gender : user.gender;
                 user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
                 user.email = updatedUser.email ? updatedUser.email : user.email;
+                user.address = updatedUser.address ? updatedUser.address : user.address;
+                user.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : user.coordinates.lat;
+                user.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : user.coordinates.lng;
                 user.last_modified = Date.now();
-                user.address.lat = updatedUser.address.lat ? updatedUser.address.lat : user.address.lat;
-                user.address.lng = updatedUser.address.lng ? updatedUser.address.lng : user.address.lng;
                 user.save(function (err, user) {
                     if (err) {
                         console.log('error in saving user in /edit-profile');

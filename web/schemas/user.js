@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
     birthday: {type: Date},
     gender: {type: String, default: ""},
     favorite_foods: [String],
+    address: {type: String, default: ""},
     favorite_restaurants: [String],
     tmp_password: {type: String, default: ""},
     tmp_time: {type: Date, default: Date.now()},
@@ -23,7 +24,7 @@ var UserSchema = new mongoose.Schema({
         event: {type: String, default: ""},
         date: {type: Date, default: Date.now()}
     }],
-    address: {
+    coordinates: {
         lat: {type: String, default: ""},
         lng: {type: String, default: ""}
     }

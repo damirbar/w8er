@@ -16,9 +16,10 @@ router.post('/create', function (req, res) {
         owner: req.user.id,
         tags: req.body.tags,
         kosher: req.body.kosher,
-        address: {
-            lat: req.body.address.lat,
-            lng: req.body.address.lng
+        address: req.body.address,
+        coordinates: {
+            lat: req.body.coordinates.lat,
+            lng: req.body.coordinates.lng
         }
     });
     rest.save(function (err, rest) {
@@ -63,8 +64,9 @@ router.post("/edit-rest", function (req, res) {
                 rest.name = updatedUser.name ? updatedUser.name : rest.name;
                 rest.tags = updatedUser.tags ? updatedUser.tags : rest.tags;
                 rest.kosher = updatedUser.kosher ? updatedUser.kosher : rest.kosher;
-                rest.address.lat = updatedUser.address.lat ? updatedUser.address.lat : rest.address.lat;
-                rest.address.lng = updatedUser.address.lng ? updatedUser.address.lng : rest.address.lng;
+                rest.address = updatedUser.address ? updatedUser.address : rest.address;
+                rest.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : rest.coordinates.lat;
+                rest.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : rest.coordinates.lng;
                 rest.last_modified = Date.now();
                 rest.save(function (err, rest) {
                     if (err) {
