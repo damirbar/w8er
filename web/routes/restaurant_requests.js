@@ -17,6 +17,7 @@ router.post('/create', function (req, res) {
         tags: req.body.tags,
         kosher: req.body.kosher,
         address: req.body.address,
+        hours: req.body.hours,
         coordinates: {
             lat: req.body.coordinates.lat,
             lng: req.body.coordinates.lng
@@ -65,6 +66,7 @@ router.post("/edit-rest", function (req, res) {
                 rest.tags = updatedUser.tags ? updatedUser.tags : rest.tags;
                 rest.kosher = updatedUser.kosher ? updatedUser.kosher : rest.kosher;
                 rest.address = updatedUser.address ? updatedUser.address : rest.address;
+                rest.hours = updatedUser.hours ? updatedUser.hours : rest.hours;
                 rest.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : rest.coordinates.lat;
                 rest.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : rest.coordinates.lng;
                 rest.last_modified = Date.now();
