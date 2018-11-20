@@ -114,11 +114,8 @@ public class PhoneVerifyFragment extends Fragment {
         user.setPhone_number(fullNumber);
         user.setPassword(pass);
         verifyProcess(user);
-
         mBtLogin.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-
-
     }
 
     private void verifyProcess(User user) {

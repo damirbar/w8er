@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.BuildConfig;
 import com.w8er.android.R;
+import com.w8er.android.activities.AddRestaurantActivity;
 import com.w8er.android.activities.FeedbackActivity;
 import com.w8er.android.activities.NavBarActivity;
 import com.w8er.android.entry.EntryActivity;
@@ -66,6 +67,8 @@ public class SettingsFragment extends BaseFragment {
         ver.setText(BuildConfig.VERSION_NAME);
         Button reportBtn = v.findViewById(R.id.report_button);
         reportBtn.setOnClickListener(view -> OpenReport());
+        Button addRes = v.findViewById(R.id.add_res_button);
+        addRes.setOnClickListener(view -> OpenAddRes());
         TextView editProfileBtn = v.findViewById(R.id.user_profile);
         editProfileBtn.setOnClickListener(view -> OpenEditProfile());
         image.setOnClickListener(view -> OpenEditProfile());
@@ -105,6 +108,11 @@ public class SettingsFragment extends BaseFragment {
             }
         });
 
+    }
+
+    private void OpenAddRes() {
+        Intent i = new Intent(getContext(), AddRestaurantActivity.class);
+        startActivity(i);
     }
 
     public void onLogoutMenuSelected() {
