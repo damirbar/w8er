@@ -1,20 +1,30 @@
 package com.w8er.android.address;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.w8er.android.R;
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.utils.GoogleMapUtils;
+import com.w8er.android.utils.SoftKeyboard;
 
 public class AddressCoordinatesFragment extends Fragment {
 
@@ -23,6 +33,9 @@ public class AddressCoordinatesFragment extends Fragment {
     private GoogleMap googleMap;
     private Coordinates coordinates;
     private String address;
+    private TextView mTVinfo;
+    private Button mBSave;
+    private LatLng currentCenter;
 
 
     @Nullable
@@ -39,14 +52,42 @@ public class AddressCoordinatesFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
+        buttonBack.setOnClickListener(view -> goBack());
         mMapView = (MapView) v.findViewById(R.id.mapView);
+        mBSave = v.findViewById(R.id.save_button);
+        mBSave.setOnClickListener(view -> saveButton());
+        mTVinfo = v.findViewById(R.id.infoTextView);
+
     }
+
+    public void saveButton() {
+
+        new SoftKeyboard(getActivity()).hideSoftKeyboard();
+
+        coordinates.setLat(currentCenter.latitude);
+        coordinates.setLng(currentCenter.longitude);
+
+
+
+        Intent i = new Intent();
+        Bundle extra = new Bundle();
+        extra.putString("address", address);
+        extra.putParcelable("coordinates", coordinates);
+
+        i.putExtras(extra);
+        getActivity().setResult(Activity.RESULT_OK, i);
+        getActivity().finish();
+    }
+
 
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             address = bundle.getString("address");
+            String country = bundle.getString("country");
             coordinates = bundle.getParcelable("coordinates");
+            mTVinfo.setText(mTVinfo.getText().toString() + address + "," + " " + country);
         }
     }
 
@@ -66,18 +107,35 @@ public class AddressCoordinatesFragment extends Fragment {
             googleMap = mMap;
 
             LatLng latLng = new LatLng(coordinates.getLat(),coordinates.getLng());
-            GoogleMapUtils.addMapMarker(latLng,"","", googleMap);
-            GoogleMapUtils.goToLocation(latLng, googleMap);
+
+            GoogleMapUtils.goToLocation(latLng,17,googleMap);
+
+            googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                @Override
+                public void onCameraIdle() {
+                    // Get the center coordinate of the map, if the overlay view is center too
+                    CameraPosition cameraPosition = googleMap.getCameraPosition();
+                    currentCenter = cameraPosition.target;
+                    }
+            });
+
 
         });
     }
 
+    private void goBack() {
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
+
+        Bundle i = new Bundle();
+        i.putString("address", address);
+        AddressFragment fragment = new AddressFragment();
+        fragment.setArguments(i);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentFrame,fragment,AddressFragment.TAG).commit();
+
     }
+
 
     @Override
     public void onPause() {
@@ -96,6 +154,25 @@ public class AddressCoordinatesFragment extends Fragment {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        mMapView.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((v, keyCode, event) -> {
+
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                goBack();
+                return true;
+            }
+            return false;
+        });
+    }
+
 
 
 }

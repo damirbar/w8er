@@ -221,7 +221,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     private void saveButton() {
 
-
         String first_name = mETFirstName.getText().toString().trim();
         String last_name = mETLastName.getText().toString().trim();
         String gender = mETGender.getText().toString().trim();

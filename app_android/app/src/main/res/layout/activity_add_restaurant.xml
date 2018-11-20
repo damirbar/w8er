@@ -276,35 +276,49 @@
 
                     </TableRow>
 
-                    <TableRow
+                    <RelativeLayout
                         android:id="@+id/tR4"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/tR3"
                         android:layout_marginTop="15dp">
 
-                        <TextView
-                            android:id="@+id/tVaddress"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center|start"
-                            android:text="Address"
-                            android:textSize="16sp" />
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/eTaddress"
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edt_bg_selected"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="Address"
-                            android:inputType="none"
-                            android:maxLength="@integer/def_max"
-                            android:textSize="16sp"
-                            app:backgroundTint="@color/edit_text" />
+                            android:layout_height="110dp"
+                            android:layout_below="@+id/table_adress"
+                            android:layout_marginTop="15dp"
+                            android:visibility="gone" />
 
-                    </TableRow>
+                        <TableRow
+                            android:id="@+id/table_adress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tVaddress"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center|start"
+                                android:text="Address"
+                                android:textSize="16sp" />
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/eTaddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/edt_bg_selected"
+                                android:ems="10"
+                                android:focusable="false"
+                                android:hint="Address"
+                                android:inputType="none"
+                                android:maxLength="@integer/def_max"
+                                android:textSize="16sp"
+                                app:backgroundTint="@color/edit_text" />
+
+                        </TableRow>
+                    </RelativeLayout>
 
                     <TableRow
                         android:id="@+id/tR6"

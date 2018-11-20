@@ -13,22 +13,28 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.w8er.android.R;
+import com.w8er.android.model.Coordinates;
 import com.w8er.android.utils.GoogleMapUtils;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class MapsFragment extends BaseFragment {
+public class RestaurantMarkerFragment extends BaseFragment {
 
     private MapView mMapView;
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private final int REQ_PERMISSION = 888;
+    private Coordinates coordinates;
 
 
     @Override
@@ -36,9 +42,8 @@ public class MapsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
-
+        getData();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         initMap();
         return rootView;
     }
@@ -47,9 +52,15 @@ public class MapsFragment extends BaseFragment {
         mMapView = (MapView) v.findViewById(R.id.mapView);
     }
 
+    private void getData() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            coordinates = bundle.getParcelable("coordinates");
+        }
+    }
+
+
     private void initMap() {
-
-
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
@@ -60,6 +71,10 @@ public class MapsFragment extends BaseFragment {
 
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
+
+
+
+            GoogleMapUtils.addMapMarker(new LatLng (coordinates.getLat(),coordinates.getLng()),"","", googleMap);
 
             // For showing a move to my location button
             if (!initMyLocation(googleMap)) {
@@ -81,7 +96,17 @@ public class MapsFragment extends BaseFragment {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
-                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()),15,googleMap);
+
+                                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                builder.include(new LatLng (coordinates.getLat(),coordinates.getLng()));
+                                builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
+
+                                LatLngBounds bounds = builder.build();
+                                int padding = 100; // offset from edges of the map in pixels
+                                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                                googleMap.moveCamera(cu);
+
+//                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()),15,googleMap);
                                 // Logic to handle location object
                             }
                         }

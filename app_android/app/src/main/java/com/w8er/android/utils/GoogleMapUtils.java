@@ -10,9 +10,9 @@ import com.w8er.android.R;
 
 public class GoogleMapUtils {
 
-    public static void goToLocation(LatLng latLng, GoogleMap googleMap) {
+    public static void goToLocation(LatLng latLng,int zoom, GoogleMap googleMap) {
         // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(zoom).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 

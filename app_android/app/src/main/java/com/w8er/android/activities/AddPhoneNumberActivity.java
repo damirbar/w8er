@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.hbb20.CountryCodePicker;
 import com.w8er.android.R;
+import com.w8er.android.utils.SoftKeyboard;
 
 public class AddPhoneNumberActivity extends AppCompatActivity {
 
@@ -64,6 +65,9 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
     }
 
     public void saveButton() {
+
+        new SoftKeyboard(this).hideSoftKeyboard();
+
         String phone = ccp.getFormattedFullNumber();
         String countryCode = ccp.getSelectedCountryCodeWithPlus();
         Intent i = new Intent();

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
 import com.w8er.android.R;
 import com.w8er.android.model.Coordinates;
@@ -20,6 +21,7 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -28,6 +30,7 @@ public class AddressFragment extends Fragment {
 
     public static final String TAG = AddressFragment.class.getSimpleName();
     private EditText mAddress;
+    private String country;
     private Button mBSave;
     private ProgressBar mProgressBar;
     private String address;
@@ -51,13 +54,16 @@ public class AddressFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        ScrollView scrollView = v.findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
         mAddress = v.findViewById(R.id.eTaddress);
         Button mBCancel = v.findViewById(R.id.cancel_button);
-        mBCancel.setOnClickListener(view -> getActivity().finish());
-        mBSave.setOnClickListener(view -> saveButton());
+        mBSave = v.findViewById(R.id.save_button);
         mAddress.addTextChangedListener(mTextEditorWatcher);
         mProgressBar = v.findViewById(R.id.progress);
-        mBSave = v.findViewById(R.id.save_button);
+        mBCancel.setOnClickListener(view -> getActivity().finish());
+        mBSave.setOnClickListener(view -> saveButton());
 
     }
 
@@ -65,6 +71,7 @@ public class AddressFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             address = bundle.getString("address");
+            country = bundle.getString("country");
             if(address!=null && !address.isEmpty()){
                 mAddress.setText(address);
             }
@@ -77,7 +84,7 @@ public class AddressFragment extends Fragment {
         mProgressBar.setVisibility(View.VISIBLE);
 
         address = mAddress.getText().toString().trim();
-        addressToCoordProcess(address);
+        addressToCoordProcess(address + " " + country);
     }
 
     private void addressToCoordProcess(String address) {
@@ -92,8 +99,11 @@ public class AddressFragment extends Fragment {
         mProgressBar.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
 
+        String capitalize = address.substring(0, 1).toUpperCase() + address.substring(1);
+
         Bundle i = new Bundle();
-        i.putString("address", address);
+        i.putString("address", capitalize);
+        i.putString("country", country);
         i.putParcelable("coordinates", coordinates);
         AddressCoordinatesFragment fragment = new AddressCoordinatesFragment();
         fragment.setArguments(i);
@@ -136,7 +146,6 @@ public class AddressFragment extends Fragment {
         public void afterTextChanged(Editable s) {
         }
     };
-
 
 
 }

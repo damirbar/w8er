@@ -8,8 +8,14 @@ public class Coordinates implements Parcelable {
     private double lat;
     private double lng;
 
+    public Coordinates(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
 
-    protected Coordinates(Parcel in) {
+    }
+
+
+    public Coordinates(Parcel in) {
         lat = in.readDouble();
         lng = in.readDouble();
     }
