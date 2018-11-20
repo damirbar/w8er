@@ -167,8 +167,6 @@ public class PhoneLoginFragment extends Fragment {
         mProgressBar.setVisibility(View.GONE);
         mBtLogin.setVisibility(View.VISIBLE);
         ccp.setCcpClickable(true);
-
-
     }
 
     @Override

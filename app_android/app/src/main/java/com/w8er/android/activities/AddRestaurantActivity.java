@@ -10,6 +10,7 @@ import android.widget.NumberPicker;
 import android.widget.ScrollView;
 
 import com.w8er.android.R;
+import com.w8er.android.address.AddAddressActivity;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -18,6 +19,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_UPDATE_NOTES = 0x1;
     public static final int REQUEST_CODE_UPDATE_PHONE_NUMBER = 0x2;
+    public static final int REQUEST_CODE_UPDATE_ADDRESS = 0x3;
+
 
     private Button countryBtn;
     private NumberPicker mNumberPicker;
@@ -57,10 +60,12 @@ public class AddRestaurantActivity extends AppCompatActivity {
         eTPhone.setOnClickListener(view -> setPhone());
         eTname = findViewById(R.id.eName);
         eTaddress = findViewById(R.id.eTaddress);
+        eTaddress.setOnClickListener(view -> setAddress());
         eTwebsite = findViewById(R.id.eTWebsite);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBCancel.setOnClickListener(view -> finish());
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -83,6 +88,15 @@ public class AddRestaurantActivity extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
+        if (requestCode == REQUEST_CODE_UPDATE_ADDRESS) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                String address = extra.getString("address");
+                eTaddress.setText(address);
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+
     }
 
     private void setNotes() {
@@ -105,6 +119,14 @@ public class AddRestaurantActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CODE_UPDATE_PHONE_NUMBER);
     }
 
+    private void setAddress() {
+        Intent i = new Intent(this, AddAddressActivity.class);
+        String address = eTaddress.getText().toString().trim();
+        Bundle extra = new Bundle();
+        extra.putString("address", address);
+        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_ADDRESS);
+    }
 
     private void changeCountry() {
         String country = countryNames[mNumberPicker.getValue()];

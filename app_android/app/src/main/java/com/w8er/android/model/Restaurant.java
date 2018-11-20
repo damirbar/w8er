@@ -10,12 +10,20 @@ public class Restaurant {
     private String[] pictures;
     private boolean kosher;
     private Review[] reviews;
+    private Coordinates coordinates;
 
-    //        location: {},
     //        menu: {},
     //        layout: {},
     //        capacity: {},
     //        sessions: {}
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public int getPhone_number() {
         return phone_number;

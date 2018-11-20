@@ -22,6 +22,15 @@ public class User {
     private String gender;
     private Date birthday;
     private String address;
+    private Coordinates coordinates;
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public String getAddress() {
         return address;
