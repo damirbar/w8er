@@ -65,9 +65,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     @Override
     public void onItemClick(View view, int position) {
 
-        if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(new RestaurantPageFragment());
-        }
 
     }
 }
