@@ -24,6 +24,7 @@ var RestaurantSchema = new mongoose.Schema({
     hours: [time],
     // hours = [{open: '08:00', close: '12:00', days: 'Sunday-Thursday'}, {open: '14:00', close: '18:00', days: 'Sunday-Thursday'}, {open: '08:00', close: '14:00', days: 'Friday'}];
     address: {type: String, default: ""},
+    country: {type: String, default: ""},
     coordinates: {
         lat: {type: String, default: ""},
         lng: {type: String, default: ""}

@@ -16,10 +16,11 @@ router.post('/create', function (req, res) {
 
     req.checkBody("name", "Name is required").notEmpty();
     req.checkBody("address", "Address required").notEmpty();
+    req.checkBody("country", "Country is required").notEmpty();
     req.checkBody("hours", "Hours are required").notEmpty();
     req.checkBody("coordinates", "Coordinates are required").notEmpty();
-    req.checkBody("coordinates.lat", "latitude is required").notEmpty();
-    req.checkBody("coordinates.lng", "longitude is required").notEmpty();
+    req.checkBody("coordinates.lat", "Latitude is required").notEmpty();
+    req.checkBody("coordinates.lng", "Longitude is required").notEmpty();
 
 
     const errors = req.validationErrors();
@@ -40,6 +41,7 @@ router.post('/create', function (req, res) {
             tags: req.body.tags,
             kosher: req.body.kosher,
             address: req.body.address,
+            country: req.body.country,
             hours: req.body.hours,
             coordinates: {
                 lat: req.body.coordinates.lat,
@@ -90,6 +92,7 @@ router.post("/edit-rest", function (req, res) {
                 rest.tags = updatedUser.tags ? updatedUser.tags : rest.tags;
                 rest.kosher = updatedUser.kosher ? updatedUser.kosher : rest.kosher;
                 rest.address = updatedUser.address ? updatedUser.address : rest.address;
+                rest.country = updatedUser.country ? updatedUser.country : rest.country;
                 rest.hours = updatedUser.hours ? updatedUser.hours : rest.hours;
                 rest.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : rest.coordinates.lat;
                 rest.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : rest.coordinates.lng;

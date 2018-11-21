@@ -43,6 +43,7 @@ router.post("/edit-profile", function (req, res) {
                 user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
                 user.email = updatedUser.email ? updatedUser.email : user.email;
                 user.address = updatedUser.address ? updatedUser.address : user.address;
+                user.country = updatedUser.country ? updatedUser.country : user.country;
 
                 if(updatedUser.coordinates) {
                     user.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : user.coordinates.lat;

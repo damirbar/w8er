@@ -13,6 +13,7 @@ var UserSchema = new mongoose.Schema({
     gender: {type: String, default: ""},
     favorite_foods: [String],
     address: {type: String, default: ""},
+    country: {type: String, default: ""},
     favorite_restaurants: [String],
     tmp_password: {type: String, default: ""},
     tmp_time: {type: Date, default: Date.now()},
