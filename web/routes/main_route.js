@@ -8,7 +8,9 @@ router.all("*", function (req, res, next) {
 
     if (req.url === '/' || req.url === '/favicon.ico'
         || req.url.includes('/auth/login-signup')
-        || req.url.includes('/auth/verify')) {
+        || req.url.includes('/auth/verify')
+        || req.url.includes('free-text-search')
+        || req.url.includes('get-rest')) {
 
         return next();
     }
