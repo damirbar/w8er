@@ -7,31 +7,55 @@ const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
 let fs = require('fs');
 
+const expressValidator = require('express-validator');
+router.use(expressValidator());
+
 const MAX_PICTURES_PER_RESTAURANT = 5;
 
 router.post('/create', function (req, res) {
-    let rest = new Restaurant({
-        name: req.body.name,
-        phone_number: req.phone_number,
-        owner: req.user.id,
-        tags: req.body.tags,
-        kosher: req.body.kosher,
-        address: req.body.address,
-        hours: req.body.hours,
-        coordinates: {
-            lat: req.body.coordinates.lat,
-            lng: req.body.coordinates.lng
+
+    req.checkBody("name", "Name is required").notEmpty();
+    req.checkBody("address", "Address required").notEmpty();
+    req.checkBody("hours", "Hours are required").notEmpty();
+    req.checkBody("coordinates", "Coordinates are required").notEmpty();
+    req.checkBody("coordinates.lat", "latitude is required").notEmpty();
+    req.checkBody("coordinates.lng", "longitude is required").notEmpty();
+
+
+    const errors = req.validationErrors();
+
+    if (errors) {
+        let str = "";
+        for (let i = 0; i < errors.length; ++i) {
+            console.log(errors[i].msg);
+            str += errors[i].msg + "  ";
         }
-    });
-    rest.save(function (err, rest) {
-        if (err) {
-            console.log(err);
-            res.status(500).json({message: err});
-        }
-        else {
-            res.status(200).json(rest);
-        }
-    });
+        res.status(409).json({message: str});
+    }
+    else {
+        let rest = new Restaurant({
+            name: req.body.name,
+            phone_number: req.phone_number,
+            owner: req.user.id,
+            tags: req.body.tags,
+            kosher: req.body.kosher,
+            address: req.body.address,
+            hours: req.body.hours,
+            coordinates: {
+                lat: req.body.coordinates.lat,
+                lng: req.body.coordinates.lng
+            }
+        });
+        rest.save(function (err, rest) {
+            if (err) {
+                console.log(err);
+                res.status(500).json({message: err});
+            }
+            else {
+                res.status(200).json(rest);
+            }
+        });
+    }
 });
 
 
@@ -259,6 +283,41 @@ router.post('/remove-item', function (req, res) {
             }
         }
     });
+});
+
+
+
+router.post('/post-profile-image', type, function (req, res) {
+    if (!req.file) {
+        console.log("no file");
+        res.status(400).json({message: 'no file'});
+    }
+    else {
+        const path = req.file.path;
+        if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
+            console.log("wrong file type");
+        }
+        else {
+            Restaurant.findOne({phone_number: req.phone_number}, function (err, rest) {
+                if (err) {
+                    console.log("error in upload profile image restaurant");
+                    fs.unlinkSync(path);
+                    res.status(500).json({message: err});
+                }
+                else {
+                    if (rest) {
+                        uploader.uploadProfileImage(req.file, path, rest, ('restaurants/' + rest.id + "profile"), res);
+                    }
+                    else {
+                        fs.unlinkSync(path);
+                        res.status(404).json({message: 'no such restaurant ' + req.phone_number})
+                    }
+                }
+            });
+        }
+    }
 });
 
 module.exports = router;

@@ -43,8 +43,11 @@ router.post("/edit-profile", function (req, res) {
                 user.about_me = updatedUser.about_me ? updatedUser.about_me : user.about_me;
                 user.email = updatedUser.email ? updatedUser.email : user.email;
                 user.address = updatedUser.address ? updatedUser.address : user.address;
-                user.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : user.coordinates.lat;
-                user.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : user.coordinates.lng;
+
+                if(updatedUser.coordinates) {
+                    user.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : user.coordinates.lat;
+                    user.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : user.coordinates.lng;
+                }
                 user.last_modified = Date.now();
                 user.save(function (err, user) {
                     if (err) {
@@ -81,13 +84,13 @@ router.post('/post-profile-image', type, function (req, res) {
         else {
             User.findOne({phone_number: req.phone_number}, function (err, user) {
                 if (err) {
-                    console.log("error in upload profile image");
+                    console.log("error in upload profile image user");
                     fs.unlinkSync(path);
                     res.status(500).json({message: err});
                 }
                 else {
                     if (user) {
-                        uploader.uploadProfileImage(req.file, path, user, res);
+                        uploader.uploadProfileImage(req.file, path, user, ("profiles/" + user.id + "profile"), res);
                     }
                     else {
                         fs.unlinkSync(path);

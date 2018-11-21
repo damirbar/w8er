@@ -4,11 +4,11 @@ const fs = require('fs');
 
 let uploadService = {
 
-    uploadProfileImage: function (file, path, user, res) {
+    uploadProfileImage: function (file, path, schema, cloud_path, res) {
         console.log("starting to upload " + file.originalname);
         cloudinary.v2.uploader.upload(path,
             {
-                public_id: "profiles/" + user.id + "profile",
+                public_id: cloud_path,
                 width: 1000,
                 height: 1000,
                 crop: 'thumb',
@@ -22,13 +22,13 @@ let uploadService = {
                 }
                 else {
                     console.log("uploaded " + file.originalname);
-                    user.updateOne({profile_img: result.url}, function (err) {
+                    schema.updateOne({profile_img: result.url}, function (err) {
                         if (err) {
                             console.log(err);
                             res.status(500).json({message: err});
                         }
                         else {
-                            res.status(200).json({message: 'changed user profile image'});
+                            res.status(200).json({message: 'changed profile image'});
                         }
                     });
                 }

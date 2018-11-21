@@ -19,6 +19,7 @@ var RestaurantSchema = new mongoose.Schema({
     last_modified: {type: Date, default: Date.now()},
     rating: {type: Number, default: 0},
     kosher: {type: Boolean, required: true, default: false},
+    profile_img: {type: String, default: "https://res.cloudinary.com/w8er/image/upload/v1541594267/w8er/default.png"},
     sessions: {},
     hours: [time],
     // hours = [{open: '08:00', close: '12:00', days: 'Sunday-Thursday'}, {open: '14:00', close: '18:00', days: 'Sunday-Thursday'}, {open: '08:00', close: '14:00', days: 'Friday'}];
