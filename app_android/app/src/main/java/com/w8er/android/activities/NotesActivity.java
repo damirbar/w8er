@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.w8er.android.R;
+import com.w8er.android.utils.SoftKeyboard;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -55,6 +56,9 @@ public class NotesActivity extends AppCompatActivity {
 
 
     public void saveButton() {
+
+        new SoftKeyboard(this).hideSoftKeyboard();
+
         String notes = mNotesText.getText().toString().trim();
 
         Intent i = new Intent();

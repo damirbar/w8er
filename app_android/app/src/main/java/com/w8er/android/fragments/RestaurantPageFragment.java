@@ -22,6 +22,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
+import com.w8er.android.address.AddressCoordinatesFragment;
+import com.w8er.android.model.Coordinates;
+import com.w8er.android.utils.GoogleMapUtils;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -114,12 +117,19 @@ public class RestaurantPageFragment extends BaseFragment {
         });
 
 
-
     }
 
     private void goToMap() {
         if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(new MapsFragment());
+
+            Coordinates coordinates  = new Coordinates(32.109333,34.845499);////////////////////need to be removed////////////////////
+
+            Bundle i = new Bundle();
+            i.putParcelable("coordinates", coordinates);
+            RestaurantMarkerFragment fragment = new RestaurantMarkerFragment();
+            fragment.setArguments(i);
+
+            mFragmentNavigation.pushFragment(fragment);
         }
 
     }
@@ -139,8 +149,8 @@ public class RestaurantPageFragment extends BaseFragment {
             googleMap = mMap;
 
             LatLng latLng = new LatLng(32.109333,34.845499);
-            goToLocation(latLng , 13);
-            addMapMarker(latLng,"PizzaHut" , "Open");
+            GoogleMapUtils.goToLocation(latLng , 13,googleMap);
+            GoogleMapUtils.addMapMarker(latLng,"PizzaHut" , "Open",googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -151,37 +161,13 @@ public class RestaurantPageFragment extends BaseFragment {
                 }
             });
 
-
-
             mMap.setOnMapClickListener(view -> goToMap());
             mMap.setOnMarkerClickListener(view -> {
                 goToMap();
                 return  true;
             });
 
-
-
-
-
-
         });
 
     }
-
-    private void goToLocation(LatLng latLng, int zoom) {
-        // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(zoom).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
-
-    private void addMapMarker(LatLng latLng, String Title, String Description) {
-        // For zooming automatically to the location of the marker
-        googleMap.addMarker(new MarkerOptions().position(latLng).title(Title).snippet(Description))
-                .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-
-    }
-
-
-
-
 }

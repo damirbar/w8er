@@ -93,7 +93,10 @@
             android:name=".activities.AddPhoneNumberActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".address.AddAddressActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -2,7 +2,7 @@ package com.w8er.android.model;
 
 public class Restaurant {
 
-    private int phone_number;
+    private String phone_number;
     private String name;
     private String owner;
     private String first_name;
@@ -10,18 +10,36 @@ public class Restaurant {
     private String[] pictures;
     private boolean kosher;
     private Review[] reviews;
+    private Coordinates coordinates;
+    private String address;
 
-    //        location: {},
     //        menu: {},
     //        layout: {},
     //        capacity: {},
     //        sessions: {}
 
-    public int getPhone_number() {
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(int phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 

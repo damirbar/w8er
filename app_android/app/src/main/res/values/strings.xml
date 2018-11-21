@@ -36,5 +36,6 @@
     <string name="about_me">About me</string>
     <string name="ok">OK</string>
     <string name="logout">Logout</string>
+    <string name="move_the_map_until_the_marker_is_directly_over_the_restaurant">Move the map until the marker is directly over the restaurant\n@</string>
 
 </resources>

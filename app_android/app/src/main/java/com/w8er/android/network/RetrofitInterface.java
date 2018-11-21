@@ -1,6 +1,8 @@
 package com.w8er.android.network;
 
+import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.Response;
+import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.User;
 
 import okhttp3.MultipartBody;
@@ -35,5 +37,14 @@ public interface RetrofitInterface {
     @POST("profile/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
 
+    //////////////////Restaurant//////////////////
+
+    @POST("rest/create")
+    Observable<Restaurant> createRestaurant(@Body Restaurant restaurant);
+
+    //////////////////Tools//////////////////
+
+    @GET("tool/address-to-coord")
+    Observable<Coordinates> addressToCoord(@Query("address") String address);
 
 }
