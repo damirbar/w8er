@@ -85,4 +85,5 @@ dependencies {
     //for managing multiple stacks of fragments
     implementation 'com.ncapdevi:frag-nav:2.4.0'
 
+
 }

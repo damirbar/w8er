@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +51,7 @@ import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Validation.validateFields;
 
 public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener
-    ,GenderDialog.OnCallbackGender{
+        , GenderDialog.OnCallbackGender {
 
     private ProgressBar mProgressBar;
     private EditText mETFirstName;
@@ -115,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> exitAlert());
         mETGender.setOnClickListener(view -> genderViewClick());
         mProfileChange.setOnClickListener(view -> showAddProfilePicDialog());
         image.setOnClickListener(view -> showAddProfilePicDialog());
@@ -150,9 +151,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 imagePath = result.getStringExtra(IntentExtras.IMAGE_PATH);
                 showCroppedImage(imagePath);
 
-            }
-            else if (resultCode == RESULT_CANCELED) { }
-            else {
+            } else if (resultCode == RESULT_CANCELED) {
+            } else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
@@ -162,10 +162,8 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 Bundle extra = result.getExtras();
                 String bio = extra.getString("bio");
                 mETAboutMe.setText(bio);
-            }
-            else if (resultCode == RESULT_CANCELED) { }
-
-            else {
+            } else if (resultCode == RESULT_CANCELED) {
+            } else {
                 String errorMsg = result.getStringExtra(ImageCropActivity.ERROR_MSG);
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
@@ -193,7 +191,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private void showAddProfilePicDialog() {
         PicModeSelectDialogFragment newFragment = new PicModeSelectDialogFragment();
         newFragment.show(getSupportFragmentManager(), PicModeSelectDialogFragment.TAG);
-        }
+    }
 
     private void actionProfilePic(String action) {
         Intent intent = new Intent(this, ImageCropActivity.class);
@@ -265,14 +263,13 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         boolean newUser = false;
         try {
             if (!(startUser.equals(user))) {
-            actions++;
-            newUser = true;
-        }
+                actions++;
+                newUser = true;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
         if (imagePath != null && !(imagePath.isEmpty())) {
@@ -286,7 +283,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
                 e.printStackTrace();
             }
         }
-        if (newUser){
+        if (newUser) {
             updateProfile(user);
             mBSave.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.VISIBLE);
@@ -413,4 +410,21 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETGender.setText(gender);
 
     }
+
+    public void exitAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel?");
+        builder.setPositiveButton("Yes", (dialog, which) -> finish());
+        builder.setNegativeButton("No", (dialog, which) -> {
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        exitAlert();
+    }
+
+
 }
