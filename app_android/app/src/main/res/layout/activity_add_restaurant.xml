@@ -119,6 +119,22 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp">
 
+                    <Button
+                        android:id="@+id/hours_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/tR9"
+                        android:layout_marginTop="15dp"
+                        android:drawableEnd="@drawable/expand_arrow"
+                        android:drawableRight="@drawable/expand_arrow"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left|center"
+                        android:paddingLeft="1dp"
+                        android:text="Hours"
+                        android:textAllCaps="false"
+                        android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/country_info"
                         android:layout_width="wrap_content"
@@ -146,7 +162,7 @@
                         android:id="@+id/info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tR9"
+                        android:layout_below="@+id/hours_button"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="Optional Information"
@@ -177,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
                             android:focusable="false"
-                            android:hint="Tags"
+                            android:hint="#Pizza #Bar"
                             android:inputType="none"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
@@ -405,7 +421,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
                             android:focusable="false"
-                            android:hint="+972 50-555-5555"
+                            android:hint="(555) 555-5555"
                             android:inputType="none"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"

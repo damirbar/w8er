@@ -16,6 +16,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.address.AddAddressActivity;
 import com.w8er.android.model.Coordinates;
@@ -23,6 +24,8 @@ import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
+
+import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,6 +40,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_UPDATE_NOTES = 0x1;
     public static final int REQUEST_CODE_UPDATE_PHONE_NUMBER = 0x2;
     public static final int REQUEST_CODE_UPDATE_ADDRESS = 0x3;
+    public static final int REQUEST_CODE_UPDATE_TAGS = 0x4;
+
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -48,6 +53,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private EditText eTname;
     private EditText eTaddress;
     private EditText eTwebsite;
+    private EditText eTtags;
     private Coordinates coordinates;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -55,6 +61,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Button mBSave;
     private String fullPhone;
+    private HashTagHelper mTextHashTagHelper;
 
 
     @Override
@@ -99,6 +106,10 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mBCancel.setOnClickListener(view -> exitAlert());
         mBSave = findViewById(R.id.save_button);
         mBSave.setOnClickListener(view -> saveButton());
+        eTtags = findViewById(R.id.eTags);
+        eTtags.setOnClickListener(view -> setTags());
+        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
+        mTextHashTagHelper.handle(eTtags);
 
     }
 
@@ -118,8 +129,11 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 Bundle extra = result.getExtras();
                 fullPhone = extra.getString("phone");
                 String countryCode = extra.getString("countryCode");
-                if (fullPhone != null)
+                if (fullPhone != null) {
                     eTPhone.setText(fullPhone.replace(countryCode, ""));
+                }
+                else
+                    eTPhone.setText(fullPhone);
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
@@ -134,6 +148,24 @@ public class AddRestaurantActivity extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
+
+        if (requestCode == REQUEST_CODE_UPDATE_TAGS) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                String tags = extra.getString("tags");
+                eTtags.setText(tags);
+                List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
+                StringBuilder orgTags = new StringBuilder();
+                for (String s : allHashTags)
+                    orgTags.append("#").append(s).append(" ");
+                eTtags.setText(orgTags);
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+
 
     }
 
@@ -209,6 +241,15 @@ public class AddRestaurantActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CODE_UPDATE_ADDRESS);
     }
 
+    private void setTags() {
+        Intent i = new Intent(this, AddTagsActivity.class);
+        String tags = eTtags.getText().toString().trim();
+        Bundle extra = new Bundle();
+        extra.putString("tags", tags);
+        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_TAGS);
+    }
+
     private void changeCountry() {
         String country = countryNames[mNumberPicker.getValue()];
         countryBtn.setText(country);
@@ -234,6 +275,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
         String phone = "+" + fullPhone.replaceAll("[^0-9]", "");
+        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
 
         if (!validateFields(name)) {
 
@@ -252,15 +295,21 @@ public class AddRestaurantActivity extends AppCompatActivity {
             mServerResponse.showSnackBarMessage("Phone should not be empty.");
             return;
         }
+        if (!allHashTags.isEmpty()) {
+
+            mServerResponse.showSnackBarMessage("Tags should not be empty.");
+            return;
+        }
+
 
         Restaurant restaurant = new Restaurant();
         restaurant.setAddress(address);
         restaurant.setName(name);
         restaurant.setCoordinates(coordinates);
         restaurant.setPhone_number(phone);
+        restaurant.setTags(allHashTags);
 
         restaurant.setKosher(false);////////////////////need to be removed////////////////////
-//        restaurant.setTags();
 //        restaurant.setHours();
 
 
