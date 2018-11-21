@@ -9,18 +9,18 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.utils.SoftKeyboard;
 
+import java.util.List;
+
 public class AddTagsActivity extends AppCompatActivity {
 
-    private EditText mNotesText;
+    private EditText mTagsText;
     private Button mBSave;
-    private TextView mTextCount;
-    private final int MAX_COUNT = 300;
-
+    private HashTagHelper mTextHashTagHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +33,24 @@ public class AddTagsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mTextCount = findViewById(R.id.count_num);
-        mNotesText = findViewById(R.id.notes_text);
+        mTagsText = findViewById(R.id.tags_text);
+        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
+        mTextHashTagHelper.handle(mTagsText);
+
+
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
-        mNotesText.addTextChangedListener(mTextEditorWatcher);
+        mTagsText.addTextChangedListener(mTextEditorWatcher);
+
     }
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String _notes = getIntent().getExtras().getString("notes");
-            if (_notes != null) {
-                mNotesText.setText(_notes);
+            String _tags = getIntent().getExtras().getString("tags");
+            if (_tags != null) {
+                mTagsText.setText(_tags);
                 return true;
             } else
                 return false;
@@ -54,16 +58,15 @@ public class AddTagsActivity extends AppCompatActivity {
             return false;
     }
 
-
     public void saveButton() {
 
         new SoftKeyboard(this).hideSoftKeyboard();
 
-        String notes = mNotesText.getText().toString().trim();
+        String tags = mTagsText.getText().toString().trim();
 
         Intent i = new Intent();
         Bundle extra = new Bundle();
-        extra.putString("notes", notes);
+        extra.putString("tags", tags);
         i.putExtras(extra);
         setResult(Activity.RESULT_OK, i);
         finish();
@@ -74,17 +77,16 @@ public class AddTagsActivity extends AppCompatActivity {
         }
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            int num = MAX_COUNT - s.length();
-            mTextCount.setText(String.valueOf(num));
-            if (num < 0) {
-                mBSave.setEnabled(false);
-                mBSave.setTextColor(Color.WHITE);
-                mTextCount.setTextColor(Color.RED);
+            List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
+            if (allHashTags.size() >= 3 || allHashTags.size() == 0) {
+                mBSave.setEnabled(true);
+                mBSave.setTextColor(Color.BLACK);
             }
             else{
-                mBSave.setEnabled(true);
-                mTextCount.setTextColor(Color.parseColor("#808080"));
-                mBSave.setTextColor(Color.BLACK);
+                mBSave.setEnabled(false);
+                mBSave.setTextColor(Color.WHITE);
+
             }
         }
         public void afterTextChanged(Editable s) {

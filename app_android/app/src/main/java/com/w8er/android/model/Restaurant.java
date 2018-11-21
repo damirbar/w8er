@@ -1,12 +1,14 @@
 package com.w8er.android.model;
 
+import java.util.List;
+
 public class Restaurant {
 
     private String phone_number;
     private String name;
     private String owner;
     private String first_name;
-    private String[] tags;
+    private List<String> tags;
     private String[] pictures;
     private boolean kosher;
     private Review[] reviews;
@@ -67,11 +69,11 @@ public class Restaurant {
         this.first_name = first_name;
     }
 
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
