@@ -2,6 +2,7 @@ package com.w8er.android.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -95,7 +96,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         eTaddress.setOnClickListener(view -> setAddress());
         eTwebsite = findViewById(R.id.eTWebsite);
         Button mBCancel = findViewById(R.id.cancel_button);
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> exitAlert());
         mBSave = findViewById(R.id.save_button);
         mBSave.setOnClickListener(view -> saveButton());
 
@@ -288,6 +289,21 @@ public class AddRestaurantActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
+    }
+
+    public void exitAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel?");
+        builder.setPositiveButton("Yes", (dialog, which) -> finish());
+        builder.setNegativeButton("No", (dialog, which) -> {
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        exitAlert();
     }
 
 

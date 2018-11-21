@@ -146,13 +146,44 @@
                         android:id="@+id/info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tR8"
+                        android:layout_below="@+id/tR9"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="Optional Information"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <TableRow
+                        android:id="@+id/tR9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tR8"
+                        android:layout_marginTop="15dp">
+
+                        <TextView
+                            android:id="@+id/tVTags"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
+                            android:ems="10"
+                            android:gravity="center|start"
+                            android:inputType="none"
+                            android:text="Tags"
+                            android:textSize="16sp" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/eTags"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edt_bg_selected"
+                            android:focusable="false"
+                            android:hint="Tags"
+                            android:inputType="none"
+                            android:maxLength="@integer/def_max"
+                            android:textSize="16sp"
+                            app:backgroundTint="@color/edit_text" />
+
+                    </TableRow>
 
                     <LinearLayout
                         android:id="@+id/tR1"
