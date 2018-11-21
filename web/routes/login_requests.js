@@ -93,7 +93,7 @@ router.post('/login-signup', function (req, res) {
 
 router.post('/verify', function (req, res) {
     if (!req.body.phone_number) {
-        res.status(404).json({message: 'no user found to verify'})
+        res.status(200).json({message: 'no user found to verify'})
     }
     else {
         User.findOne({phone_number: req.body.phone_number}, function (err, user) {
@@ -103,34 +103,33 @@ router.post('/verify', function (req, res) {
             }
             else {
                 if (user) {
-                    if (req.body.password === user.tmp_password) {
+                    if (req.body.password === user.tmp_password && req.body.password !== "") {
                         if (user.tmp_time >= new Date(Date.now())) {
                             const token = jwt.sign(user.phone_number, config.email.secret);
-                            user.updateOne({
-                                tmp_password: "",
-                                tmp_time: new Date(Date.now()),
-                                accessToken: token
-                            }, function (err, usr) {
+                            user.tmp_password = "";
+                            user.tmp_time = new Date(Date.now());
+                            user.accessToken = token;
+                            user.save(function (err, usr) {
                                 if (err) {
                                     console.log("Error while uptading user in /varify");
                                     res.status(500).json({message: err})
                                 }
                                 else {
-                                    res.status(200).json(user);
+                                    res.status(200).json(usr);
                                 }
-                            })
+                            });
                         }
                         else {
                             res.status(304).json({message: 'password expired'});
                         }
                     }
                     else {
-                        res.status(304).json({message: 'wrong password'});
+                        res.status(200).json({message: 'wrong password'});
                     }
 
                 }
                 else {
-                    res.status(404).json({message: 'no user found with phone_number ' + req.body.phone_number})
+                    res.status(200).json({message: 'no user found with phone_number ' + req.body.phone_number})
                 }
             }
         });
