@@ -46,6 +46,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private MapView mMapView;
     private GoogleMap googleMap;
     private Button countryBtn;
+    private Button countryBtn;
     private NumberPicker mNumberPicker;
     private String countryNames[];
     private EditText eTNotes;
