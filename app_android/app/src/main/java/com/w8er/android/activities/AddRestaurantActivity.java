@@ -46,6 +46,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private MapView mMapView;
     private GoogleMap googleMap;
     private Button countryBtn;
+    private Button hoursBtn;
     private NumberPicker mNumberPicker;
     private String countryNames[];
     private EditText eTNotes;
@@ -79,8 +80,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
     private void initCountriesPicker() {
-        ScrollView scrollView = findViewById(R.id.scroll_view);
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         countryNames = new String[]{"United States", "Israel"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(countryNames.length - 1);
@@ -88,6 +87,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         mProgressBar = findViewById(R.id.progress);
         mMapView = (MapView) findViewById(R.id.mapView);
         countryBtn = findViewById(R.id.country_button);
@@ -110,6 +111,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         eTtags.setOnClickListener(view -> setTags());
         mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
         mTextHashTagHelper.handle(eTtags);
+        hoursBtn = findViewById(R.id.hours_button);
+        hoursBtn.setOnClickListener(view -> setHours());
 
     }
 
@@ -250,6 +253,17 @@ public class AddRestaurantActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CODE_UPDATE_TAGS);
     }
 
+    private void setHours() {
+        Intent i = new Intent(this, OpenHoursActivity.class);
+//        String tags = eTtags.getText().toString().trim();
+//        Bundle extra = new Bundle();
+//        extra.putString("tags", tags);
+//        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_TAGS);
+
+    }
+
+
     private void changeCountry() {
         String country = countryNames[mNumberPicker.getValue()];
         countryBtn.setText(country);
@@ -271,12 +285,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mBSave.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
 
-
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
-        String phone = "+" + fullPhone.replaceAll("[^0-9]", "");
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
-
 
         if (!validateFields(name)) {
 
@@ -290,7 +301,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
             return;
         }
 
-        if (!validateFields(phone)) {
+        if (!validateFields(fullPhone)) {
 
             mServerResponse.showSnackBarMessage("Phone should not be empty.");
             return;
@@ -300,6 +311,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
             mServerResponse.showSnackBarMessage("Tags should not be empty.");
             return;
         }
+
+        String phone = "+" + fullPhone.replaceAll("[^0-9]", "");
 
 
         Restaurant restaurant = new Restaurant();
