@@ -52,7 +52,7 @@ let uploadService = {
                 }
                 else {
                     console.log("uploaded " + file.originalname);
-                    rest.updateOne({ $push: { pictures: result.url } }, function (err) {
+                    rest.updateOne({$push: {pictures: result.url}}, function (err) {
                         if (err) {
                             console.log(err);
                             res.status(500).json({message: err});

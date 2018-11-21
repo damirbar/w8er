@@ -93,7 +93,7 @@ router.post('/login-signup', function (req, res) {
 
 router.post('/verify', function (req, res) {
     if (!req.body.phone_number) {
-        res.status(200).json({message: 'no user found to verify'})
+        res.status(404).json({message: 'no user found to verify'})
     }
     else {
         User.findOne({phone_number: req.body.phone_number}, function (err, user) {
@@ -120,16 +120,16 @@ router.post('/verify', function (req, res) {
                             });
                         }
                         else {
-                            res.status(304).json({message: 'password expired'});
+                            res.status(401).json({message: 'password expired'});
                         }
                     }
                     else {
-                        res.status(200).json({message: 'wrong password'});
+                        res.status(401).json({message: 'wrong password'});
                     }
 
                 }
                 else {
-                    res.status(200).json({message: 'no user found with phone_number ' + req.body.phone_number})
+                    res.status(404).json({message: 'no user found with phone_number ' + req.body.phone_number})
                 }
             }
         });
