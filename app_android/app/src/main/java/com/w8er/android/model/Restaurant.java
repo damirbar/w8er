@@ -11,9 +11,9 @@ public class Restaurant {
     private String owner;
     private String first_name;
     private List<String> tags;
-    private String[] pictures;
+    private List<String> pictures;
     private boolean kosher;
-    private Review[] reviews;
+    private ArrayList<Review> reviews;
     private Coordinates coordinates;
     private String address;
     private String country;
@@ -122,11 +122,11 @@ public class Restaurant {
         this.tags = tags;
     }
 
-    public String[] getPictures() {
+    public List<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(String[] pictures) {
+    public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
 
@@ -138,11 +138,11 @@ public class Restaurant {
         this.kosher = kosher;
     }
 
-    public Review[] getReviews() {
+    public ArrayList<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Review[] reviews) {
+    public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
 }

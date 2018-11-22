@@ -36,14 +36,14 @@ public interface RetrofitInterface {
 
     //////////////////User//////////////////
 
-    @GET("profile/get-profile")
+    @GET("user/get-profile")
     Observable<User> getProfile(@Query("phone_number") String phone_number);
 
-    @POST("profile/edit-profile")
+    @POST("user/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
     @Multipart
-    @POST("profile/post-profile-image")
+    @POST("user/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
 
     //////////////////Restaurant//////////////////

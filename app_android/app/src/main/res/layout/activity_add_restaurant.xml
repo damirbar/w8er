@@ -115,15 +115,15 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/header_cover_image"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_below="@+id/header_cover_image">
 
                     <TextView
                         android:id="@+id/country_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="Country"
                         android:textColor="@android:color/black"
@@ -135,7 +135,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR1"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="Required Information"
                         android:textColor="@android:color/black"
@@ -147,7 +149,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR10"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="Optional Information"
                         android:textColor="@android:color/black"
@@ -159,7 +163,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR9"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:id="@+id/tVHours"
@@ -176,11 +182,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
+                            android:cursorVisible="false"
                             android:enabled="true"
                             android:focusable="false"
                             android:hint="Sun 9:00 - 17:00"
                             android:inputType="none|textMultiLine|textNoSuggestions"
-                            android:cursorVisible="false"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
 
@@ -191,7 +197,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR8"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:id="@+id/tVTags"
@@ -207,10 +215,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
+                            android:cursorVisible="false"
                             android:focusable="false"
                             android:hint="#Pizza #Bar"
                             android:inputType="none|textMultiLine|textNoSuggestions"
-                            android:cursorVisible="false"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
@@ -222,7 +230,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/country_info"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <Button
@@ -256,7 +266,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/req_info"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:id="@+id/tVName"
@@ -285,7 +297,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/info"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:id="@+id/tVWebsite"
@@ -314,7 +328,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR2"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp"
                         android:visibility="gone">
 
                         <TextView
@@ -344,7 +360,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/tR3"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <com.google.android.gms.maps.MapView
                             android:id="@+id/mapView"
@@ -372,11 +390,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/edt_bg_selected"
+                                android:cursorVisible="false"
                                 android:ems="10"
                                 android:focusable="false"
                                 android:hint="45 Rockefeller"
                                 android:inputType="none|textMultiLine|textNoSuggestions"
-                                android:cursorVisible="false"
                                 android:maxLength="@integer/def_max"
                                 android:textSize="16sp"
                                 app:backgroundTint="@color/edit_text" />
@@ -389,7 +407,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR5"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp"
                         android:layout_marginBottom="15dp">
 
                         <TextView
@@ -420,7 +440,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tR4"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:id="@+id/tVphoneNumber"
@@ -437,10 +459,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
+                            android:cursorVisible="false"
                             android:focusable="false"
                             android:hint="(555) 555-5555"
                             android:inputType="none|textMultiLine|textNoSuggestions"
-                            android:cursorVisible="false"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />

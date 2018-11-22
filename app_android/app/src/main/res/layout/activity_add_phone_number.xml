@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:background="@drawable/edt_bg_selected"
             android:ems="10"
             android:inputType="phone"
             android:maxLength="15"

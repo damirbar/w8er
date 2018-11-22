@@ -2,6 +2,7 @@ package com.w8er.android.model;
 
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private String first_name;
@@ -16,8 +17,8 @@ public class User {
     private String type;
     private Date date;
     private String profile_img;
-    private String[] favorite_foods;
-    private String[] favorite_restaurants;
+    private List<String> favorite_foods;
+    private List<String> favorite_restaurants;
     private String new_password;
     private boolean is_admin;
     private String gender;
@@ -146,19 +147,19 @@ public class User {
         this.profile_img = profile_img;
     }
 
-    public String[] getFavorite_foods() {
+    public List<String> getFavorite_foods() {
         return favorite_foods;
     }
 
-    public void setFavorite_foods(String[] favorite_foods) {
+    public void setFavorite_foods(List<String> favorite_foods) {
         this.favorite_foods = favorite_foods;
     }
 
-    public String[] getFavorite_restaurants() {
+    public List<String> getFavorite_restaurants() {
         return favorite_restaurants;
     }
 
-    public void setFavorite_restaurants(String[] favorite_restaurants) {
+    public void setFavorite_restaurants(List<String> favorite_restaurants) {
         this.favorite_restaurants = favorite_restaurants;
     }
 

@@ -1,19 +1,25 @@
 package com.w8er.android.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
+
+import java.util.List;
 
 public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontalAdapter.ViewHolder> {
 
+    private Context mContext;
+    private List<String> pics;
 
-    private String[] titles;
-
-    public ImageHorizontalAdapter(String[] titles) {
-        this.titles = titles;
+    public ImageHorizontalAdapter(Context context, List<String> titles) {
+        this.pics = titles;
+        this.mContext =context;
     }
 
     @Override
@@ -24,21 +30,26 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public void onBindViewHolder(ImageHorizontalAdapter.ViewHolder holder, int position) {
-        String title = titles[position];
-//        holder.title.setText(title);
+        String url = pics.get(position);
+
+        if (url != null && !(url.isEmpty()))
+            Picasso.with(mContext)
+                    .load(url)
+                    .error(R.drawable.default_user_image)
+                    .into(holder.pic);
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return pics.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-//        private TextView title;
+        private ImageView pic;
 
         ViewHolder(final View itemView) {
             super(itemView);
-//            this.title = (TextView) itemView.findViewById(R.id.title);
+            this.pic =  itemView.findViewById(R.id.rest_pic);
         }
     }
 

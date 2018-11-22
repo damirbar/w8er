@@ -248,7 +248,7 @@
                     android:layout_height="45dp"
                     android:fontFamily="sans-serif"
                     android:gravity="left|center"
-                    android:text="Call +972 50-858-5644"
+                    android:text="Call "
                     android:textAllCaps="false"
                     android:textSize="15sp" />
 
@@ -261,7 +261,7 @@
                     android:visibility="visible" />
 
                 <Button
-                    android:id="@+id/phone_button"
+                    android:id="@+id/navigation_button"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"

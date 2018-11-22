@@ -1,8 +1,10 @@
 package com.w8er.android.fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,6 +41,9 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private final int REQ_PERMISSION = 888;
     private Coordinates coordinates;
     private TextView textViewName;
+    private LatLng latLngMarker;
+    private Button navigationButton;
+    private String restAddress;
 
 
     @Override
@@ -53,13 +60,28 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private void initViews(View v) {
         mMapView = (MapView) v.findViewById(R.id.mapView);
         textViewName = v.findViewById(R.id.res_name);
+        ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
+        buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
+        navigationButton =  v.findViewById(R.id.navigation_button);
+        navigationButton.setOnClickListener(view -> goToNavigation());
+
+
     }
+
+    private void goToNavigation() {
+        if(restAddress!=null && !restAddress.isEmpty()) {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + restAddress));
+            startActivity(i);
+        }
+    }
+
 
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             coordinates = bundle.getParcelable("coordinates");
             String name =  bundle.getString("restName");
+            restAddress =  bundle.getString("restAddress");
             textViewName.setText(name);
         }
     }
@@ -78,8 +100,9 @@ public class RestaurantMarkerFragment extends BaseFragment {
             googleMap = mMap;
 
 
+            latLngMarker = new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng()));
 
-            GoogleMapUtils.addMapMarker(new LatLng (Double.parseDouble(coordinates.getLat()),Double.parseDouble(coordinates.getLng())),"","", googleMap);
+            GoogleMapUtils.addMapMarker(latLngMarker,"","", googleMap);
 
             // For showing a move to my location button
             if (!initMyLocation(googleMap)) {
@@ -102,23 +125,22 @@ public class RestaurantMarkerFragment extends BaseFragment {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
 
+                                //zoom to fit all markers on map
                                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                                builder.include(new LatLng (Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng())));
-                                builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
-
+                                builder.include(latLngMarker);
+                                builder.include((new LatLng(location.getLatitude(), location.getLongitude())));
                                 LatLngBounds bounds = builder.build();
-                                int padding = 100; // offset from edges of the map in pixels
-                                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                                googleMap.moveCamera(cu);
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
-//                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()),15,googleMap);
-                                // Logic to handle location object
                             }
+                            else
+                                GoogleMapUtils.goToLocation(latLngMarker,15,googleMap);
                         }
                     });
         }
 
     }
+
 
     private Boolean initMyLocation(GoogleMap googleMap) {
         if (checkPermission()) {
