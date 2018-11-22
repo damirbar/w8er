@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
-import com.w8er.android.adapters.RestaurantPagerAdapter;
 
 
 public class RestaurantActivity extends AppCompatActivity {

@@ -243,17 +243,17 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         String AboutMe = mETAboutMe.getText().toString().trim();
 
 
-        if (!validateFields(first_name)) {
-
-            mServerResponse.showSnackBarMessage("First Name should not be empty.");
-            return;
-        }
-
-        if (!validateFields(last_name)) {
-
-            mServerResponse.showSnackBarMessage("Last Name should not be empty.");
-            return;
-        }
+//        if (!validateFields(first_name)) {
+//
+//            mServerResponse.showSnackBarMessage("First Name should not be empty.");
+//            return;
+//        }
+//
+//        if (!validateFields(last_name)) {
+//
+//            mServerResponse.showSnackBarMessage("Last Name should not be empty.");
+//            return;
+//        }
 
         User user = new User();
         user.setFirst_name(first_name);
@@ -333,7 +333,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         mETFirstName.setText(user.getFirst_name());
         mETLastName.setText(user.getLast_name());
 //        mETDisplayName.setText(user.getDisplay_name());
-//        mETCountry.setText(user.getCountry());
+        mETCountry.setText(user.getCountry());
         mETAddress.setText(user.getAddress());
         mETAboutMe.setText(user.getAbout_me());
 

@@ -1,4 +1,4 @@
-package com.w8er.android.adapters;
+package com.w8er.android.restaurantPage_test;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

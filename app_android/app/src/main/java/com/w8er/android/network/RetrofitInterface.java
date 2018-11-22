@@ -3,7 +3,10 @@ package com.w8er.android.network;
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
+
+import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
@@ -16,6 +19,12 @@ import rx.Observable;
 
 
 public interface RetrofitInterface {
+
+    //////////////////search//////////////////
+
+    @GET("search/free-text-search")
+    Observable<Searchable> getFreeTextSearch(@Query("keyword") String keyword);
+
 
     //////////////////Auth//////////////////
 
@@ -41,6 +50,10 @@ public interface RetrofitInterface {
 
     @POST("rest/create")
     Observable<Restaurant> createRestaurant(@Body Restaurant restaurant);
+
+    @GET("rest/get-rest")
+    Observable<Restaurant> getRest(@Query("id") String id);
+
 
     //////////////////Tools//////////////////
 

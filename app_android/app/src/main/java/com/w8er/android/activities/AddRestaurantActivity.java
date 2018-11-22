@@ -43,7 +43,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_UPDATE_PHONE_NUMBER = 0x2;
     public static final int REQUEST_CODE_UPDATE_ADDRESS = 0x3;
     public static final int REQUEST_CODE_UPDATE_TAGS = 0x4;
-    public static final int REQUEST_CODE_UPDATE_TIME_SLOTS = 0x4;
+    public static final int REQUEST_CODE_UPDATE_TIME_SLOTS = 0x5;
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -274,7 +274,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         Bundle extra = new Bundle();
         extra.putParcelableArrayList("timeSlots", timeSlots);
         i.putExtras(extra);
-        startActivityForResult(i, REQUEST_CODE_UPDATE_TAGS);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_TIME_SLOTS);
     }
 
 
@@ -295,9 +295,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
     private void saveButton() {
-
-        mBSave.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
 
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
@@ -321,13 +318,13 @@ public class AddRestaurantActivity extends AppCompatActivity {
             mServerResponse.showSnackBarMessage("Phone should not be empty.");
             return;
         }
-        if (!allHashTags.isEmpty()) {
+        if (allHashTags.isEmpty()) {
 
             mServerResponse.showSnackBarMessage("Tags should not be empty.");
             return;
         }
 
-        if (!timeSlots.isEmpty()) {
+        if (timeSlots.isEmpty()) {
 
             mServerResponse.showSnackBarMessage("Opening Hours should not be empty.");
             return;
@@ -350,6 +347,10 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
 
         createRestaurantProcess(restaurant);
+
+        mBSave.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
     }
 
     private void createRestaurantProcess(Restaurant restaurant) {

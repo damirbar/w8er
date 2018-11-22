@@ -80,11 +80,13 @@ public class AddressFragment extends Fragment {
 
     private void saveButton() {
 
-        mBSave.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
 
         address = mAddress.getText().toString().trim();
         addressToCoordProcess(address + " " + country);
+
+        mBSave.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
     }
 
     private void addressToCoordProcess(String address) {
@@ -116,9 +118,10 @@ public class AddressFragment extends Fragment {
     }
 
     public void handleError(Throwable error) {
-        mServerResponse.handleError(error);
         mProgressBar.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
+
+        mServerResponse.handleError(error);
     }
 
     @Override
