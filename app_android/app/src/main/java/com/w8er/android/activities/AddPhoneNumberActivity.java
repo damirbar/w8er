@@ -48,15 +48,18 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
             String _country = getIntent().getExtras().getString("country");
             String countryCode;
             if (_phone != null && _country != null) {
-                mPhoneNumber.setText(_phone);
-
                 if(_country.equals("Israel")){
                     countryCode = "il";
                 }
                 else
                     countryCode = "us";
-
                 ccp.setCountryForNameCode(countryCode);
+                if(!_phone.isEmpty()) {
+                    String codeNum = ccp.getSelectedCountryCode() + " ";
+                    _phone = _phone.replaceFirst(codeNum, "");
+                    _phone = _phone.substring(1);
+                }
+                mPhoneNumber.setText(_phone);
                 return true;
             } else
                 return false;
@@ -69,11 +72,9 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
         new SoftKeyboard(this).hideSoftKeyboard();
 
         String phone = ccp.getFormattedFullNumber();
-        String countryCode = ccp.getSelectedCountryCodeWithPlus();
         Intent i = new Intent();
         Bundle extra = new Bundle();
         extra.putString("phone", phone);
-        extra.putString("countryCode", countryCode);
         i.putExtras(extra);
         setResult(Activity.RESULT_OK, i);
         finish();

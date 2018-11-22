@@ -178,6 +178,22 @@ public class User {
     public void setIs_admin(boolean is_admin) {
         this.is_admin = is_admin;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof User)) {
+            return false;
+        }
+        User u = (User) other;
+        return this.getFirst_name().equals(u.getFirst_name()) &&
+                this.getLast_name().equals(u.getLast_name()) &&
+                this.getCountry().equals(u.getCountry()) &&
+                this.getAddress().equals(u.getAddress()) &&
+                this.getBirthday().equals(u.getBirthday()) &&
+                this.getGender().equals(u.getGender()) &&
+                this.getAbout_me().equals(u.getAbout_me());
+    }
+
 }
 
 

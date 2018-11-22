@@ -145,4 +145,16 @@ public class Restaurant {
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Restaurant)) {
+            return false;
+        }
+        Restaurant u = (Restaurant) other;
+        return this.getName().equals(u.getName()) &&
+                this.getHours().equals(u.getHours()) &&
+                this.getTags().equals(u.getTags());
+    }
+
 }

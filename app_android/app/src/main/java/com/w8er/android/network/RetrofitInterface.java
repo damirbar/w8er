@@ -54,6 +54,8 @@ public interface RetrofitInterface {
     @GET("rest/get-rest")
     Observable<Restaurant> getRest(@Query("id") String id);
 
+    @POST("rest/edit-rest")
+    Observable<Response> updateRestaurant(@Body Restaurant restaurant);
 
     //////////////////Tools//////////////////
 

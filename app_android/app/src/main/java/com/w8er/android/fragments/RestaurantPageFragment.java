@@ -3,6 +3,7 @@ package com.w8er.android.fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,11 +28,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
+import com.w8er.android.activities.AddRestaurantActivity;
+import com.w8er.android.activities.EditRestaurantActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -60,6 +70,10 @@ public class RestaurantPageFragment extends BaseFragment {
     private Button callButton;
     private Button navigationButton;
     private String resID;
+    private TextView mTVstatus;
+    private TextView mTVhours;
+    private Button editButton;
+
 
     @Nullable
     @Override
@@ -77,15 +91,19 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void initViews(View v) {
         mMapView = (MapView) v.findViewById(R.id.mapView);
+        mTVstatus = v.findViewById(R.id.status);
+        mTVhours = v.findViewById(R.id.hours);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         multiSnapRecyclerView = v.findViewById(R.id.res_pics);
         buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
-        resName =  v.findViewById(R.id.name);
-        ratingBar =  v.findViewById(R.id.simple_rating_bar);
-        callButton =  v.findViewById(R.id.phone_button);
+        resName = v.findViewById(R.id.name);
+        ratingBar = v.findViewById(R.id.simple_rating_bar);
+        callButton = v.findViewById(R.id.phone_button);
         callButton.setOnClickListener(view -> askToCallNum());
-        navigationButton =  v.findViewById(R.id.navigation_button);
+        navigationButton = v.findViewById(R.id.navigation_button);
         navigationButton.setOnClickListener(view -> goToNavigation());
+        editButton = v.findViewById(R.id.button_edit);
+        editButton.setOnClickListener(view -> openEditRest());
         ScrollView scrollView = v.findViewById(R.id.scroll_view);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         decor.setOverScrollStateListener((decor1, oldState, newState) -> {
@@ -103,8 +121,7 @@ public class RestaurantPageFragment extends BaseFragment {
                     if (oldState == STATE_DRAG_START_SIDE) {
                         getResProcess(resID);
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
-                    }
-                    else { // i.e. (oldState == STATE_DRAG_END_SIDE)
+                    } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
                         // View is starting to bounce back from the *right-end*.
                     }
                     break;
@@ -112,13 +129,21 @@ public class RestaurantPageFragment extends BaseFragment {
         });
     }
 
+    private void openEditRest() {
+        Intent i = new Intent(getContext(), EditRestaurantActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("resID", resID);
+        i.putExtras(extra);
+        startActivity(i);
+    }
+
     private void goToNavigation() {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q="+restaurant.getAddress() + " " + restaurant.getCountry()));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + restaurant.getAddress() + " " + restaurant.getCountry()));
         startActivity(i);
     }
 
     private void askToCallNum() {
-        if(restaurant.getPhone_number()!=null) {
+        if (restaurant.getPhone_number() != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMessage(restaurant.getPhone_number());
             builder.setPositiveButton("Call", (dialog, which) -> callNum());
@@ -129,13 +154,7 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void callNum() {
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        callIntent.setData(Uri.parse("tel:" + restaurant.getPhone_number()));
-//        getActivity().startActivity(callIntent);
-
         String number = ("tel:" + restaurant.getPhone_number());
-
         Intent mIntent = new Intent(Intent.ACTION_CALL);
         mIntent.setData(Uri.parse(number));
 // Here, thisActivity is the current activity
@@ -146,7 +165,6 @@ public class RestaurantPageFragment extends BaseFragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.CALL_PHONE},
                     MY_PERMISSIONS_REQUEST_CALL_PHONE);
-
             // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
             // app-defined int constant. The callback method gets the
             // result of the request.
@@ -154,7 +172,7 @@ public class RestaurantPageFragment extends BaseFragment {
             //You already have permission
             try {
                 startActivity(mIntent);
-            } catch(SecurityException e) {
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
         }
@@ -177,7 +195,6 @@ public class RestaurantPageFragment extends BaseFragment {
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -194,7 +211,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
 
     private void initRestaurantPics() {
-        adapter = new ImageHorizontalAdapter(getContext(),restaurant.getPictures());
+        adapter = new ImageHorizontalAdapter(getContext(), restaurant.getPictures());
         LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         multiSnapRecyclerView.setLayoutManager(firstManager);
         multiSnapRecyclerView.setAdapter(adapter);
@@ -216,8 +233,6 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void initMap() {
-
-
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
@@ -233,10 +248,10 @@ public class RestaurantPageFragment extends BaseFragment {
             double lng = Double.parseDouble(restaurant.getCoordinates().getLng());
 
 
-            LatLng latLng = new LatLng(lat,lng);
+            LatLng latLng = new LatLng(lat, lng);
 
-            GoogleMapUtils.goToLocation(latLng , 13,googleMap);
-            GoogleMapUtils.addMapMarker(latLng,restaurant.getName() , "",googleMap);
+            GoogleMapUtils.goToLocation(latLng, 13, googleMap);
+            GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -250,7 +265,7 @@ public class RestaurantPageFragment extends BaseFragment {
             mMap.setOnMapClickListener(view -> goToMap());
             mMap.setOnMarkerClickListener(view -> {
                 goToMap();
-                return  true;
+                return true;
             });
 
         });
@@ -273,6 +288,84 @@ public class RestaurantPageFragment extends BaseFragment {
         ratingBar.setRating(restaurant.getRating());
         String call = "Call " + " " + restaurant.getPhone_number();
         callButton.setText(call);
+        initRestStatus();
+
+    }
+
+    private void initRestStatus() {
+
+        DateFormat time = new SimpleDateFormat("HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        int ho = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        Date closestTime = null;
+
+        String strDay = "";
+        switch (day) {
+            case Calendar.SUNDAY:
+                strDay = "Sun";
+                break;
+            case Calendar.MONDAY:
+                strDay = "Mon";
+                break;
+            case Calendar.TUESDAY:
+                strDay = "Tue";
+                break;
+            case Calendar.WEDNESDAY:
+                strDay = "Wed";
+                break;
+            case Calendar.THURSDAY:
+                strDay = "Thu";
+                break;
+            case Calendar.FRIDAY:
+                strDay = "Fri";
+                break;
+            case Calendar.SATURDAY:
+                strDay = "Sat";
+                break;
+        }
+
+        try {
+
+            Date currentTime = time.parse(ho+":"+min);
+
+            for (TimeSlot t : restaurant.getHours()) {
+                if (t.getDays().equalsIgnoreCase(strDay)) {
+
+                    Date open = time.parse(t.getOpen());
+                    Date closed = time.parse(t.getClose());
+
+                    if (currentTime.after(open) && currentTime.before(closed)) {
+                        mTVstatus.setText("Open");
+                        mTVstatus.setTextColor(Color.GREEN);
+                        mTVhours.setText(t.toStringHours());
+                        break;
+                    } else if (currentTime.before(open)) {
+
+                        if (closestTime == null) {
+                            closestTime = open;
+                            mTVstatus.setText("Open from");
+                            mTVstatus.setTextColor(Color.RED);
+
+                            mTVhours.setText(t.toStringHours());
+                        } else if (closestTime.after(open)) {
+                            closestTime = open;
+                            mTVstatus.setText("Open from");
+                            mTVstatus.setTextColor(Color.RED);
+                            mTVhours.setText(t.toStringHours());
+                        }
+                    } else {
+                        mTVstatus.setText("Closed");
+                        mTVstatus.setTextColor(Color.RED);
+                    }
+
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 

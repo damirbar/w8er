@@ -65,7 +65,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private Button mBSave;
     private String fullPhone;
     private HashTagHelper mTextHashTagHelper;
-    ArrayList<TimeSlot> timeSlots;
+    private ArrayList<TimeSlot> timeSlots;
 
 
     @Override
@@ -134,11 +134,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 fullPhone = extra.getString("phone");
-                String countryCode = extra.getString("countryCode");
-                if (fullPhone != null) {
-                    eTPhone.setText(fullPhone.replace(countryCode, ""));
-                } else
-                    eTPhone.setText(fullPhone);
+                eTPhone.setText(fullPhone);
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
@@ -174,9 +170,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 timeSlots = extra.getParcelableArrayList("timeSlots");
-                if(timeSlots!=null){
+                if (timeSlots != null) {
                     StringBuilder orgTimeSlots = new StringBuilder();
-                    for (TimeSlot t : timeSlots){
+                    for (TimeSlot t : timeSlots) {
                         orgTimeSlots.append(t.toString()).append("\n");
                     }
                     eTHours.setText(orgTimeSlots.toString().trim());
@@ -374,22 +370,52 @@ public class AddRestaurantActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mMapView.onDestroy();
         mSubscriptions.unsubscribe();
     }
 
     public void exitAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to cancel?");
-        builder.setPositiveButton("Yes", (dialog, which) -> finish());
-        builder.setNegativeButton("No", (dialog, which) -> {
-        });
-        builder.show();
+
+//        String web = eTwebsite.getText().toString().trim();
+//        String name = eTname.getText().toString().trim();
+//        String note = eTNotes.getText().toString().trim();
+//        String address = eTaddress.getText().toString().trim();
+//        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+//
+//        if(!name.isEmpty()||!address.isEmpty()||!fullPhone.isEmpty()||!timeSlots.isEmpty()||!web.isEmpty()||!note.isEmpty()||!allHashTags.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to cancel?");
+            builder.setPositiveButton("Yes", (dialog, which) -> finish());
+            builder.setNegativeButton("No", (dialog, which) -> {
+            });
+            builder.show();
+//        }
+//        else
+//            finish();
     }
 
     @Override
     public void onBackPressed() {
 
         exitAlert();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
 

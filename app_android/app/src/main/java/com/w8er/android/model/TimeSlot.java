@@ -73,4 +73,21 @@ public class TimeSlot implements Parcelable {
     public String toString() {
         return days + " " + open + " - " + close;
     }
+
+    public String toStringHours() {
+        return open + " - " + close;
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof TimeSlot)) {
+            return false;
+        }
+        TimeSlot u = (TimeSlot) other;
+        return this.getDays().equals(u.getDays()) &&
+                this.getOpen().equals(u.getOpen()) &&
+                this.getClose().equals(u.getClose());
+    }
+
 }

@@ -233,46 +233,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     private void saveButton() {
 
-        String first_name = mETFirstName.getText().toString().trim();
-        String last_name = mETLastName.getText().toString().trim();
-        String gender = mETGender.getText().toString().trim();
-        mDisplayName = mETDisplayName.getText().toString().trim();
-        String country = mETCountry.getText().toString().trim();
-        String TAddress = mETAddress.getText().toString().trim();
-        String Age = mETAge.getText().toString().trim();
-        String AboutMe = mETAboutMe.getText().toString().trim();
-
-
-//        if (!validateFields(first_name)) {
-//
-//            mServerResponse.showSnackBarMessage("First Name should not be empty.");
-//            return;
-//        }
-//
-//        if (!validateFields(last_name)) {
-//
-//            mServerResponse.showSnackBarMessage("Last Name should not be empty.");
-//            return;
-//        }
-
-        User user = new User();
-        user.setFirst_name(first_name);
-        user.setLast_name(last_name);
-        user.setGender(gender);
-//        user.setDisplay_name(mDisplayName);
-        user.setCountry(country);
-        user.setAddress(TAddress);
-        user.setAbout_me(AboutMe);
-
-
-        DateFormat format = new SimpleDateFormat("d MMM yyyy");
-        try {
-            Date date = format.parse(Age);
-            user.setBirthday(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        User user = getNewUser();
 
         boolean newUser = false;
         try {
@@ -332,11 +293,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
         mETFirstName.setText(user.getFirst_name());
         mETLastName.setText(user.getLast_name());
-//        mETDisplayName.setText(user.getDisplay_name());
         mETCountry.setText(user.getCountry());
         mETAddress.setText(user.getAddress());
         mETAboutMe.setText(user.getAbout_me());
-
 
         //Date
         Date date = user.getBirthday();
@@ -425,13 +384,46 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
     }
 
-    public void exitAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to cancel?");
-        builder.setPositiveButton("Yes", (dialog, which) -> finish());
-        builder.setNegativeButton("No", (dialog, which) -> {
-        });
-        builder.show();
+    private User getNewUser(){
+        String first_name = mETFirstName.getText().toString().trim();
+        String last_name = mETLastName.getText().toString().trim();
+        String gender = mETGender.getText().toString().trim();
+        String country = mETCountry.getText().toString().trim();
+        String TAddress = mETAddress.getText().toString().trim();
+        String Age = mETAge.getText().toString().trim();
+        String AboutMe = mETAboutMe.getText().toString().trim();
+
+        User user = new User();
+        user.setFirst_name(first_name);
+        user.setLast_name(last_name);
+        user.setGender(gender);
+        user.setCountry(country);
+        user.setAddress(TAddress);
+        user.setAbout_me(AboutMe);
+
+
+        DateFormat format = new SimpleDateFormat("d MMM yyyy");
+        try {
+            Date date = format.parse(Age);
+            user.setBirthday(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    private void exitAlert() {
+//        if(startUser!=null && !startUser.equals(getNewUser())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to cancel?");
+            builder.setPositiveButton("Yes", (dialog, which) -> finish());
+            builder.setNegativeButton("No", (dialog, which) -> {
+            });
+            builder.show();
+//        }
+//        else
+//            finish();
     }
 
     @Override
