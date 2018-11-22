@@ -56,11 +56,13 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
+                android:baselineAligned="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:iconifiedByDefault="false"
+                android:maxLength="@integer/def_max"
+                app:iconifiedByDefault="false"
                 android:background="@drawable/edittext_search"
-                android:focusable="false"
-                android:inputType="none"
-                android:visibility="visible"
-                app:iconifiedByDefault="true"
                 app:queryHint="Search.." />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -82,7 +84,9 @@
             android:id="@+id/rvRes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:scrollbarSize="3dp"
+            android:scrollbarThumbVertical="@color/colorPrimaryDark"
+            android:scrollbars="vertical" />
 
     </com.baoyz.widget.PullRefreshLayout>
 

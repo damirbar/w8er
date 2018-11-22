@@ -59,7 +59,7 @@ public class CountryDialog extends BottomSheetDialogFragment {
             String country = bundle.getString("country");
             if(country!=null) {
                 int i = 0;
-                if (country.equalsIgnoreCase("United States"))
+                if (country.equalsIgnoreCase("Israel"))
                     i = 1;
                 mNumberPicker.setValue(i);
             }

@@ -5,22 +5,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aurelhubert.simpleratingbar.SimpleRatingBar;
+import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
+import com.w8er.android.model.Restaurant;
 
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<Restaurant> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context mContext;
+
 
     // data is passed into the constructor
-    public RestaurantsAdapter(Context context, List<String> data) {
+    public RestaurantsAdapter(Context context, List<Restaurant> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.mContext =context;
     }
 
     // inflates the row layout from xml when needed
@@ -33,8 +40,17 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
-        holder.myTextView.setText(animal);
+        String name = mData.get(position).getName();
+        holder.mTextViewName.setText(name);
+        holder.ratingBar.setRating(mData.get(position).getRating());
+
+        String pic = mData.get(position).getProfile_img();
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.with(mContext)
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(holder.mResImage);
+
     }
 
     // total number of rows
@@ -43,14 +59,30 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         return mData.size();
     }
 
+    // convenience method for getting data at click position
+    public String getItemID(int id) {
+        return mData.get(id).get_id();
+    }
+
+    public List<Restaurant> getmData() {
+        return mData;
+    }
+
+    public void setmData(List<Restaurant> mData) {
+        this.mData = mData;
+    }
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView mTextViewName;
+        ImageView mResImage;
+        SimpleRatingBar ratingBar;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.title_res);
+            mTextViewName = itemView.findViewById(R.id.title_res);
+            mResImage = itemView.findViewById(R.id.imageView);
+            ratingBar = itemView.findViewById(R.id.simple_rating_bar);
             itemView.setOnClickListener(this);
         }
 
@@ -60,10 +92,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
     }
 
-    // convenience method for getting data at click position
-    String getItem(int id) {
-        return mData.get(id);
-    }
+
 
     // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {

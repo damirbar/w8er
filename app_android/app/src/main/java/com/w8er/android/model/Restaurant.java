@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Restaurant {
 
+    private String _id;
     private String phone_number;
     private String name;
     private String owner;
@@ -17,12 +18,37 @@ public class Restaurant {
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
-
+    private int rating;
+    private String profile_img;
     //        menu: {},
     //        layout: {},
     //        capacity: {},
     //        sessions: {}
 
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String getProfile_img() {
+        return profile_img;
+    }
+
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
     public ArrayList<TimeSlot> getHours() {
         return hours;

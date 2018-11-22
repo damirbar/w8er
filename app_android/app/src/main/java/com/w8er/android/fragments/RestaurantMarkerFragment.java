@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,11 +36,12 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private FusedLocationProviderClient mFusedLocationClient;
     private final int REQ_PERMISSION = 888;
     private Coordinates coordinates;
+    private TextView textViewName;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_rest_map_marker, container, false);
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
         getData();
@@ -50,12 +52,15 @@ public class RestaurantMarkerFragment extends BaseFragment {
 
     private void initViews(View v) {
         mMapView = (MapView) v.findViewById(R.id.mapView);
+        textViewName = v.findViewById(R.id.res_name);
     }
 
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             coordinates = bundle.getParcelable("coordinates");
+            String name =  bundle.getString("restName");
+            textViewName.setText(name);
         }
     }
 
