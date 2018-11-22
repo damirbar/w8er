@@ -5,19 +5,28 @@ import android.os.Parcelable;
 
 public class Coordinates implements Parcelable {
 
-    private double lat;
-    private double lng;
+    private String lat;
+    private String lng;
 
-    public Coordinates(double lat, double lng) {
+    public Coordinates(String lat, String lng) {
         this.lat = lat;
         this.lng = lng;
-
     }
 
-
     public Coordinates(Parcel in) {
-        lat = in.readDouble();
-        lng = in.readDouble();
+        lat = in.readString();
+        lng = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(lat);
+        dest.writeString(lng);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Coordinates> CREATOR = new Creator<Coordinates>() {
@@ -32,30 +41,19 @@ public class Coordinates implements Parcelable {
         }
     };
 
-    public double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLng() {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(String lng) {
         this.lng = lng;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(lat);
-        dest.writeDouble(lng);
     }
 }

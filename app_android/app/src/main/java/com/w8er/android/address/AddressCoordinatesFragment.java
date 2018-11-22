@@ -65,8 +65,8 @@ public class AddressCoordinatesFragment extends Fragment {
 
         new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
-        coordinates.setLat(currentCenter.latitude);
-        coordinates.setLng(currentCenter.longitude);
+        coordinates.setLat(String.valueOf(currentCenter.latitude));
+        coordinates.setLng(String.valueOf(currentCenter.longitude));
 
 
 
@@ -106,7 +106,7 @@ public class AddressCoordinatesFragment extends Fragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            LatLng latLng = new LatLng(coordinates.getLat(),coordinates.getLng());
+            LatLng latLng = new LatLng(Double.parseDouble(coordinates.getLat()),Double.parseDouble(coordinates.getLng()));
 
             GoogleMapUtils.goToLocation(latLng,17,googleMap);
 

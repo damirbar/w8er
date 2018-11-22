@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
+import com.w8er.android.dialogs.CountryDialog;
 import com.w8er.android.dialogs.GenderDialog;
 import com.w8er.android.dialogs.MyDateDialog;
 import com.w8er.android.imageCrop.ImageCropActivity;
@@ -51,7 +52,7 @@ import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Validation.validateFields;
 
 public class EditProfileActivity extends AppCompatActivity implements MyDateDialog.OnCallbackReceived, PicModeSelectDialogFragment.IPicModeSelectListener
-        , GenderDialog.OnCallbackGender {
+        , GenderDialog.OnCallbackGender, CountryDialog.OnCallbackCountry {
 
     private ProgressBar mProgressBar;
     private EditText mETFirstName;
@@ -122,6 +123,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         image.setOnClickListener(view -> showAddProfilePicDialog());
         mETAge.setOnClickListener(view -> showDialog());
         mETAboutMe.setOnClickListener(view -> setBio());
+        mETCountry.setOnClickListener(view -> countryViewClick());
     }
 
     private void setBio() {
@@ -216,6 +218,18 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         newFragment.show(getSupportFragmentManager(), GenderDialog.TAG);
     }
 
+    public void countryViewClick() {
+        CountryDialog newFragment = new CountryDialog();
+        String c = mETCountry.getText().toString().trim();
+        if (!(c.isEmpty())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("country", c);
+            newFragment.setArguments(bundle);
+        }
+        newFragment.show(getSupportFragmentManager(), CountryDialog.TAG);
+    }
+
+
 
     private void saveButton() {
 
@@ -246,7 +260,7 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         user.setLast_name(last_name);
         user.setGender(gender);
 //        user.setDisplay_name(mDisplayName);
-//        user.setCountry(country);
+        user.setCountry(country);
         user.setAddress(TAddress);
         user.setAbout_me(AboutMe);
 
@@ -427,4 +441,9 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     }
 
 
+    @Override
+    public void UpdateCountry(String country) {
+        mETCountry.setText(country);
+
+    }
 }
