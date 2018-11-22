@@ -176,9 +176,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
+                            android:enabled="true"
                             android:focusable="false"
                             android:hint="Sun 9:00 - 17:00"
-                            android:inputType="none"
+                            android:inputType="none|textMultiLine|textNoSuggestions"
+                            android:cursorVisible="false"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
 
@@ -197,7 +199,6 @@
                             android:layout_height="match_parent"
                             android:ems="10"
                             android:gravity="center|start"
-                            android:inputType="none"
                             android:text="Tags"
                             android:textSize="16sp" />
 
@@ -208,7 +209,8 @@
                             android:background="@drawable/edt_bg_selected"
                             android:focusable="false"
                             android:hint="#Pizza #Bar"
-                            android:inputType="none"
+                            android:inputType="none|textMultiLine|textNoSuggestions"
+                            android:cursorVisible="false"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
@@ -233,7 +235,7 @@
                             android:drawableRight="@drawable/expand_arrow"
                             android:fontFamily="sans-serif"
                             android:gravity="left|center"
-                            android:paddingLeft="1dp"
+                            android:paddingLeft="10dp"
                             android:text="United States"
                             android:textAllCaps="false"
                             android:textSize="16sp" />
@@ -373,7 +375,8 @@
                                 android:ems="10"
                                 android:focusable="false"
                                 android:hint="45 Rockefeller"
-                                android:inputType="none"
+                                android:inputType="none|textMultiLine|textNoSuggestions"
+                                android:cursorVisible="false"
                                 android:maxLength="@integer/def_max"
                                 android:textSize="16sp"
                                 app:backgroundTint="@color/edit_text" />
@@ -436,7 +439,8 @@
                             android:background="@drawable/edt_bg_selected"
                             android:focusable="false"
                             android:hint="(555) 555-5555"
-                            android:inputType="none"
+                            android:inputType="none|textMultiLine|textNoSuggestions"
+                            android:cursorVisible="false"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />

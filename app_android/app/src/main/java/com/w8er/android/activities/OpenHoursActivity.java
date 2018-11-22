@@ -23,6 +23,10 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAdapter.ItemClickListener{
 
     private final int MAX_TIME_SLOTS = 20;
+    private final int DEFAULT_OPEN_TIME = 18;
+    private final int DEFAULT_CLOSED_TIME = 26;
+
+
     private Button mBSave;
     private NumberPicker mTimePickerFrom;
     private NumberPicker mTimePickerTo;
@@ -120,13 +124,14 @@ public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAda
         mTimePickerTo.setMinValue(0);
         mTimePickerTo.setMaxValue(hourNames.length - 1);
         mTimePickerTo.setDisplayedValues(hourNames);
+        mTimePickerTo.setValue(DEFAULT_CLOSED_TIME);
     }
 
     private void initTimePickerFrom() {
         mTimePickerFrom.setMinValue(0);
         mTimePickerFrom.setMaxValue(hourNames.length - 1);
         mTimePickerFrom.setDisplayedValues(hourNames);
-
+        mTimePickerFrom.setValue(DEFAULT_OPEN_TIME);
     }
 
     private void changeDay() {

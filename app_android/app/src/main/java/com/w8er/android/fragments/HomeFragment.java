@@ -36,7 +36,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private SearchView editSearch;
-    private String saveQuery;
+    private String saveQuery = "";
 
 
     @Nullable
