@@ -21,10 +21,12 @@ import com.w8er.android.R;
 import com.w8er.android.address.AddAddressActivity;
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -41,12 +43,11 @@ public class AddRestaurantActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_UPDATE_PHONE_NUMBER = 0x2;
     public static final int REQUEST_CODE_UPDATE_ADDRESS = 0x3;
     public static final int REQUEST_CODE_UPDATE_TAGS = 0x4;
-
+    public static final int REQUEST_CODE_UPDATE_TIME_SLOTS = 0x4;
 
     private MapView mMapView;
     private GoogleMap googleMap;
     private Button countryBtn;
-    private Button hoursBtn;
     private NumberPicker mNumberPicker;
     private String countryNames[];
     private EditText eTNotes;
@@ -55,6 +56,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private EditText eTaddress;
     private EditText eTwebsite;
     private EditText eTtags;
+    private EditText eTHours;
     private Coordinates coordinates;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -63,6 +65,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private Button mBSave;
     private String fullPhone;
     private HashTagHelper mTextHashTagHelper;
+    ArrayList<TimeSlot> timeSlots;
 
 
     @Override
@@ -70,11 +73,11 @@ public class AddRestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_restaurant);
         initViews();
+        mMapView.onCreate(savedInstanceState);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
-
-        mMapView.onCreate(savedInstanceState);
+        timeSlots = new ArrayList<>();
         initCountriesPicker();
 
     }
@@ -93,7 +96,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mMapView = (MapView) findViewById(R.id.mapView);
         countryBtn = findViewById(R.id.country_button);
         mNumberPicker = findViewById(R.id.number_picker);
-        mNumberPicker.setOnScrollListener((view, SCROLL_STATE_IDLE) -> changeCountry());
+        mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> changeCountry());
         countryBtn.setOnClickListener(view -> OpenCloseList());
         eTNotes = findViewById(R.id.eTNotes);
         eTNotes.setOnClickListener(view -> setNotes());
@@ -111,8 +114,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         eTtags.setOnClickListener(view -> setTags());
         mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
         mTextHashTagHelper.handle(eTtags);
-        hoursBtn = findViewById(R.id.hours_button);
-        hoursBtn.setOnClickListener(view -> setHours());
+        eTHours = findViewById(R.id.eHours);
+        eTHours.setOnClickListener(view -> setHours());
 
     }
 
@@ -134,8 +137,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 String countryCode = extra.getString("countryCode");
                 if (fullPhone != null) {
                     eTPhone.setText(fullPhone.replace(countryCode, ""));
-                }
-                else
+                } else
                     eTPhone.setText(fullPhone);
             } else if (resultCode == RESULT_CANCELED) {
             }
@@ -146,7 +148,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 String address = extra.getString("address");
                 coordinates = extra.getParcelable("coordinates");
                 eTaddress.setText(address);
-                initMap(new LatLng(coordinates.getLat(), coordinates.getLng()));
+                initMap(new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng())));
                 mMapView.setVisibility(View.VISIBLE);
             } else if (resultCode == RESULT_CANCELED) {
             }
@@ -165,6 +167,20 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 eTtags.setText(orgTags);
 
 
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+        if (requestCode == REQUEST_CODE_UPDATE_TIME_SLOTS) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                timeSlots = extra.getParcelableArrayList("timeSlots");
+                if(timeSlots!=null){
+                    StringBuilder orgTimeSlots = new StringBuilder();
+                    for (TimeSlot t : timeSlots){
+                        orgTimeSlots.append(t.toString()).append("\n");
+                    }
+                    eTHours.setText(orgTimeSlots.toString().trim());
+                }
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
@@ -255,12 +271,10 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
     private void setHours() {
         Intent i = new Intent(this, OpenHoursActivity.class);
-//        String tags = eTtags.getText().toString().trim();
-//        Bundle extra = new Bundle();
-//        extra.putString("tags", tags);
-//        i.putExtras(extra);
+        Bundle extra = new Bundle();
+        extra.putParcelableArrayList("timeSlots", timeSlots);
+        i.putExtras(extra);
         startActivityForResult(i, REQUEST_CODE_UPDATE_TAGS);
-
     }
 
 
@@ -288,6 +302,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+        String country = countryBtn.getText().toString().trim();
 
         if (!validateFields(name)) {
 
@@ -312,6 +327,13 @@ public class AddRestaurantActivity extends AppCompatActivity {
             return;
         }
 
+        if (!timeSlots.isEmpty()) {
+
+            mServerResponse.showSnackBarMessage("Opening Hours should not be empty.");
+            return;
+        }
+
+
         String phone = "+" + fullPhone.replaceAll("[^0-9]", "");
 
 
@@ -321,9 +343,10 @@ public class AddRestaurantActivity extends AppCompatActivity {
         restaurant.setCoordinates(coordinates);
         restaurant.setPhone_number(phone);
         restaurant.setTags(allHashTags);
+        restaurant.setCountry(country);
+        restaurant.setHours(timeSlots);
 
         restaurant.setKosher(false);////////////////////need to be removed////////////////////
-//        restaurant.setHours();
 
 
         createRestaurantProcess(restaurant);
@@ -367,8 +390,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         exitAlert();
     }
-
-
 
 
 }

@@ -74,7 +74,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
 
 
 
-            GoogleMapUtils.addMapMarker(new LatLng (coordinates.getLat(),coordinates.getLng()),"","", googleMap);
+            GoogleMapUtils.addMapMarker(new LatLng (Double.parseDouble(coordinates.getLat()),Double.parseDouble(coordinates.getLng())),"","", googleMap);
 
             // For showing a move to my location button
             if (!initMyLocation(googleMap)) {
@@ -98,7 +98,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
                             if (location != null) {
 
                                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                                builder.include(new LatLng (coordinates.getLat(),coordinates.getLng()));
+                                builder.include(new LatLng (Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng())));
                                 builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
 
                                 LatLngBounds bounds = builder.build();

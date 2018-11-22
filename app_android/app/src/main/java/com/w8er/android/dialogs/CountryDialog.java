@@ -14,16 +14,16 @@ import android.widget.NumberPicker;
 import com.w8er.android.R;
 
 
-public class GenderDialog extends BottomSheetDialogFragment {
+public class CountryDialog extends BottomSheetDialogFragment {
 
-    public interface OnCallbackGender {
-        void UpdateGender(String gender);
+    public interface OnCallbackCountry {
+        void UpdateCountry(String country);
     }
 
-    public static final String TAG = GenderDialog.class.getSimpleName();
+    public static final String TAG = CountryDialog.class.getSimpleName();
 
     private NumberPicker mNumberPicker;
-    GenderDialog.OnCallbackGender mCallback;
+    OnCallbackCountry mCallback;
     private String[] data;
 
     @Nullable
@@ -38,7 +38,7 @@ public class GenderDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
-        data = new String[]{"Male", "Female", "Not Specified"};
+        data = new String[]{"United States", "Israel"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(data.length-1);
         mNumberPicker.setDisplayedValues(data);
@@ -47,8 +47,8 @@ public class GenderDialog extends BottomSheetDialogFragment {
 
     private void initViews(View v) {
         mNumberPicker = v.findViewById(R.id.number_picker);
-        Button mBtSetGender = v.findViewById(R.id.button_ok);
-        mBtSetGender.setOnClickListener(view -> onGenderSet());
+        Button mBtSetCountry = v.findViewById(R.id.button_ok);
+        mBtSetCountry.setOnClickListener(view -> onCountrySet());
         Button mBtCancel = v.findViewById(R.id.button_cancel);
         mBtCancel.setOnClickListener(view -> dismiss());
     }
@@ -56,21 +56,19 @@ public class GenderDialog extends BottomSheetDialogFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String gender = bundle.getString("gender");
-            if(gender!=null) {
+            String country = bundle.getString("country");
+            if(country!=null) {
                 int i = 0;
-                if (gender.equalsIgnoreCase("Female"))
+                if (country.equalsIgnoreCase("United States"))
                     i = 1;
-                else if (gender.equalsIgnoreCase("Not Specified"))
-                    i = 2;
                 mNumberPicker.setValue(i);
             }
         }
     }
 
-    public void onGenderSet() {
-        String gender = data[mNumberPicker.getValue()];
-        mCallback.UpdateGender(gender);
+    public void onCountrySet() {
+        String country = data[mNumberPicker.getValue()];
+        mCallback.UpdateCountry(country);
         dismiss();
     }
 
@@ -79,7 +77,7 @@ public class GenderDialog extends BottomSheetDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (GenderDialog.OnCallbackGender) context;
+            mCallback = (OnCallbackCountry) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

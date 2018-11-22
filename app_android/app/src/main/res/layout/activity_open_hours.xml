@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -66,83 +67,165 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar">
 
-        <LinearLayout
+
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/pick_time"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="7dp"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginBottom="0dp"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="131dp"
-                    android:layout_marginRight="131dp"
-                    android:text="Button" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pick_time"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp">
+                android:orientation="vertical">
 
-                <TimePicker
-                    android:id="@+id/timePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:theme="@style/DefaultPickerTheme"
-                    android:timePickerMode="spinner"
-                    android:visibility="gone" />
 
-                <NumberPicker
-                    android:id="@+id/number_picker"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/info_text"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:descendantFocusability="blocksDescendants"
-                    android:theme="@style/DefaultPickerTheme"
-                    android:visibility="gone" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@color/account_status_bar"
+                    android:gravity="left|end"
+                    android:padding="5dp"
+                    android:text="Add opening hours of the restaurant"
+                    android:textSize="15sp" />
+
+                <RelativeLayout
+                    android:id="@+id/pick_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
+
+                    <Button
+                        android:id="@+id/day_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Sun"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/from_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_toEndOf="@+id/day_button"
+                        android:layout_toRightOf="@+id/day_button"
+                        android:text="9:00"
+                        android:textAllCaps="false"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/to_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="90dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_toEndOf="@+id/from_button"
+                        android:layout_toRightOf="@+id/from_button"
+                        android:text="13:00"
+                        android:textAllCaps="false"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/add_hours_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="80dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="19dp"
+                        android:layout_marginRight="5dp"
+                        android:text="Add Hours"
+                        android:textAllCaps="false"
+                        android:textColor="@color/design_default_color_primary_dark"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <NumberPicker
+                        android:id="@+id/timePicker_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="203dp"
+                        android:layout_marginLeft="203dp"
+                        android:layout_marginBottom="0dp"
+                        android:descendantFocusability="blocksDescendants"
+                        android:theme="@style/DefaultPickerTheme" />
+
+                    <NumberPicker
+                        android:id="@+id/timePicker_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="109dp"
+                        android:layout_marginLeft="109dp"
+                        android:layout_marginBottom="0dp"
+                        android:descendantFocusability="blocksDescendants"
+                        android:theme="@style/DefaultPickerTheme" />
+
+                    <NumberPicker
+                        android:id="@+id/day_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginBottom="0dp"
+                        android:descendantFocusability="blocksDescendants"
+                        android:theme="@style/DefaultPickerTheme" />
+                </RelativeLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvRes"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scrollbarSize="3dp"
+                        android:scrollbarThumbVertical="@color/dialog_color"
+                        android:scrollbars="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHeight_default="wrap"
+                        app:layout_constraintHeight_max="205dp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
 
 
 </RelativeLayout>

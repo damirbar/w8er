@@ -122,7 +122,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void goToMap() {
         if (mFragmentNavigation != null) {
 
-            Coordinates coordinates  = new Coordinates(32.109333,34.845499);////////////////////need to be removed////////////////////
+            Coordinates coordinates  = new Coordinates(String.valueOf(32.109333),String.valueOf(34.845499));////////////////////need to be removed////////////////////
 
             Bundle i = new Bundle();
             i.putParcelable("coordinates", coordinates);

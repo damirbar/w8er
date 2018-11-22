@@ -4,9 +4,10 @@ package com.w8er.android.model;
 import java.util.Date;
 
 public class User {
+    private String first_name;
+
 
     private String phone_number;
-    private String first_name;
     private String last_name;
     private String email;
     private String accessToken;
@@ -23,6 +24,15 @@ public class User {
     private Date birthday;
     private String address;
     private Coordinates coordinates;
+    private String country;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public Coordinates getCoordinates() {
         return coordinates;

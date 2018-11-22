@@ -1,5 +1,6 @@
 package com.w8er.android.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant {
@@ -14,12 +15,30 @@ public class Restaurant {
     private Review[] reviews;
     private Coordinates coordinates;
     private String address;
+    private String country;
+    private ArrayList<TimeSlot> hours;
 
     //        menu: {},
     //        layout: {},
     //        capacity: {},
     //        sessions: {}
 
+
+    public ArrayList<TimeSlot> getHours() {
+        return hours;
+    }
+
+    public void setHours(ArrayList<TimeSlot> hours) {
+        this.hours = hours;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getAddress() {
         return address;
