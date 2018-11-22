@@ -27,7 +27,7 @@ router.all("*", function (req, res, next) {
             }
             else {
                 req.phone_number = decoded;
-                if (req.url.includes('/rest/')) {
+                if (req.url.includes('/rest/') || req.url.includes('/user/')) {
                     User.findOne({phone_number: decoded}, function (err, user) {
                         if (err) {
                             console.log(err);
@@ -35,14 +35,14 @@ router.all("*", function (req, res, next) {
                         }
                         else {
                             if (user) {
-                                if (user.is_admin) {
-                                    req.user = user;
-                                    return next();
+                                    if (req.url.includes('/user/') || user.is_admin) {
+                                        req.user = user;
+                                        return next();
+                                    }
+                                    else {
+                                        res.status(404).json({message: 'user ' + req.phone_number + ' not admin'});
+                                    }
                                 }
-                                else {
-                                    res.status(404).json({message: 'user ' + req.phone_number + ' not admin'});
-                                }
-                            }
                             else {
                                 res.status(404).json({message: 'user ' + req.body.phone_number + ' dose not exist'});
                             }
