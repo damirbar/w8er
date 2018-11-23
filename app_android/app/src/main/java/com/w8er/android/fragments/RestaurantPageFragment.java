@@ -331,6 +331,9 @@ public class RestaurantPageFragment extends BaseFragment {
 
             Date currentTime = time.parse(ho+":"+min);
 
+            mTVstatus.setText("Closed");
+            mTVstatus.setTextColor(Color.RED);
+
             for (TimeSlot t : restaurant.getHours()) {
                 if (t.getDays().equalsIgnoreCase(strDay)) {
 
@@ -356,9 +359,6 @@ public class RestaurantPageFragment extends BaseFragment {
                             mTVstatus.setTextColor(Color.RED);
                             mTVhours.setText(t.toStringHours());
                         }
-                    } else {
-                        mTVstatus.setText("Closed");
-                        mTVstatus.setTextColor(Color.RED);
                     }
 
                 }

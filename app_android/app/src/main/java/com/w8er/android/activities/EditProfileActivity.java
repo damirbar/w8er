@@ -299,26 +299,16 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
 
         //Date
         Date date = user.getBirthday();
+        Format formatter = new SimpleDateFormat("d MMM yyyy");
         if (date != null) {
-            Format formatter = new SimpleDateFormat("d MMM yyyy");
             String s = formatter.format(date);
             mETAge.setText(s);
-        } else {
-            Date now = new Date();
-            Format formatterNow = new SimpleDateFormat("d MMM yyyy");
-            String sNow = formatterNow.format(now);
-            try {
-                DateFormat format = new SimpleDateFormat("d MMM yyyy");
-                now = format.parse(sNow);
-                user.setBirthday(now);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
 
         String g = user.getGender();
         if (g == null || g.isEmpty()) {
             mETGender.setText("Not Specified");
+            user.setGender("Not Specified");
         } else
             mETGender.setText(user.getGender());
 
@@ -387,11 +377,11 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private User getNewUser(){
         String first_name = mETFirstName.getText().toString().trim();
         String last_name = mETLastName.getText().toString().trim();
-        String gender = mETGender.getText().toString().trim();
         String country = mETCountry.getText().toString().trim();
-        String TAddress = mETAddress.getText().toString().trim();
-        String Age = mETAge.getText().toString().trim();
         String AboutMe = mETAboutMe.getText().toString().trim();
+        String TAddress = mETAddress.getText().toString().trim();
+        String gender = mETGender.getText().toString().trim();
+        String age = mETAge.getText().toString().trim();
 
         User user = new User();
         user.setFirst_name(first_name);
@@ -402,28 +392,31 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
         user.setAbout_me(AboutMe);
 
 
-        DateFormat format = new SimpleDateFormat("d MMM yyyy");
-        try {
-            Date date = format.parse(Age);
-            user.setBirthday(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!age.isEmpty()) {
+            DateFormat format = new SimpleDateFormat("d MMM yyyy");
+            try {
+                Date date = format.parse(age);
+                user.setBirthday(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         return user;
     }
 
     private void exitAlert() {
-//        if(startUser!=null && !startUser.equals(getNewUser())) {
+        if(startUser!=null && !startUser.equals(getNewUser())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to cancel?");
-            builder.setPositiveButton("Yes", (dialog, which) -> finish());
-            builder.setNegativeButton("No", (dialog, which) -> {
+            builder.setTitle("Discard Changes?");
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Discard Changes", (dialog, which) -> finish());
+            builder.setNegativeButton("Keep Editing", (dialog, which) -> {
             });
             builder.show();
-//        }
-//        else
-//            finish();
+        }
+        else
+            finish();
     }
 
     @Override

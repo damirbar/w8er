@@ -1,5 +1,6 @@
 package com.w8er.android.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;

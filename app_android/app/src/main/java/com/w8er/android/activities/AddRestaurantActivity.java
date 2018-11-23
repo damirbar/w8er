@@ -63,7 +63,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private ProgressBar mProgressBar;
     private Button mBSave;
-    private String fullPhone;
+    private String fullPhone = "";
     private HashTagHelper mTextHashTagHelper;
     private ArrayList<TimeSlot> timeSlots;
 
@@ -374,24 +374,25 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mSubscriptions.unsubscribe();
     }
 
+    public boolean isChanged() {
+        String name = eTname.getText().toString().trim();
+        String address = eTaddress.getText().toString().trim();
+        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
+        return (!name.isEmpty() || !address.isEmpty() || !fullPhone.isEmpty() || allHashTags.size() > 0 || timeSlots.size() > 0);
+
+    }
+
     public void exitAlert() {
 
-//        String web = eTwebsite.getText().toString().trim();
-//        String name = eTname.getText().toString().trim();
-//        String note = eTNotes.getText().toString().trim();
-//        String address = eTaddress.getText().toString().trim();
-//        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
-//
-//        if(!name.isEmpty()||!address.isEmpty()||!fullPhone.isEmpty()||!timeSlots.isEmpty()||!web.isEmpty()||!note.isEmpty()||!allHashTags.isEmpty()) {
+        if (isChanged()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to cancel?");
-            builder.setPositiveButton("Yes", (dialog, which) -> finish());
-            builder.setNegativeButton("No", (dialog, which) -> {
-            });
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Leave", (dialog, which) -> finish());
+            builder.setNegativeButton("Stay", (dialog, which) -> { });
             builder.show();
-//        }
-//        else
-//            finish();
+        } else
+            finish();
     }
 
     @Override

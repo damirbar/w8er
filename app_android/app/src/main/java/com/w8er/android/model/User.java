@@ -1,6 +1,8 @@
 package com.w8er.android.model;
 
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -185,11 +187,25 @@ public class User {
             return false;
         }
         User u = (User) other;
-        return this.getFirst_name().equals(u.getFirst_name()) &&
+
+        Boolean date = true;
+        if ((this.getBirthday() != null && u.getBirthday() == null) || (this.getBirthday() == null && u.getBirthday() != null)){
+            return false;
+        }
+
+        if (this.getBirthday() != null && u.getBirthday() != null) {
+            Format formatter = new SimpleDateFormat("d MMM yyyy");
+            String s1 = formatter.format(this.getBirthday());
+            String s2 = formatter.format(u.getBirthday());
+            if(!s1.equals(s2)){
+                date = false;
+            }
+        }
+        return  date &&
+                this.getFirst_name().equals(u.getFirst_name()) &&
                 this.getLast_name().equals(u.getLast_name()) &&
                 this.getCountry().equals(u.getCountry()) &&
                 this.getAddress().equals(u.getAddress()) &&
-                this.getBirthday().equals(u.getBirthday()) &&
                 this.getGender().equals(u.getGender()) &&
                 this.getAbout_me().equals(u.getAbout_me());
     }

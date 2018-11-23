@@ -160,19 +160,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         }
 
 
-
-        boolean newRest = false;
-        try {
-            if (!(newRestaurant.equals(restaurant))) {
-                newRest = true;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        if (newRest) {
+        if (!(newRestaurant.equals(restaurant))) {
             updateResProcess(newRestaurant);
 
             mBSave.setVisibility(View.GONE);
@@ -222,6 +210,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         String name = eTname.getText().toString().trim();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
         Restaurant newRestaurant = new Restaurant();
         newRestaurant.setName(name);
         newRestaurant.setTags(allHashTags);
@@ -233,16 +222,17 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
 
     public void exitAlert() {
-//        if(restaurant!=null && !restaurant.equals(getNewRestaurant())) {
+        if(restaurant!=null && !restaurant.equals(getNewRestaurant())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to cancel?");
-        builder.setPositiveButton("Yes", (dialog, which) -> finish());
-        builder.setNegativeButton("No", (dialog, which) -> {
+            builder.setTitle("Discard Changes?");
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Discard Changes", (dialog, which) -> finish());
+            builder.setNegativeButton("Keep Editing", (dialog, which) -> {
         });
         builder.show();
-//        }
-//        else
-//            finish();
+        }
+        else
+            finish();
     }
 
     private boolean getData() {
