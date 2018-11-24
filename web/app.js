@@ -26,14 +26,16 @@ app.use('/search', searchRequests);
 app.use('/tool', toolRequests);
 
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist/w8erWebapp')));
 
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(config.mongo.mongoDB, {useNewUrlParser: true}, function (err, connection) {
-    if (err) {
-        console.log('error in mongo connection:\n' + err);
-    }
+mongoose.connect(config.mongo.mongoDB, {
+  useNewUrlParser: true
+}, function (err, connection) {
+  if (err) {
+    console.log('error in mongo connection:\n' + err);
+  }
 });
 
 // let geocoder = require('./config/config').geocoder;
@@ -47,5 +49,5 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
 
 http.listen(3000, function () {
-    console.log("listening on 3000");
+  console.log("listening on 3000");
 });
