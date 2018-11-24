@@ -1,6 +1,249 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimaryDark"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/image_Button_back"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="?selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Info"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/background">
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@android:color/background_light"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tR1"
+                    android:layout_marginBottom="10dp"
+                    android:text="Opening Hours"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_1"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Sunday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_2"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Monday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_3"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Tuesday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="18:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_4"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Wednesday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_5"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Thursday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_6"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Friday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day_7"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:text="Saturday"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/hours_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="09:00 - 13:00"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

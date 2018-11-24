@@ -1,12 +1,13 @@
 package com.w8er.android.model;
 
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private String first_name;
-
-
     private String phone_number;
     private String last_name;
     private String email;
@@ -16,8 +17,8 @@ public class User {
     private String type;
     private Date date;
     private String profile_img;
-    private String[] favorite_foods;
-    private String[] favorite_restaurants;
+    private List<String> favorite_foods;
+    private List<String> favorite_restaurants;
     private String new_password;
     private boolean is_admin;
     private String gender;
@@ -146,19 +147,19 @@ public class User {
         this.profile_img = profile_img;
     }
 
-    public String[] getFavorite_foods() {
+    public List<String> getFavorite_foods() {
         return favorite_foods;
     }
 
-    public void setFavorite_foods(String[] favorite_foods) {
+    public void setFavorite_foods(List<String> favorite_foods) {
         this.favorite_foods = favorite_foods;
     }
 
-    public String[] getFavorite_restaurants() {
+    public List<String> getFavorite_restaurants() {
         return favorite_restaurants;
     }
 
-    public void setFavorite_restaurants(String[] favorite_restaurants) {
+    public void setFavorite_restaurants(List<String> favorite_restaurants) {
         this.favorite_restaurants = favorite_restaurants;
     }
 
@@ -177,6 +178,36 @@ public class User {
     public void setIs_admin(boolean is_admin) {
         this.is_admin = is_admin;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof User)) {
+            return false;
+        }
+        User u = (User) other;
+
+        Boolean date = true;
+        if ((this.getBirthday() != null && u.getBirthday() == null) || (this.getBirthday() == null && u.getBirthday() != null)){
+            return false;
+        }
+
+        if (this.getBirthday() != null && u.getBirthday() != null) {
+            Format formatter = new SimpleDateFormat("d MMM yyyy");
+            String s1 = formatter.format(this.getBirthday());
+            String s2 = formatter.format(u.getBirthday());
+            if(!s1.equals(s2)){
+                date = false;
+            }
+        }
+        return  date &&
+                this.getFirst_name().equals(u.getFirst_name()) &&
+                this.getLast_name().equals(u.getLast_name()) &&
+                this.getCountry().equals(u.getCountry()) &&
+                this.getAddress().equals(u.getAddress()) &&
+                this.getGender().equals(u.getGender()) &&
+                this.getAbout_me().equals(u.getAbout_me());
+    }
+
 }
 
 

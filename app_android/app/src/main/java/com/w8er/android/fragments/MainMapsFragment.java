@@ -23,7 +23,7 @@ import com.w8er.android.utils.GoogleMapUtils;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class MapsFragment extends BaseFragment {
+public class MainMapsFragment extends BaseFragment {
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -36,9 +36,7 @@ public class MapsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         initMap();
         return rootView;
     }

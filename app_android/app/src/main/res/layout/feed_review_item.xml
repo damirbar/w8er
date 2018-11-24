@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8.0dip"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/feed_item_menu"
+        android:layout_width="48.0dip"
+        android:layout_height="36.0dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2.0dip"
+        android:background="@null"
+        android:rotation="90"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_more_vert_black_24dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="42.0dip"
+        android:layout_height="42.0dip"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/padding8"
+        android:layout_marginLeft="@dimen/padding8"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:padding="5dp"
+        android:src="@drawable/default_user_image" />
+
+    <LinearLayout
+        android:id="@+id/author_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_toEndOf="@id/user_image"
+        android:layout_toRightOf="@id/user_image"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="190.0dip"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:textAlignment="viewStart"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/subhead_size" />
+
+        <TextView
+            android:id="@+id/creation_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_post_text"
+            android:textSize="@dimen/caption_size" />
+
+        <com.willy.ratingbar.BaseRatingBar
+            android:id="@+id/simple_rating_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title_res"
+            android:layout_marginStart="187dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="3dp"
+            android:clickable="false"
+            android:enabled="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srb_minimumStars="1"
+            app:srb_numStars="5"
+            app:srb_scrollable="false"
+            app:srb_starHeight="15dp"
+            app:srb_starPadding="1dp"
+            app:srb_starWidth="15dp"
+            app:srb_stepSize="0" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/feed_font_size" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/divider_img"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/author_details"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="?attr/colorButtonNormal"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -3,10 +3,12 @@ package com.w8er.android.network;
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
@@ -36,15 +38,21 @@ public interface RetrofitInterface {
 
     //////////////////User//////////////////
 
-    @GET("profile/get-profile")
+    @GET("user/get-profile")
     Observable<User> getProfile(@Query("phone_number") String phone_number);
 
-    @POST("profile/edit-profile")
+    @POST("user/edit-profile")
     Observable<Response> updateProfile(@Body User user);
 
     @Multipart
-    @POST("profile/post-profile-image")
+    @POST("user/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
+
+    @POST("user/review")
+    Observable<Response> postReview(@Body Review review);
+
+    @GET("user/get-rest")
+    Observable<List<Restaurant>> getFavRest();
 
     //////////////////Restaurant//////////////////
 
@@ -54,6 +62,8 @@ public interface RetrofitInterface {
     @GET("rest/get-rest")
     Observable<Restaurant> getRest(@Query("id") String id);
 
+    @POST("rest/edit-rest")
+    Observable<Response> updateRestaurant(@Body Restaurant restaurant);
 
     //////////////////Tools//////////////////
 

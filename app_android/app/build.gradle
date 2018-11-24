@@ -4,11 +4,12 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.w8er.android"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -80,9 +81,6 @@ dependencies {
     //Snap in place RecyclerView
     implementation 'com.github.takusemba:multisnaprecyclerview:1.2.0'
 
-    //rating bar(minSdkVersion=16)
-    implementation 'com.aurelhubert:simpleratingbar:0.1.5'
-
     //for managing multiple stacks of fragments
     implementation 'com.ncapdevi:frag-nav:2.4.0'
 
@@ -91,5 +89,7 @@ dependencies {
     //HashTag Helper
     implementation 'com.github.danylovolokh:hashtag-helper:1.1.0'
 
+    //SimpleRatingBar
+    implementation 'com.github.ome450901:SimpleRatingBar:1.4.2'
 
 }

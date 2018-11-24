@@ -9,16 +9,15 @@ public class Restaurant {
     private String phone_number;
     private String name;
     private String owner;
-    private String first_name;
     private List<String> tags;
-    private String[] pictures;
+    private List<String> pictures;
     private boolean kosher;
-    private Review[] reviews;
+    private ArrayList<Review> reviews;
     private Coordinates coordinates;
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
-    private int rating;
+    private float rating;
     private String profile_img;
     //        menu: {},
     //        layout: {},
@@ -42,11 +41,11 @@ public class Restaurant {
         this.profile_img = profile_img;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -106,14 +105,6 @@ public class Restaurant {
         this.owner = owner;
     }
 
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
     public List<String> getTags() {
         return tags;
     }
@@ -122,11 +113,11 @@ public class Restaurant {
         this.tags = tags;
     }
 
-    public String[] getPictures() {
+    public List<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(String[] pictures) {
+    public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
 
@@ -138,11 +129,23 @@ public class Restaurant {
         this.kosher = kosher;
     }
 
-    public Review[] getReviews() {
+    public ArrayList<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Review[] reviews) {
+    public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Restaurant)) {
+            return false;
+        }
+        Restaurant u = (Restaurant) other;
+        return this.getName().equals(u.getName()) &&
+                this.getHours().equals(u.getHours()) &&
+                this.getTags().equals(u.getTags());
+    }
+
 }

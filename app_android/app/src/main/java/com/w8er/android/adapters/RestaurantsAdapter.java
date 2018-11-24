@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aurelhubert.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
+import com.willy.ratingbar.BaseRatingBar;
 
 import java.util.List;
+
+import static com.w8er.android.utils.RatingUtils.roundToHalf;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
@@ -42,7 +44,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         String name = mData.get(position).getName();
         holder.mTextViewName.setText(name);
-        holder.ratingBar.setRating(mData.get(position).getRating());
+        float r = roundToHalf(mData.get(position).getRating());
+        holder.ratingBar.setRating(r);
 
         String pic = mData.get(position).getProfile_img();
         if (pic != null && !(pic.isEmpty()))
@@ -76,13 +79,15 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTextViewName;
         ImageView mResImage;
-        SimpleRatingBar ratingBar;
+        BaseRatingBar ratingBar;
 
         ViewHolder(View itemView) {
             super(itemView);
             mTextViewName = itemView.findViewById(R.id.title_res);
             mResImage = itemView.findViewById(R.id.imageView);
             ratingBar = itemView.findViewById(R.id.simple_rating_bar);
+            ratingBar.setEnabled(false);
+            ratingBar.setClickable(false);
             itemView.setOnClickListener(this);
         }
 
