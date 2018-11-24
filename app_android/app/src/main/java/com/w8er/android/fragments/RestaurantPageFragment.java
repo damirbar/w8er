@@ -12,21 +12,26 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.hbb20.CountryCodePicker;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
 import com.w8er.android.activities.EditRestaurantActivity;
@@ -56,6 +61,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Constants.TOKEN;
+import static com.w8er.android.utils.PhoneUtils.getCountryCode;
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
@@ -65,6 +71,8 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
 public class RestaurantPageFragment extends BaseFragment {
 
+    private EditText textViewPhone;
+    private CountryCodePicker ccp;
     private MultiSnapRecyclerView multiSnapRecyclerView;
     private ImageHorizontalAdapter adapterPics;
     private MapView mMapView;
@@ -106,6 +114,9 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void initViews(View v) {
+        textViewPhone = v.findViewById(R.id.textView_phone);
+        ccp = v.findViewById(R.id.ccp);
+        ccp.registerCarrierNumberEditText(textViewPhone);
         openReviewsButton = v.findViewById(R.id.button_reviews);
         recyclerView = v.findViewById(R.id.rvRes);
         mTVstatus = v.findViewById(R.id.status);
@@ -134,11 +145,23 @@ public class RestaurantPageFragment extends BaseFragment {
         infoButton.setOnClickListener(view -> openInfo());
         openReviewsButton.setOnClickListener(view -> openReviews());
         restName = v.findViewById(R.id.resr_name);
-        tVaddress.setOnClickListener(view -> copyToClipboard());
+        tVaddress.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                copyToClipboard();
+                return true;
+            }
+        });
+
         ratingReview.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar baseRatingBar, float v) {
                 openReview();
+            }
+        });
+        ratingBar.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(BaseRatingBar baseRatingBar, float v) {
             }
         });
         decor.setOverScrollStateListener((decor1, oldState, newState) -> {
@@ -170,13 +193,10 @@ public class RestaurantPageFragment extends BaseFragment {
         ClipData clip = ClipData.newPlainText("Copied Text", restaurant.getAddress());
         clipboard.setPrimaryClip(clip);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Address has been copied to clipboard.");
-        builder.setPositiveButton("Ok", (dialog, which) -> {
-        });
-        builder.show();
-
-
+        String msg = "Address has been copied to clipboard.";
+        Toast toast = Toast.makeText(new ContextThemeWrapper(getContext().getApplicationContext(), R.style.AppTheme), msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     private void initSharedPreferences() {
@@ -217,8 +237,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void openInfo() {
         Bundle i = new Bundle();
-//        i.putParcelableArrayList("reviews", restaurant.getReviews());
-
+        i.putParcelableArrayList("hours", restaurant.getHours());
         RestaurantInfoFragment fragment = new RestaurantInfoFragment();
         fragment.setArguments(i);
 
@@ -333,11 +352,7 @@ public class RestaurantPageFragment extends BaseFragment {
         resName.setText(restaurant.getName());
         float r = roundToHalf(restaurant.getRating());
         ratingBar.setRating(r);
-
-        String call = "   Call " + " " + restaurant.getPhone_number();
-        callButton.setText(call);
-        initRestStatus();
-
+        initPhoneNum();
 
         int size = restaurant.getReviews().size();
         if (size > 5) {
@@ -352,6 +367,16 @@ public class RestaurantPageFragment extends BaseFragment {
         }
 
 
+    }
+
+    private void initPhoneNum() {
+        String countryCode = getCountryCode(restaurant.getCountry());
+        ccp.setCountryForNameCode(countryCode);
+        textViewPhone.setText(restaurant.getPhone_number());
+        String formattedNumber = ccp.getFormattedFullNumber();
+        String call = "   Call " + " " + formattedNumber;
+        callButton.setText(call);
+        initRestStatus();
     }
 
     private void initReviews(List<Review> reviews) {
@@ -440,6 +465,7 @@ public class RestaurantPageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mMapView.onResume();
         getResProcess(resID);
     }
 
@@ -448,6 +474,21 @@ public class RestaurantPageFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
+        mMapView.onDestroy();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
 
 }

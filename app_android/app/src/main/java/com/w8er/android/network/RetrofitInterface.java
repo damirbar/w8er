@@ -8,6 +8,7 @@ import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
@@ -50,6 +51,8 @@ public interface RetrofitInterface {
     @POST("user/review")
     Observable<Response> postReview(@Body Review review);
 
+    @GET("user/get-rest")
+    Observable<List<Restaurant>> getFavRest();
 
     //////////////////Restaurant//////////////////
 
