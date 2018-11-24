@@ -16,9 +16,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="2.0dip"
         android:background="@null"
-        android:rotation="90"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_more_vert_black_24dp" />
+        android:src="@drawable/ic_more" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_image"
@@ -85,7 +84,7 @@
             app:srb_starWidth="15dp"
             app:srb_stepSize="0" />
 
-        <TextView
+        <com.w8er.android.view.ExpandableTextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

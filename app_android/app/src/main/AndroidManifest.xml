@@ -109,6 +109,16 @@
             android:name=".activities.ReviewActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditMenuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MenuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+
 
     </application>
 

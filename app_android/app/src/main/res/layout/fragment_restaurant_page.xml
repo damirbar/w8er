@@ -250,7 +250,9 @@
                     android:id="@+id/navigation_button"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_get_directions_button"
                     android:drawableLeft="@drawable/ic_get_directions_button"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -265,11 +267,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
+                    android:background="?attr/colorButtonNormal" />
+
 
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccp"
@@ -295,7 +295,9 @@
                     android:id="@+id/phone_button"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_call"
                     android:drawableLeft="@drawable/ic_call"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -310,8 +312,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="?attr/colorButtonNormal"
                     android:visibility="visible" />
@@ -320,7 +320,9 @@
                     android:id="@+id/menu_button"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_fork"
                     android:drawableLeft="@drawable/ic_fork"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -335,8 +337,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="?attr/colorButtonNormal"
                     android:visibility="visible" />
@@ -345,7 +345,9 @@
                     android:id="@+id/info_button"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_info_outline_black_24dp"
                     android:drawableLeft="@drawable/ic_info_outline_black_24dp"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
@@ -357,19 +359,10 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
-
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
