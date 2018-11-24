@@ -353,4 +353,11 @@ public class EditRestaurantActivity extends AppCompatActivity {
         mMapView.onLowMemory();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        exitAlert();
+    }
+
+
 }

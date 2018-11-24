@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -106,10 +105,10 @@
             android:name=".activities.EditRestaurantActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
-
-
-
+        <activity
+            android:name=".activities.ReviewActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
 
     </application>
 

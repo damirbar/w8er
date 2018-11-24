@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.w8er.android.restaurantPage_test.RestaurantInfoFragment;
+import com.w8er.android.fragments.ReviewsFragment;
 
 public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -18,9 +18,9 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new RestaurantInfoFragment();
+                return new ReviewsFragment();
             case 1:
-                return new RestaurantInfoFragment();
+                return new ReviewsFragment();
             default:
                 return null;
         }

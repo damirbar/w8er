@@ -1,6 +1,5 @@
 package com.w8er.android.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,6 +10,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
@@ -19,6 +19,7 @@ import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.SoftKeyboard;
 
 import java.util.ArrayList;
 
@@ -57,7 +58,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
         recyclerView = v.findViewById(R.id.rvRes);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         editSearch = v.findViewById(R.id.searchView);
-
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
 
             if(!saveQuery.isEmpty()){
@@ -119,6 +119,15 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (validateFields(saveQuery)) {
+            sendQuery(saveQuery);
+        }
+    }
+
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
@@ -126,6 +135,8 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
 
     @Override
     public void onItemClick(View view, int position) {
+        new SoftKeyboard(getActivity()).hideSoftKeyboard();
+
         Bundle i = new Bundle();
         String resID = adapter.getItemID(position);
         i.putString("resID", resID);

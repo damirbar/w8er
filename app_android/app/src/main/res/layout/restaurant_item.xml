@@ -48,18 +48,25 @@
                     android:textSize="12sp"
                     android:visibility="gone" />
 
-                <com.aurelhubert.simpleratingbar.SimpleRatingBar
+                <com.willy.ratingbar.BaseRatingBar
                     android:id="@+id/simple_rating_bar"
-                    android:layout_width="90dp"
-                    android:layout_height="15dp"
-                    android:layout_below="@+id/dis_res"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_res"
                     android:layout_marginStart="187dp"
                     android:layout_marginLeft="0dp"
-                    android:layout_marginTop="5dp"
-                    app:drawablePadding="4dp"
-                    app:enable="false"
-                    app:maxRating="5"
-                    app:rating="4" />
+                    android:layout_marginTop="3dp"
+                    android:clickable="false"
+                    android:enabled="false"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:srb_minimumStars="1"
+                    app:srb_numStars="5"
+                    app:srb_scrollable="false"
+                    app:srb_starHeight="15dp"
+                    app:srb_starPadding="1dp"
+                    app:srb_starWidth="15dp"
+                    app:srb_stepSize="0" />
 
                 <TextView
                     android:id="@+id/textView"

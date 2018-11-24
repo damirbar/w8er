@@ -3,6 +3,7 @@ package com.w8er.android.network;
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
 
@@ -45,6 +46,10 @@ public interface RetrofitInterface {
     @Multipart
     @POST("user/post-profile-image")
     Observable<Response> uploadProfileImage(@Part MultipartBody.Part file);
+
+    @POST("user/review")
+    Observable<Response> postReview(@Body Review review);
+
 
     //////////////////Restaurant//////////////////
 

@@ -5,5 +5,11 @@
     <dimen name="box_name_size">18.0sp</dimen>
     <dimen name="box_feed_text_offset">16.0dip</dimen>
     <dimen name="box_space">2.0dip</dimen>
+    <dimen name="icon_size">20</dimen>
+    <dimen name="icon_size_arrow_right">20</dimen>
+    <dimen name="padding8">8.0dip</dimen>
+    <dimen name="subhead_size">16.0sp</dimen>
+    <dimen name="caption_size">12.0sp</dimen>
+    <dimen name="feed_font_size">16.0sp</dimen>
 
 </resources>

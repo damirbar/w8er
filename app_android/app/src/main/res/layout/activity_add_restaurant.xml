@@ -241,14 +241,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_below="@+id/req_info"
-                            android:drawableEnd="@drawable/expand_arrow"
-                            android:drawableRight="@drawable/expand_arrow"
+                            android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
                             android:fontFamily="sans-serif"
                             android:gravity="left|center"
                             android:paddingLeft="10dp"
                             android:text="United States"
                             android:textAllCaps="false"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
                         <NumberPicker
                             android:id="@+id/number_picker"

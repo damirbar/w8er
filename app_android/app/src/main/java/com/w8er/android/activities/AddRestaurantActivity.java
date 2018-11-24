@@ -419,5 +419,4 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mMapView.onLowMemory();
     }
 
-
 }

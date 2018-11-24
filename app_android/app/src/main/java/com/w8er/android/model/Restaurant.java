@@ -9,7 +9,6 @@ public class Restaurant {
     private String phone_number;
     private String name;
     private String owner;
-    private String first_name;
     private List<String> tags;
     private List<String> pictures;
     private boolean kosher;
@@ -18,7 +17,7 @@ public class Restaurant {
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
-    private int rating;
+    private float rating;
     private String profile_img;
     //        menu: {},
     //        layout: {},
@@ -42,11 +41,11 @@ public class Restaurant {
         this.profile_img = profile_img;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -104,14 +103,6 @@ public class Restaurant {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
     }
 
     public List<String> getTags() {
