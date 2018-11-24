@@ -51,3 +51,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 http.listen(3000, function () {
   console.log("listening on 3000");
 });
+
+
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+});
