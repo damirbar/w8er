@@ -33,7 +33,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.hbb20.CountryCodePicker;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
-import com.w8er.android.activities.EditMenuActivity;
+import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.activities.EditRestaurantActivity;
 import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
@@ -233,7 +233,7 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void openMenu() {
-        Intent i = new Intent(getContext(), EditMenuActivity.class);
+        Intent i = new Intent(getContext(), AddToMenuActivity.class);
         Bundle extra = new Bundle();
         extra.putString("resID", resID);
         i.putExtras(extra);
