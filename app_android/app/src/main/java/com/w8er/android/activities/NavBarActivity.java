@@ -12,7 +12,8 @@ import com.ncapdevi.fragnav.FragNavController;
 import com.ncapdevi.fragnav.FragNavSwitchController;
 import com.ncapdevi.fragnav.FragNavTransactionOptions;
 import com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController;
-import com.w8er.android.fragments.MapsFragment;
+import com.w8er.android.fragments.FavoritesResFragment;
+import com.w8er.android.fragments.MainMapsFragment;
 import com.w8er.android.R;
 import com.w8er.android.entry.EntryActivity;
 import com.w8er.android.fragments.BaseFragment;
@@ -31,7 +32,8 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
 
     private final int INDEX_HOME = FragNavController.TAB1;
     private final int INDEX_MAP = FragNavController.TAB2;
-    private final int INDEX_SETTINGS = FragNavController.TAB3;
+    private final int INDEX_FAVORITES = FragNavController.TAB3;
+    private final int INDEX_SETTINGS = FragNavController.TAB4;
 
     private int oldTabSelectIndex;
 
@@ -81,6 +83,11 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.bookmark_empty_128),
+                        color).build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.settings),
                         color).build()
         );
@@ -120,6 +127,9 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
                         mNavController.switchTab(INDEX_MAP);
                         break;
                     case 2:
+                        mNavController.switchTab(INDEX_FAVORITES);
+                        break;
+                    case 3:
                         mNavController.switchTab(INDEX_SETTINGS);
                         break;
                 }
@@ -180,7 +190,9 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
             case INDEX_HOME:
                 return new HomeFragment();
             case INDEX_MAP:
-                return new MapsFragment();
+                return new MainMapsFragment();
+            case INDEX_FAVORITES:
+                return new FavoritesResFragment();
             case INDEX_SETTINGS:
                 return new SettingsFragment();
         }

@@ -23,7 +23,7 @@ import com.w8er.android.utils.GoogleMapUtils;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class MapsFragment extends BaseFragment {
+public class MainMapsFragment extends BaseFragment {
 
     private MapView mMapView;
     private GoogleMap googleMap;

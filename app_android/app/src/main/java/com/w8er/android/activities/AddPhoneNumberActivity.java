@@ -14,6 +14,8 @@ import com.hbb20.CountryCodePicker;
 import com.w8er.android.R;
 import com.w8er.android.utils.SoftKeyboard;
 
+import static com.w8er.android.utils.PhoneUtils.getCountryCode;
+
 public class AddPhoneNumberActivity extends AppCompatActivity {
 
     private EditText mPhoneNumber;
@@ -46,15 +48,10 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             String _phone = getIntent().getExtras().getString("phone");
             String _country = getIntent().getExtras().getString("country");
-            String countryCode;
             if (_phone != null && _country != null) {
-                if(_country.equals("Israel")){
-                    countryCode = "il";
-                }
-                else
-                    countryCode = "us";
+                String countryCode = getCountryCode(_country);
                 ccp.setCountryForNameCode(countryCode);
-                if(!_phone.isEmpty()) {
+                if (!_phone.isEmpty()) {
                     String codeNum = ccp.getSelectedCountryCode() + " ";
                     _phone = _phone.replaceFirst(codeNum, "");
                     _phone = _phone.substring(1);
@@ -88,13 +85,13 @@ public class AddPhoneNumberActivity extends AppCompatActivity {
             if (ccp.isValidFullNumber() || mPhoneNumber.getText().toString().isEmpty()) {
                 mBSave.setEnabled(true);
                 mBSave.setTextColor(Color.BLACK);
-                }
-            else{
+            } else {
                 mBSave.setEnabled(false);
                 mBSave.setTextColor(Color.WHITE);
 
             }
         }
+
         public void afterTextChanged(Editable s) {
         }
     };

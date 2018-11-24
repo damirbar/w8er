@@ -33,6 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.utils.PhoneUtils.getCountryCode;
 import static com.w8er.android.utils.Validation.validateFields;
 
 
@@ -297,12 +298,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
     }
 
     private void initPhone(String country, String phone) {
-        String countryCode;
-
-        if (country.equals("Israel")) {
-            countryCode = "il";
-        } else
-            countryCode = "us";
+        String countryCode = getCountryCode(restaurant.getCountry());
         ccp.setCountryForNameCode(countryCode);
         eTPhone.setText(phone);
         String formattedNumber = ccp.getFormattedFullNumber();
