@@ -288,8 +288,9 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void goToNavigation() {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + restaurant.getAddress() + " " + restaurant.getCountry()));
-        startActivity(i);
+        String uri = "geo: " + restaurant.getCoordinates().getLat() + "," + restaurant.getCoordinates().getLng();
+        startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse(uri)));
     }
 
     private void callNum() {
