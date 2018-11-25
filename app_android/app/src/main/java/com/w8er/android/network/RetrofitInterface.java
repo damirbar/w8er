@@ -1,6 +1,7 @@
 package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.MenuItem;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
@@ -64,6 +65,9 @@ public interface RetrofitInterface {
 
     @POST("rest/edit-rest")
     Observable<Response> updateRestaurant(@Body Restaurant restaurant);
+
+    @POST("rest/edit-item")
+    Observable<Response> postMenuItem(@Body MenuItem menuItem);
 
     //////////////////Tools//////////////////
 

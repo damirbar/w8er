@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -25,19 +24,6 @@
             android:layout_height="match_parent">
 
 
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:indeterminate="true"
-                android:theme="@style/AppTheme.WhiteAccent"
-                android:visibility="gone" />
-
             <Button
                 android:id="@+id/save_button"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -47,7 +33,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:fontFamily="sans-serif"
-                android:text="Post"
+                android:text="@string/save"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
@@ -56,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Review"
+                android:text="Description"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -77,30 +63,11 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <com.willy.ratingbar.RotationRatingBar
-        android:id="@+id/simple_rating_open"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tool_bar"
-        android:layout_marginStart="187dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        app:srb_drawableEmpty="@drawable/ic_star_empty"
-        app:srb_drawableFilled="@drawable/ic_star_full"
-        app:srb_numStars="5"
-        app:srb_scrollable="false"
-        app:srb_starHeight="30dp"
-        app:srb_starPadding="2dp"
-        app:srb_starWidth="30dp"
-        app:srb_stepSize="1" />
-
     <EditText
-        android:id="@+id/review_text"
+        android:id="@+id/desc_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/simple_rating_open"
+        android:layout_below="@+id/tool_bar"
         android:background="@color/background"
         android:gravity="start|center|top"
         android:inputType="textLongMessage|textMultiLine"
@@ -114,7 +81,7 @@
         android:id="@+id/count_num"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@+id/review_text"
+        android:layout_below="@+id/desc_text"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="-25dp"
         android:layout_marginEnd="5dp"

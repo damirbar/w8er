@@ -79,10 +79,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/msg_public"
-        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:refreshType="smartisan"
-        android:layout_marginEnd="6dp">
+        app:refreshType="smartisan">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvRes"

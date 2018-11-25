@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
-
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
     private List<Review> mData;
@@ -106,4 +104,5 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
 }

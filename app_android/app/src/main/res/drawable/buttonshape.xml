@@ -7,6 +7,7 @@
         android:color="#0096eb"
         />
     <size
+        android:gravity="bottom"
         android:width="250dp"
         android:height="40dp"
         />

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,6 +26,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="false"
+                android:fontFamily="sans-serif"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -69,24 +83,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Add Restaurant"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Add to Menu"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/cancel_button"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="false"
-                android:fontFamily="sans-serif"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -118,14 +121,14 @@
                     android:layout_below="@+id/header_cover_image">
 
                     <TextView
-                        android:id="@+id/country_info"
+                        android:id="@+id/type_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Country"
+                        android:text="Type"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -144,54 +147,6 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tR10"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="Optional Information"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TableRow
-                        android:id="@+id/tR10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tR9"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="20dp">
-
-                        <TextView
-                            android:id="@+id/tVHours"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:ems="10"
-                            android:gravity="center|start"
-                            android:inputType="none"
-                            android:text="Hours"
-                            android:textSize="16sp" />
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/eHours"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edt_bg_selected"
-                            android:cursorVisible="false"
-                            android:enabled="true"
-                            android:focusable="false"
-                            android:hint="Sun 9:00 - 17:00"
-                            android:inputType="none|textMultiLine|textNoSuggestions"
-                            android:textSize="16sp"
-                            app:backgroundTint="@color/edit_text" />
-
-                    </TableRow>
-
                     <TableRow
                         android:id="@+id/tR9"
                         android:layout_width="match_parent"
@@ -199,7 +154,8 @@
                         android:layout_below="@+id/tR8"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="15dp"
-                        android:layout_marginRight="20dp">
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp">
 
                         <TextView
                             android:id="@+id/tVTags"
@@ -229,24 +185,24 @@
                         android:id="@+id/tR1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/country_info"
+                        android:layout_below="@+id/type_info"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/country_button"
+                            android:id="@+id/type_button"
                             style="@style/Widget.AppCompat.Button.Borderless.Colored"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:layout_below="@+id/req_info"
+                            android:layout_below="@+id/number_picker"
                             android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
                             android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                             android:fontFamily="sans-serif"
                             android:gravity="left|center"
                             android:paddingLeft="10dp"
-                            android:text="Israel"
+                            android:text="Main Course"
                             android:textAllCaps="false"
                             android:textSize="16sp" />
 
@@ -284,39 +240,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
                             android:ems="10"
-                            android:hint="Bob's Diner"
+                            android:hint="Name"
                             android:inputType="textPersonName"
-                            android:maxLength="@integer/def_max"
-                            android:textSize="16sp"
-                            app:backgroundTint="@color/edit_text" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/tR5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/info"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="20dp">
-
-                        <TextView
-                            android:id="@+id/tVWebsite"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center|start"
-                            android:text="Website"
-                            android:textSize="16sp" />
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/eTWebsite"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edt_bg_selected"
-                            android:ems="10"
-                            android:hint="www.restaurant.com"
-                            android:inputType="text"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
@@ -378,22 +303,22 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/tVaddress"
+                                android:id="@+id/tVdesc"
                                 android:layout_width="110dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center|start"
-                                android:text="Address"
+                                android:text="Description"
                                 android:textSize="16sp" />
 
                             <android.support.v7.widget.AppCompatEditText
-                                android:id="@+id/eTaddress"
+                                android:id="@+id/eTdesc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/edt_bg_selected"
                                 android:cursorVisible="false"
                                 android:ems="10"
                                 android:focusable="false"
-                                android:hint="45 Rockefeller"
+                                android:hint="Description"
                                 android:inputType="none|textMultiLine|textNoSuggestions"
                                 android:maxLength="@integer/def_max"
                                 android:textSize="16sp"
@@ -401,39 +326,6 @@
 
                         </TableRow>
                     </RelativeLayout>
-
-                    <TableRow
-                        android:id="@+id/tR6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tR5"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="15dp">
-
-                        <TextView
-                            android:id="@+id/tVNotes"
-                            android:layout_width="110dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center|start"
-                            android:text="Notes"
-                            android:textSize="16sp" />
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/eTNotes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edt_bg_selected"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="Just wanted to say..."
-                            android:inputType="none"
-                            android:maxLength="@integer/def_max"
-                            android:textSize="16sp"
-                            app:backgroundTint="@color/edit_text" />
-
-                    </TableRow>
 
                     <TableRow
                         android:id="@+id/tR8"
@@ -445,27 +337,26 @@
                         android:layout_marginRight="20dp">
 
                         <TextView
-                            android:id="@+id/tVphoneNumber"
+                            android:id="@+id/tVprice"
                             android:layout_width="110dp"
                             android:layout_height="match_parent"
                             android:ems="10"
                             android:gravity="center|start"
                             android:inputType="none"
-                            android:text="Phone Number"
+                            android:text="Price"
                             android:textSize="16sp" />
 
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/eTphoneNumbe"
+                        <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
+                            android:id="@+id/eTprice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edt_bg_selected"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="(555) 555-5555"
-                            android:inputType="none|textMultiLine|textNoSuggestions"
-                            android:maxLength="@integer/def_max"
+                            android:hint="Price"
+                            android:inputType="numberDecimal"
                             android:textSize="16sp"
-                            app:backgroundTint="@color/edit_text" />
+                            app:currency_symbol="₪"
+                            app:show_commas="true"
+                            app:show_currency="true" />
 
                     </TableRow>
 
@@ -476,6 +367,5 @@
         </ScrollView>
 
     </FrameLayout>
-
 
 </RelativeLayout>

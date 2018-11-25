@@ -41,7 +41,6 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private TextView textViewName;
     private LatLng latLngMarker;
     private Button navigationButton;
-    private String restAddress;
 
 
     @Override
@@ -67,10 +66,11 @@ public class RestaurantMarkerFragment extends BaseFragment {
     }
 
     private void goToNavigation() {
-        if(restAddress!=null && !restAddress.isEmpty()) {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + restAddress));
-            startActivity(i);
-        }
+        if(coordinates!=null) {
+            String uri = "geo: " + coordinates.getLat() + "," + coordinates.getLng();
+            startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse(uri)));
+            }
     }
 
 
@@ -79,7 +79,6 @@ public class RestaurantMarkerFragment extends BaseFragment {
         if (bundle != null) {
             coordinates = bundle.getParcelable("coordinates");
             String name =  bundle.getString("restName");
-            restAddress =  bundle.getString("restAddress");
             textViewName.setText(name);
         }
     }

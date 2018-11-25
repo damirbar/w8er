@@ -70,7 +70,7 @@
         android:layout_below="@+id/info_text"
         android:background="@color/background"
         android:gravity="start|center|top"
-        android:hint="#Pizza #Beer #Family_restaurant"
+        android:hint="#Pizza #Beer "
         android:inputType="textLongMessage|textMultiLine"
         android:maxLength="@integer/notes_max"
         android:padding="@dimen/activity_vertical_margin"
@@ -88,7 +88,7 @@
         android:background="@color/account_status_bar"
         android:gravity="left|end"
         android:padding="5dp"
-        android:text="Add at least 3 tags that describe your restaurant"
+        android:text="Add at least 2 tags"
         android:textSize="15sp" />
 
 </RelativeLayout>

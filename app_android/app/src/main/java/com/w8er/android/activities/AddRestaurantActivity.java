@@ -83,7 +83,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
     private void initCountriesPicker() {
-        countryNames = new String[]{"United States", "Israel"};
+        countryNames = new String[]{"Israel", "United States"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(countryNames.length - 1);
         mNumberPicker.setDisplayedValues(countryNames);
@@ -397,7 +397,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         exitAlert();
     }
 

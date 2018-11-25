@@ -158,6 +158,8 @@
 
                     <com.willy.ratingbar.BaseRatingBar
                         android:id="@+id/simple_rating_bar"
+                        app:srb_drawableEmpty="@drawable/ic_star_empty"
+                        app:srb_drawableFilled="@drawable/ic_star_full"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/name"
@@ -206,7 +208,6 @@
                     android:layout_alignTop="@+id/bookmark_checkbox"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="3dp"
                     android:background="@drawable/buttonshape"
                     android:gravity="center"
                     android:text="Edit Page"
@@ -216,12 +217,19 @@
                 <com.willy.ratingbar.BaseRatingBar
                     android:id="@+id/simple_rating_open"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="187dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginLeft="0dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foregroundGravity="center"
                     android:gravity="center"
+                    app:srb_drawableEmpty="@drawable/ic_star_empty"
+                    app:srb_drawableFilled="@drawable/ic_star_full"
                     app:srb_numStars="5"
                     app:srb_scrollable="false"
                     app:srb_starHeight="30dp"
@@ -246,31 +254,6 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/navigation_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:drawableStart="@drawable/ic_get_directions_button"
-                    android:drawableLeft="@drawable/ic_get_directions_button"
-                    android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="left|center"
-                    android:text="   Get Directions"
-                    android:textAllCaps="false"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
-
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccp"
                     android:layout_width="match_parent"
@@ -283,93 +266,34 @@
                     app:ccp_rememberLastSelection="true"
                     app:ccp_showArrow="false"
                     app:ccp_showFlag="false"
-                    app:ccp_showNameCode="false" >
+                    app:ccp_showNameCode="false">
 
                     <EditText
-                        android:id="@+id/textView_phone"
+                        android:id="@+id/textEdit_phone"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </com.hbb20.CountryCodePicker>
 
-                <Button
+                <include
+                    layout="@layout/navigation_button_frame"
+                    android:id="@+id/navigation_button" />
+                <include
                     android:id="@+id/phone_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:drawableStart="@drawable/ic_call"
-                    android:drawableLeft="@drawable/ic_call"
-                    android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="left|center"
-                    android:text="   Call "
-                    android:textAllCaps="false"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
-
-                <Button
+                    layout="@layout/phone_button_frame" />
+                <include
                     android:id="@+id/menu_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:drawableStart="@drawable/ic_fork"
-                    android:drawableLeft="@drawable/ic_fork"
-                    android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="left|center"
-                    android:text="   Menu"
-                    android:textAllCaps="false"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    layout="@layout/menu_button_frame" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
-
-                <Button
+                <include
                     android:id="@+id/info_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:drawableStart="@drawable/ic_info_outline_black_24dp"
-                    android:drawableLeft="@drawable/ic_info_outline_black_24dp"
-                    android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="left|center"
-                    android:text="   More Info"
-                    android:textAllCaps="false"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    layout="@layout/info_button_frame" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
 
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"

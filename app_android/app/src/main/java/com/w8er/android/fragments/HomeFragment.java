@@ -62,6 +62,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             if (validateFields(saveQuery)) {
                 sendQuery(saveQuery);
+
             }
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
@@ -79,6 +80,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
             }
 
             private void callSearch(String query) {
+                new SoftKeyboard(getActivity()).hideSoftKeyboard();
                 saveQuery = query;
                 sendQuery(query);
             }

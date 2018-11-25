@@ -1,5 +1,7 @@
 package com.w8er.android.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -58,10 +60,11 @@ public class ReviewActivity extends AppCompatActivity {
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> returnAnswer(0));
         mReviewText.addTextChangedListener(mTextEditorWatcher);
         ratingReview = findViewById(R.id.simple_rating_open);
     }
+
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
@@ -132,11 +135,29 @@ public class ReviewActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
 
-        new SoftKeyboard(this).hideSoftKeyboard();
-        finish();
+        float rating = ratingReview.getRating();
+        returnAnswer(rating);
 
     }
 
+    private void returnAnswer(float rating){
+
+        Intent i = new Intent();
+        Bundle extra = new Bundle();
+        extra.putFloat("rating", rating);
+        i.putExtras(extra);
+        setResult(Activity.RESULT_OK, i);
+        finish();
+
+        new SoftKeyboard(this).hideSoftKeyboard();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        returnAnswer(0);
+    }
 
 
 }

@@ -92,4 +92,7 @@ dependencies {
     //SimpleRatingBar
     implementation 'com.github.ome450901:SimpleRatingBar:1.4.2'
 
+    //Easy Money Widgets
+    implementation 'com.wajahatkarim3.EasyMoney-Widgets:EasyMoney-Widgets:1.0.0'
+
 }
