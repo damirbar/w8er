@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
 import com.willy.ratingbar.BaseRatingBar;
+import com.willy.ratingbar.ScaleRatingBar;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,8 +73,13 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
 
 public class RestaurantPageFragment extends BaseFragment {
+    private FrameLayout callButton;
+    private FrameLayout menuButton;
+    private FrameLayout infoButton;
+    private FrameLayout navigationButton;
 
-    private EditText textViewPhone;
+    private TextView textViewPhone;
+    private EditText textEditPhone;
     private CountryCodePicker ccp;
     private MultiSnapRecyclerView multiSnapRecyclerView;
     private ImageHorizontalAdapter adapterPics;
@@ -83,22 +90,19 @@ public class RestaurantPageFragment extends BaseFragment {
     private CompositeSubscription mSubscriptions;
     private TextView resName;
     private BaseRatingBar ratingBar;
-    private BaseRatingBar ratingReview;
-    private Button callButton;
+    private ScaleRatingBar ratingReview;
     private Button openReviewsButton;
-    private Button navigationButton;
     private String resID;
     private TextView mTVstatus;
     private TextView mTVhours;
     private Button editButton;
-    private Button menuButton;
-    private Button infoButton;
     private TextView tVaddress;
     private TextView restName;
     private SharedPreferences mSharedPreferences;
     private String mToken;
     private ReviewsAdapter adapterReview;
     private RecyclerView recyclerView;
+    private boolean first = true;
 
     @Nullable
     @Override
@@ -111,14 +115,14 @@ public class RestaurantPageFragment extends BaseFragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.layout));
         initSharedPreferences();
         getData();
-        autoScroll();
         return view;
     }
 
     private void initViews(View v) {
-        textViewPhone = v.findViewById(R.id.textView_phone);
+        textViewPhone = v.findViewById(R.id.number_text);
+        textEditPhone = v.findViewById(R.id.textEdit_phone);
         ccp = v.findViewById(R.id.ccp);
-        ccp.registerCarrierNumberEditText(textViewPhone);
+        ccp.registerCarrierNumberEditText(textEditPhone);
         openReviewsButton = v.findViewById(R.id.button_reviews);
         recyclerView = v.findViewById(R.id.rvRes);
         mTVstatus = v.findViewById(R.id.status);
@@ -286,6 +290,11 @@ public class RestaurantPageFragment extends BaseFragment {
         multiSnapRecyclerView.setLayoutManager(firstManager);
         multiSnapRecyclerView.setAdapter(adapterPics);
 
+        if(first) {
+            first = false;
+            autoScroll();
+        }
+
     }
 
     private void autoScroll() {
@@ -405,10 +414,9 @@ public class RestaurantPageFragment extends BaseFragment {
     private void initPhoneNum() {
         String countryCode = getCountryCode(restaurant.getCountry());
         ccp.setCountryForNameCode(countryCode);
-        textViewPhone.setText(restaurant.getPhone_number());
+        textEditPhone.setText(restaurant.getPhone_number());
         String formattedNumber = ccp.getFormattedFullNumber();
-        String call = "   Call " + " " + formattedNumber;
-        callButton.setText(call);
+        textViewPhone.setText(formattedNumber);
         initRestStatus();
     }
 
