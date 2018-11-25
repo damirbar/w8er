@@ -42,12 +42,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginBottom="13dp"
                 android:layout_toEndOf="@+id/name"
                 android:layout_toRightOf="@+id/name"
-                android:textColor="@color/pin_normal"
-                android:textSize="12sp" />
+                android:textColor="@color/black" />
 
             <ImageView
                 android:id="@+id/arrow"

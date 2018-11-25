@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,6 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
 import com.willy.ratingbar.BaseRatingBar;
-import com.willy.ratingbar.ScaleRatingBar;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -63,6 +63,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.w8er.android.utils.Constants.TOKEN;
 import static com.w8er.android.utils.PhoneUtils.getCountryCode;
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
@@ -73,11 +75,16 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
 
 public class RestaurantPageFragment extends BaseFragment {
+
+    public static final int REQUEST_CODE_REVIEW = 0x1;
+
+    private float saveRating;
     private FrameLayout callButton;
     private FrameLayout menuButton;
     private FrameLayout infoButton;
     private FrameLayout navigationButton;
 
+    private LinearLayout ratingLayout;
     private TextView textViewPhone;
     private EditText textEditPhone;
     private CountryCodePicker ccp;
@@ -90,7 +97,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private CompositeSubscription mSubscriptions;
     private TextView resName;
     private BaseRatingBar ratingBar;
-    private ScaleRatingBar ratingReview;
+    private BaseRatingBar ratingReview;
     private Button openReviewsButton;
     private String resID;
     private TextView mTVstatus;
@@ -119,6 +126,7 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void initViews(View v) {
+        ratingLayout = v.findViewById(R.id.rating_frame);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
         ccp = v.findViewById(R.id.ccp);
@@ -162,14 +170,13 @@ public class RestaurantPageFragment extends BaseFragment {
         ratingReview.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar baseRatingBar, float v) {
-                openReview();
+                if(saveRating != v){
+                    saveRating = v;
+                    openReview();
+                }
             }
         });
-        ratingBar.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
-            @Override
-            public void onRatingChange(BaseRatingBar baseRatingBar, float v) {
-            }
-        });
+
         decor.setOverScrollStateListener((decor1, oldState, newState) -> {
             switch (newState) {
                 case STATE_IDLE:
@@ -193,6 +200,19 @@ public class RestaurantPageFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
+
+        if (requestCode == REQUEST_CODE_REVIEW) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                float rating = extra.getFloat("rating");
+                saveRating = rating;
+                ratingReview.setRating(rating);
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+    }
 
     private void copyToClipboard() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -216,14 +236,16 @@ public class RestaurantPageFragment extends BaseFragment {
         if (mToken.isEmpty()) {
             ratingReview.setRating(0);
             i = new Intent(getContext(), EntryActivity.class);
+            startActivity(i);
         } else {
+
             i = new Intent(getContext(), ReviewActivity.class);
             Bundle extra = new Bundle();
             extra.putString("resID", resID);
             extra.putFloat("rating", ratingReview.getRating());
             i.putExtras(extra);
+            startActivityForResult(i, REQUEST_CODE_REVIEW);
         }
-        startActivity(i);
 
     }
 
@@ -290,7 +312,7 @@ public class RestaurantPageFragment extends BaseFragment {
         multiSnapRecyclerView.setLayoutManager(firstManager);
         multiSnapRecyclerView.setAdapter(adapterPics);
 
-        if(first) {
+        if (first) {
             first = false;
             autoScroll();
         }
@@ -303,23 +325,24 @@ public class RestaurantPageFragment extends BaseFragment {
         final Runnable runnable = new Runnable() {
             int count = 0;
             boolean flag = true;
+
             @Override
             public void run() {
-                if(count < adapterPics.getItemCount()){
-                    if(count==adapterPics.getItemCount()-1){
+                if (count < adapterPics.getItemCount()) {
+                    if (count == adapterPics.getItemCount() - 1) {
                         flag = false;
-                    }else if(count == 0){
+                    } else if (count == 0) {
                         flag = true;
                     }
-                    if(flag) count++;
+                    if (flag) count++;
                     else count--;
 
                     multiSnapRecyclerView.smoothScrollToPosition(count);
-                    handler.postDelayed(this,speedScroll);
+                    handler.postDelayed(this, speedScroll);
                 }
             }
         };
-        handler.postDelayed(runnable,speedScroll);
+        handler.postDelayed(runnable, speedScroll);
     }
 
     private void goToMap() {

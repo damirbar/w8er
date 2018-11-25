@@ -47,7 +47,7 @@ public class ExpandableTextView extends android.support.v7.widget.AppCompatTextV
         if (getText() == null) return;
         int lineEndIndex = getLayout().getLineEnd(MAX_LINES - 1);
         String showMore = "...<br><font color=Blue>Show more</font>";
-        String text = saveStr.subSequence(0, lineEndIndex - showMore.length() + 1) + showMore;
+        String text = saveStr.subSequence(0, lineEndIndex - showMore.length() - 5) + showMore;
         setText(Html.fromHtml(text));
     }
 
