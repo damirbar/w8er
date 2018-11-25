@@ -1,0 +1,17 @@
+<mat-card>
+  <form (submit)="login(postForm)" #postForm="ngForm">
+    <mat-form-field>
+
+      <input matInput type="number" ngModel name="title" required #phone_num="ngModel">
+      <mat-error *ngIf="phone_num.invalid">Please a phone number</mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">Save Post</button>
+
+  </form>
+
+</mat-card>
+

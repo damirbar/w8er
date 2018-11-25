@@ -13,11 +13,19 @@ import { MatInputModule,
   MatExpansionModule } from '@angular/material';
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {PostCreateComponent} from "./posts/post-create/post-create.component";
+import {PostListComponent} from "./posts/post-list/post-list.component";
+import {PostsService} from "./posts/posts.service";
+import { LoginComponent } from './user-forms/login/login.component';
+import {LoginService} from "./user-forms/login.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    PostCreateComponent,
+    PostListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +38,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     MatToolbarModule,
     MatExpansionModule
   ],
-  providers: [],
+  providers: [PostsService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
