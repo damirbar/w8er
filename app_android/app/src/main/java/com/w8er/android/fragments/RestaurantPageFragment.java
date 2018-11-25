@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +83,6 @@ public class RestaurantPageFragment extends BaseFragment {
     private FrameLayout infoButton;
     private FrameLayout navigationButton;
 
-    private LinearLayout ratingLayout;
     private TextView textViewPhone;
     private EditText textEditPhone;
     private CountryCodePicker ccp;
@@ -126,7 +124,6 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void initViews(View v) {
-        ratingLayout = v.findViewById(R.id.rating_frame);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
         ccp = v.findViewById(R.id.ccp);
@@ -208,7 +205,7 @@ public class RestaurantPageFragment extends BaseFragment {
                 Bundle extra = result.getExtras();
                 float rating = extra.getFloat("rating");
                 saveRating = rating;
-                ratingReview.setRating(rating);
+                ratingReview.setRating(saveRating);
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
@@ -234,6 +231,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void openReview() {
         Intent i;
         if (mToken.isEmpty()) {
+            saveRating = 0;////Need work
             ratingReview.setRating(0);
             i = new Intent(getContext(), EntryActivity.class);
             startActivity(i);
@@ -351,7 +349,6 @@ public class RestaurantPageFragment extends BaseFragment {
             Bundle i = new Bundle();
             i.putParcelable("coordinates", restaurant.getCoordinates());
             i.putString("restName", restaurant.getName());
-            i.putString("restAddress", restaurant.getAddress() + " " + restaurant.getCountry());
 
             RestaurantMarkerFragment fragment = new RestaurantMarkerFragment();
             fragment.setArguments(i);

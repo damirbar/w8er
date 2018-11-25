@@ -397,7 +397,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         exitAlert();
     }
 

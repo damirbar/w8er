@@ -214,33 +214,28 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
 
-                <LinearLayout
-                    android:id="@+id/rating_frame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <com.willy.ratingbar.BaseRatingBar
-                        android:id="@+id/simple_rating_open"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foregroundGravity="center"
-                        android:gravity="center"
-                        app:srb_drawableEmpty="@drawable/ic_star_empty"
-                        app:srb_drawableFilled="@drawable/ic_star_full"
-                        app:srb_numStars="5"
-                        app:srb_scrollable="false"
-                        app:srb_starHeight="30dp"
-                        app:srb_starPadding="2dp"
-                        app:srb_starWidth="30dp"
-                        app:srb_stepSize="1" />
-                </LinearLayout>
+                <com.willy.ratingbar.BaseRatingBar
+                    android:id="@+id/simple_rating_open"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    app:srb_drawableEmpty="@drawable/ic_star_empty"
+                    app:srb_drawableFilled="@drawable/ic_star_full"
+                    app:srb_numStars="5"
+                    app:srb_scrollable="false"
+                    app:srb_starHeight="30dp"
+                    app:srb_starPadding="2dp"
+                    app:srb_starWidth="30dp"
+                    app:srb_stepSize="1" />
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapView"
