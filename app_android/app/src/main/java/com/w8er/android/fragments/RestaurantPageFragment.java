@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -110,6 +111,7 @@ public class RestaurantPageFragment extends BaseFragment {
         mServerResponse = new ServerResponse(view.findViewById(R.id.layout));
         initSharedPreferences();
         getData();
+        autoScroll();
         return view;
     }
 
@@ -283,6 +285,32 @@ public class RestaurantPageFragment extends BaseFragment {
         LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         multiSnapRecyclerView.setLayoutManager(firstManager);
         multiSnapRecyclerView.setAdapter(adapterPics);
+
+    }
+
+    private void autoScroll() {
+        final int speedScroll = 7000;
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            int count = 0;
+            boolean flag = true;
+            @Override
+            public void run() {
+                if(count < adapterPics.getItemCount()){
+                    if(count==adapterPics.getItemCount()-1){
+                        flag = false;
+                    }else if(count == 0){
+                        flag = true;
+                    }
+                    if(flag) count++;
+                    else count--;
+
+                    multiSnapRecyclerView.smoothScrollToPosition(count);
+                    handler.postDelayed(this,speedScroll);
+                }
+            }
+        };
+        handler.postDelayed(runnable,speedScroll);
     }
 
     private void goToMap() {

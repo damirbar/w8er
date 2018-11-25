@@ -48,6 +48,12 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
 
+        <!--Need to be removed!-->
+        <activity
+            android:name=".SetUpIpActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".restaurantPage_test.TableSelectionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -121,8 +127,6 @@
             android:name=".activities.ItemDescriptionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
-
-
 
     </application>
 

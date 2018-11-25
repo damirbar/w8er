@@ -79,7 +79,7 @@ public class AddTagsActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
 
-            if (allHashTags.size() >= 1 ) {
+            if (allHashTags.size() >= 2 || allHashTags.size() == 0) {
                 mBSave.setEnabled(true);
                 mBSave.setTextColor(Color.BLACK);
             }

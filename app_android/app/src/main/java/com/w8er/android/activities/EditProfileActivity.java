@@ -68,7 +68,6 @@ public class EditProfileActivity extends AppCompatActivity implements MyDateDial
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String mPhone;
-    private String mDisplayName;
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
     public static final int REQUEST_CODE_UPDATE_BIO = 0x2;

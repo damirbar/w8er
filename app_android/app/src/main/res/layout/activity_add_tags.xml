@@ -88,7 +88,7 @@
         android:background="@color/account_status_bar"
         android:gravity="left|end"
         android:padding="5dp"
-        android:text="Add at least 1 tag"
+        android:text="Add at least 2 tags"
         android:textSize="15sp" />
 
 </RelativeLayout>
