@@ -29,13 +29,16 @@ export class LoginComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    const val = this.form.value;
+
+    console.log(form);
+    const val = form.value;
+    
 
     this.loginService.login(val.phone_num)
       .subscribe(
         () => {
           console.log("User is logged in");
-          this.router.navigateByUrl('/');
+          // this.router.navigateByUrl('/');
         }
       );
 

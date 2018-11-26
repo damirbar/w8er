@@ -18,6 +18,10 @@ import {PostListComponent} from "./posts/post-list/post-list.component";
 import {PostsService} from "./posts/posts.service";
 import { LoginComponent } from './user-forms/login/login.component';
 import {LoginService} from "./user-forms/login.service";
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import { HttpErrorHandler } from './http-error-handler.service';
+import { MessageService } from './message.service';
 
 @NgModule({
   declarations: [
@@ -36,9 +40,11 @@ import {LoginService} from "./user-forms/login.service";
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    HttpClientModule,
+    HttpModule,
   ],
-  providers: [PostsService, LoginService],
+  providers: [PostsService, LoginService, HttpErrorHandler, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
