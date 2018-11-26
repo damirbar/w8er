@@ -25,18 +25,30 @@ export class LoginComponent implements OnInit {
   //   this.postsService.addPost(form.value.title, form.value.content);
   // }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    return !(charCode > 31 && (charCode < 48 || charCode > 57));
+
+
+  }
+
   login(form: NgForm) {
     if (form.invalid) {
       return;
     }
 
-    console.log(form);
-    const val = form.value;
-    
+    console.log(form.value.phonenum);
+    const val = form.value.phonenum;
 
-    this.loginService.login(val.phone_num)
+
+    this.loginService.login(val)
       .subscribe(
-        () => {
+        (data) => {
+          console.log(typeof(data));
+          if (data instanceof Array && data.length == 0) {
+            console.log("No data received");
+            return;
+          }
           console.log("User is logged in");
           // this.router.navigateByUrl('/');
         }
