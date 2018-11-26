@@ -1,85 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8.0dip"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/item_pic"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@color/colorAccent" />
+        android:background="?attr/colorPrimaryDark"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <LinearLayout
-        android:id="@+id/author_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="99dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_toLeftOf="@+id/item_pic"
-        android:gravity="start"
-        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="190.0dip"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:maxLines="2"
-            android:text="Pizza"
-            android:textAlignment="viewStart"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/subhead_size" />
+            <ImageButton
+                android:id="@+id/image_Button_back"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                app:srcCompat="@drawable/ic_close_button" />
 
-        <TextView
-            android:id="@+id/item_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:text="Crispy Pizza with .."
-            android:textColor="@color/secondary_post_text"
-            android:textSize="@dimen/caption_size" />
+            <TextView
+                android:id="@+id/page_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Menu"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="10dp"
-            android:text="$12"
-            android:textColor="@color/primary_text" />
+        </RelativeLayout>
 
-    </LinearLayout>
+    </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/divider_img"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRes"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/author_details"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="?attr/colorButtonNormal"
-        android:visibility="visible"
-        tools:layout_below="@+id/item_pic" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_bar"
+        android:scrollbarSize="3dp"
+        android:scrollbarThumbVertical="@color/colorPrimaryDark"
+        android:scrollbars="vertical" />
+
 
 </RelativeLayout>

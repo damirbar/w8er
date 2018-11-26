@@ -95,4 +95,6 @@ dependencies {
     //Easy Money Widgets
     implementation 'com.wajahatkarim3.EasyMoney-Widgets:EasyMoney-Widgets:1.0.0'
 
+    //Android side Swipe Layout
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 }
