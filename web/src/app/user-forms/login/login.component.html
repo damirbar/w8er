@@ -2,7 +2,9 @@
   <form (submit)="login(postForm)" #postForm="ngForm">
     <mat-form-field>
 
-      <input matInput type="number" ngModel name="phonenum" required #phonenum="ngModel">
+      <!--<input matInput type="number" ngModel name="phonenum" required #phonenum="ngModel">-->
+      <input matInput type="text" ngModel name="phonenum" required #phonenum="ngModel" (keypress)="numberOnly($event)">
+
       <mat-error *ngIf="phonenum.invalid">Please a phone number</mat-error>
     </mat-form-field>
 
