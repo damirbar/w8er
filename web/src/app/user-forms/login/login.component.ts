@@ -43,7 +43,12 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(val)
       .subscribe(
-        () => {
+        (data) => {
+          console.log(typeof(data));
+          if (data instanceof Array && data.length == 0) {
+            console.log("No data received");
+            return;
+          }
           console.log("User is logged in");
           // this.router.navigateByUrl('/');
         }

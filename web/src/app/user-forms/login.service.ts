@@ -4,8 +4,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../user";
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
-import {Observable} from "rxjs/index";
-import {HttpParamsOptions} from "@angular/common/http/src/params";
 
 
 @Injectable({
@@ -37,12 +35,7 @@ export class LoginService {
       .pipe(
         catchError(this.handleError('login', []))
       );
-      // .then(function(data) {
-      //   console.log("DATA = " + data);
-      // })
-    // this is just the HTTP call,
-    // we still need to handle the reception of the token
-    //   .shareReplay();
+
   }
 
 }
