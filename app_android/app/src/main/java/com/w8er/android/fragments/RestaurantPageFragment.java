@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -108,12 +109,13 @@ public class RestaurantPageFragment extends BaseFragment {
     private ReviewsAdapter adapterReview;
     private RecyclerView recyclerView;
     private boolean first = true;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_restaurant_page, container, false);
+        view = inflater.inflate(R.layout.fragment_restaurant_page, container, false);
         initViews(view);
         mMapView.onCreate(savedInstanceState);
         mSubscriptions = new CompositeSubscription();
@@ -132,8 +134,7 @@ public class RestaurantPageFragment extends BaseFragment {
         recyclerView = v.findViewById(R.id.rvRes);
         mTVstatus = v.findViewById(R.id.status);
         ratingBar = v.findViewById(R.id.simple_rating_bar);
-        ratingBar.setEnabled(false);
-        ratingBar.setClickable(false);
+        enableRatingBar(ratingBar,false);
         ratingReview = v.findViewById(R.id.simple_rating_open);
         tVaddress = v.findViewById(R.id.address_info);
         mMapView = (MapView) v.findViewById(R.id.mapView);
@@ -204,12 +205,20 @@ public class RestaurantPageFragment extends BaseFragment {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 float rating = extra.getFloat("rating");
+                boolean post = extra.getBoolean("post");
+                enableRatingBar(ratingReview,post);
                 saveRating = rating;
                 ratingReview.setRating(saveRating);
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
     }
+
+    private void enableRatingBar(BaseRatingBar r, boolean post) {
+        r.setEnabled(post);
+        r.setClickable(post);
+    }
+
 
     private void copyToClipboard() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -231,8 +240,6 @@ public class RestaurantPageFragment extends BaseFragment {
     private void openReview() {
         Intent i;
         if (mToken.isEmpty()) {
-            saveRating = 0;////Need work
-            ratingReview.setRating(0);
             i = new Intent(getContext(), EntryActivity.class);
             startActivity(i);
         } else {

@@ -60,7 +60,7 @@ public class ReviewActivity extends AppCompatActivity {
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
-        mBCancel.setOnClickListener(view -> returnAnswer(0));
+        mBCancel.setOnClickListener(view -> returnAnswer(0, true));
         mReviewText.addTextChangedListener(mTextEditorWatcher);
         ratingReview = findViewById(R.id.simple_rating_open);
     }
@@ -136,15 +136,16 @@ public class ReviewActivity extends AppCompatActivity {
         mBSave.setVisibility(View.VISIBLE);
 
         float rating = ratingReview.getRating();
-        returnAnswer(rating);
+        returnAnswer(rating, false);
 
     }
 
-    private void returnAnswer(float rating){
+    private void returnAnswer(float rating, boolean post){
 
         Intent i = new Intent();
         Bundle extra = new Bundle();
         extra.putFloat("rating", rating);
+        extra.putBoolean("post", post);
         i.putExtras(extra);
         setResult(Activity.RESULT_OK, i);
         finish();
@@ -156,7 +157,7 @@ public class ReviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        returnAnswer(0);
+        returnAnswer(0, true);
     }
 
 

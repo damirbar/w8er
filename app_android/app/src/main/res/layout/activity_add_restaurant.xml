@@ -428,7 +428,8 @@
                             android:ems="10"
                             android:focusable="false"
                             android:hint="Just wanted to say..."
-                            android:inputType="none"
+                            android:inputType="none|textMultiLine|textNoSuggestions"
+                            android:cursorVisible="false"
                             android:maxLength="@integer/def_max"
                             android:textSize="16sp"
                             app:backgroundTint="@color/edit_text" />
