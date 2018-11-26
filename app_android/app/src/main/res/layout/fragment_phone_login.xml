@@ -26,8 +26,8 @@
 
             <ImageButton
                 android:id="@+id/close_msg"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
@@ -37,7 +37,8 @@
                 android:scaleType="centerInside"
                 android:scaleX="0.6"
                 android:scaleY="0.6"
-                card_view:srcCompat="@drawable/x_button" />
+                app:srcCompat="@drawable/ic_close_button"
+                card_view:srcCompat="@drawable/ic_close_button" />
 
 
             <TextView
