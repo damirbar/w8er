@@ -281,8 +281,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         restaurant = _restaurant;
 
-        LatLng latLngMarker = new LatLng(Double.parseDouble(restaurant.getCoordinates().getLat()),
-                Double.parseDouble(restaurant.getCoordinates().getLng()));
+        LatLng latLngMarker = new LatLng(Double.parseDouble(restaurant.getLocation().getCoordinates().getLat()),
+                Double.parseDouble(restaurant.getLocation().getCoordinates().getLng()));
         initMap(latLngMarker);
 
         eTname.setText(restaurant.getName());

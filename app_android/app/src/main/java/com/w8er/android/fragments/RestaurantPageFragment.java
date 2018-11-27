@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -42,12 +41,12 @@ import com.hbb20.CountryCodePicker;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
-import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.activities.EditRestaurantActivity;
 import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
 import com.w8er.android.entry.EntryActivity;
+import com.w8er.android.menu.MenuActivity;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
@@ -114,7 +113,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private BaseRatingBar ratingBar;
     private BaseRatingBar ratingReview;
     private Button openReviewsButton;
-    private String resID;
+    private String restId;
     private TextView mTVstatus;
     private TextView mTVhours;
     private Button editButton;
@@ -166,7 +165,7 @@ public class RestaurantPageFragment extends BaseFragment {
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         multiSnapRecyclerView = v.findViewById(R.id.res_pics);
         buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
-        resName = v.findViewById(R.id.name);
+        resName = v.findViewById(R.id.name_appetizer);
         callButton = v.findViewById(R.id.phone_button);
         callButton.setOnClickListener(view -> callNum());
         navigationButton = v.findViewById(R.id.navigation_button);
@@ -212,7 +211,7 @@ public class RestaurantPageFragment extends BaseFragment {
                 case STATE_BOUNCE_BACK:
 
                     if (oldState == STATE_DRAG_START_SIDE) {
-                        getResProcess(resID);
+                        getResProcess(restId);
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
                     } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
                         // View is starting to bounce back from the *right-end*.
@@ -286,7 +285,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
             i = new Intent(getContext(), ReviewActivity.class);
             Bundle extra = new Bundle();
-            extra.putString("resID", resID);
+            extra.putString("restId", restId);
             extra.putFloat("rating", ratingReview.getRating());
             i.putExtras(extra);
             startActivityForResult(i, REQUEST_CODE_REVIEW);
@@ -306,9 +305,9 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void openMenu() {
-        Intent i = new Intent(getContext(), AddToMenuActivity.class);
+        Intent i = new Intent(getContext(), MenuActivity.class);
         Bundle extra = new Bundle();
-        extra.putString("resID", resID);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }
@@ -327,13 +326,13 @@ public class RestaurantPageFragment extends BaseFragment {
     private void openEditRest() {
         Intent i = new Intent(getContext(), EditRestaurantActivity.class);
         Bundle extra = new Bundle();
-        extra.putString("resID", resID);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }
 
     private void goToNavigation() {
-        String uri = "geo: " + restaurant.getCoordinates().getLat() + "," + restaurant.getCoordinates().getLng();
+        String uri = "geo: " + restaurant.getLocation().getCoordinates().getLat() + "," + restaurant.getLocation().getCoordinates().getLng();
         startActivity(new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse(uri)));
     }
@@ -346,8 +345,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            resID = bundle.getString("resID");
-            getResProcess(resID);
+            restId = bundle.getString("restId");
         }
     }
 
@@ -394,7 +392,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void goToMap() {
         if (mFragmentNavigation != null) {
             Bundle i = new Bundle();
-            i.putParcelable("coordinates", restaurant.getCoordinates());
+            i.putParcelable("coordinates", restaurant.getLocation().getCoordinates());
             i.putString("restName", restaurant.getName());
 
             RestaurantMarkerFragment fragment = new RestaurantMarkerFragment();
@@ -417,9 +415,9 @@ public class RestaurantPageFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            try {
-                double lat = Double.parseDouble(restaurant.getCoordinates().getLat());
-                double lng = Double.parseDouble(restaurant.getCoordinates().getLng());
+            if(restaurant.getLocation().getCoordinates()!=null) {
+                double lat = Double.parseDouble(restaurant.getLocation().getCoordinates().getLat());
+                double lng = Double.parseDouble(restaurant.getLocation().getCoordinates().getLng());
 
 
                 LatLng latLng = new LatLng(lat, lng);
@@ -427,10 +425,7 @@ public class RestaurantPageFragment extends BaseFragment {
                 GoogleMapUtils.goToLocation(latLng, 13, googleMap);
                 GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
             }
-
             mMap.getUiSettings().setAllGesturesEnabled(false);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -580,7 +575,7 @@ public class RestaurantPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        getResProcess(resID);
+        getResProcess(restId);
     }
 
 
@@ -672,7 +667,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void handleResponseUploadImage(Response response) {
         hud.dismiss();
-        getResProcess(resID);
+        getResProcess(restId);
     }
 
     private void handleErrorUploadImage(Throwable error) {

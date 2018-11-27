@@ -59,18 +59,18 @@ public class RestaurantMarkerFragment extends BaseFragment {
         textViewName = v.findViewById(R.id.res_name);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
-        navigationButton =  v.findViewById(R.id.navigation_button);
+        navigationButton = v.findViewById(R.id.navigation_button);
         navigationButton.setOnClickListener(view -> goToNavigation());
 
 
     }
 
     private void goToNavigation() {
-        if(coordinates!=null) {
+        if (coordinates != null) {
             String uri = "geo: " + coordinates.getLat() + "," + coordinates.getLng();
             startActivity(new Intent(android.content.Intent.ACTION_VIEW,
                     Uri.parse(uri)));
-            }
+        }
     }
 
 
@@ -78,7 +78,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             coordinates = bundle.getParcelable("coordinates");
-            String name =  bundle.getString("restName");
+            String name = bundle.getString("restName");
             textViewName.setText(name);
         }
     }
@@ -96,14 +96,15 @@ public class RestaurantMarkerFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
+            if (coordinates != null) {
+                latLngMarker = new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng()));
 
-            latLngMarker = new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng()));
+                GoogleMapUtils.addMapMarker(latLngMarker, "", "", googleMap);
 
-            GoogleMapUtils.addMapMarker(latLngMarker,"","", googleMap);
-
-            // For showing a move to my location button
-            if (!initMyLocation(googleMap)) {
-                askPermission();
+                // For showing a move to my location button
+                if (!initMyLocation(googleMap)) {
+                    askPermission();
+                }
             }
 
         });
@@ -129,9 +130,8 @@ public class RestaurantMarkerFragment extends BaseFragment {
                                 LatLngBounds bounds = builder.build();
                                 googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
-                            }
-                            else
-                                GoogleMapUtils.goToLocation(latLngMarker,15,googleMap);
+                            } else
+                                GoogleMapUtils.goToLocation(latLngMarker, 15, googleMap);
                         }
                     });
         }

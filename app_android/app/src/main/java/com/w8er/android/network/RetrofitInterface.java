@@ -2,13 +2,13 @@ package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
 import com.w8er.android.model.MenuItem;
+import com.w8er.android.model.MenuRest;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -62,6 +62,10 @@ public interface RetrofitInterface {
 
     @GET("rest/get-rest")
     Observable<Restaurant> getRest(@Query("restId") String restId);
+
+    @GET("restAuth/get-menu")
+    Observable<MenuRest> getMenu(@Query("restId") String restId);
+
 
     //////////////////Restaurant - Auth//////////////////
 

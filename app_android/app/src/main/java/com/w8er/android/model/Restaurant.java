@@ -13,17 +13,25 @@ public class Restaurant {
     private List<String> pictures;
     private boolean kosher;
     private ArrayList<Review> reviews;
-    private Coordinates coordinates;
+    private Location location;
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
     private float rating;
     private String profile_img;
-    //        menu: {},
+    private MenuRest menu;
     //        layout: {},
     //        capacity: {},
     //        sessions: {}
 
+
+    public MenuRest getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuRest menu) {
+        this.menu = menu;
+    }
 
     public String get_id() {
         return _id;
@@ -73,12 +81,12 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getPhone_number() {
