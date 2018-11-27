@@ -36,6 +36,9 @@ mongoose.connect(config.mongo.mongoDB, {
   if (err) {
     console.log('error in mongo connection:\n' + err);
   }
+  else{
+    mongoose.set('useFindAndModify', false);
+  }
 });
 
 // let geocoder = require('./config/config').geocoder;

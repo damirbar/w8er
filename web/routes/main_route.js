@@ -5,7 +5,7 @@ let config = require('../config/config');
 let User = require('../schemas/user');
 let path = require('path');
 
-router.all("/", function (req, res, next) {
+router.all("*", function (req, res, next) {
 
   if (req.url === '/' || req.url === '/favicon.ico' ||
     req.url.includes('/auth/login-signup') ||
@@ -30,9 +30,7 @@ router.all("/", function (req, res, next) {
       } else {
         req.phone_number = decoded;
         if (req.url.includes('/rest/') || req.url.includes('/user/')) {
-          User.findOne({
-            phone_number: decoded
-          }, function (err, user) {
+          User.findOne({phone_number: decoded}, function (err, user) {
             if (err) {
               console.log(err);
               res.status(500).json({
