@@ -63,7 +63,7 @@ public interface RetrofitInterface {
     @GET("rest/get-rest")
     Observable<Restaurant> getRest(@Query("restId") String restId);
 
-    @GET("restAuth/get-menu")
+    @GET("rest/get-menu")
     Observable<MenuRest> getMenu(@Query("restId") String restId);
 
 

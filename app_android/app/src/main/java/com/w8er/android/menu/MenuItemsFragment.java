@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-import static android.gesture.GestureOverlayView.ORIENTATION_VERTICAL;
+import static me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_VERTICAL;
 
 public class MenuItemsFragment extends BaseFragment {
 
@@ -28,7 +28,7 @@ public class MenuItemsFragment extends BaseFragment {
     private ArrayList<MenuItem> items;
     private RecyclerView recyclerView;
     private ItemsAdapter adapter;
-
+    private String restId;
 
     @Nullable
     @Override
@@ -56,6 +56,7 @@ public class MenuItemsFragment extends BaseFragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             items = bundle.getParcelableArrayList("items");
+            restId = bundle.getString("restId");
             initRecyclerView();
         }
     }
@@ -70,8 +71,10 @@ public class MenuItemsFragment extends BaseFragment {
 
 
     private void goBack() {
-
+        Bundle i = new Bundle();
+        i.putString("restId",restId);
         MenuTypesFragment fragment = new MenuTypesFragment();
+        fragment.setArguments(i);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentFrame, fragment, MenuTypesFragment.TAG).commit();

@@ -1,7 +1,6 @@
 package com.w8er.android.menu;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +23,11 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
 public class MenuTypesFragment extends Fragment {
 
@@ -60,6 +64,28 @@ public class MenuTypesFragment extends Fragment {
         ScrollView scrollView = v.findViewById(R.id.scroll_view);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
+        decor.setOverScrollStateListener((decor1, oldState, newState) -> {
+            switch (newState) {
+                case STATE_IDLE:
+                    // No over-scroll is in effect.
+                    break;
+                case STATE_DRAG_START_SIDE:
+                    // Dragging started at the left-end.
+                    break;
+                case STATE_DRAG_END_SIDE:
+                    break;
+                case STATE_BOUNCE_BACK:
+
+                    if (oldState == STATE_DRAG_START_SIDE) {
+                        getMenuProcess(restId);
+                        // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
+                    } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
+                        // View is starting to bounce back from the *right-end*.
+                    }
+                    break;
+            }
+        });
+
         ImageButton mBCancel = v.findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> getActivity().finish());
         ImageButton addItemBtn = v.findViewById(R.id.image_Button_add);
@@ -95,17 +121,25 @@ public class MenuTypesFragment extends Fragment {
             switch (s) {
                 case 0:
                     i.putParcelableArrayList("items", menuItems.getAppetizer());
+                    break;
                 case 1:
                     i.putParcelableArrayList("items", menuItems.getMain_course());
+                    break;
                 case 2:
                     i.putParcelableArrayList("items", menuItems.getDessert());
+                    break;
                 case 3:
                     i.putParcelableArrayList("items", menuItems.getDrinks());
+                    break;
                 case 4:
                     i.putParcelableArrayList("items", menuItems.getDeals());
+                    break;
                 default:
                     i.putParcelableArrayList("items", menuItems.getSpecials());
+                    break;
             }
+
+            i.putString("restId",restId);
             MenuItemsFragment fragment = new MenuItemsFragment();
             fragment.setArguments(i);
             getActivity().getSupportFragmentManager().beginTransaction()
@@ -119,7 +153,7 @@ public class MenuTypesFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            restId = bundle.getString("resID");
+            restId = bundle.getString("restId");
         }
     }
 
