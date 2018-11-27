@@ -17,6 +17,7 @@ let userRequests = require('./routes/user_requests');
 let restaurantRequests = require('./routes/restaurant_requests');
 let searchRequests = require('./routes/search_requests');
 let toolRequests = require('./routes/tool_routs');
+let restAuth = require('./routes/rest_Auth_routs');
 
 app.use('/', mainRequests);
 app.use('/auth', authRouts);
@@ -24,6 +25,7 @@ app.use('/user', userRequests);
 app.use('/rest', restaurantRequests);
 app.use('/search', searchRequests);
 app.use('/tool', toolRequests);
+app.use('/restAuth', restAuth);
 
 
 app.use(express.static(path.join(__dirname, 'dist/w8erWebapp')));
