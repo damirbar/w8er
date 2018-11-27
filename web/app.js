@@ -38,7 +38,7 @@ mongoose.connect(config.mongo.mongoDB, {
   if (err) {
     console.log('error in mongo connection:\n' + err);
   }
-  else{
+  else {
     mongoose.set('useFindAndModify', false);
   }
 });
@@ -57,7 +57,52 @@ http.listen(3000, function () {
   console.log("listening on 3000");
 });
 
+//location
+// var mongoose = require("mongoose");
+// var Schema = mongoose.Schema;
+// var MessageSchema = new Schema(
+//   {
+//     username: String,
+//     text: String,
+//     location: {
+//       type: {type: String},
+//       coordinates: []
+//     }
+//   }
+// );
+// MessageSchema.index({location: "2dsphere"});
+// var Message = mongoose.model("Message", MessageSchema);
+//
+//
+// var message = new Message({
+//   username: "SexySkeletor",
+//   text: "Hello World",
+//   location: {
+//     type: "Point",
+//     coordinates: [-112.110492, 36.098948]
+//   },
+// });
+// message.save((err, message) => {
+//   if (err) console.log(err);
+//   Message.find({
+//     location: {
+//       $near: {
+//         $maxDistance: 1000,
+//         $geometry: {
+//           type: "Point",
+//           coordinates: [-112.110493, 36.098947]
+//         }
+//       }
+//     }
+//   }).find((error, results) => {
+//     if (error) console.log(error);
+//     console.log(JSON.stringify(results, 0, 2));
+//   });
+// });
 
+
+
+//location
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function (req, res) {
