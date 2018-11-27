@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -57,6 +58,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
 
     private void initViews(View v) {
         recyclerView = v.findViewById(R.id.rvRes);
+
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         editSearch = v.findViewById(R.id.searchView);
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
@@ -90,6 +92,12 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     private void initRecyclerView() {
         restaurants = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
+//        recyclerView.setItemAnimator(new FadeInLeftAnimator());
+//        recyclerView.setOnScrollListener(onScrollListener);
+
+
         adapter = new RestaurantsAdapter(getContext(), restaurants);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
