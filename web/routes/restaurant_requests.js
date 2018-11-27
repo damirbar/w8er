@@ -172,8 +172,7 @@ router.post("/add-item", function (req, res) {
             description: req.body.description,
             price: req.body.price,
             available: req.body.available,
-            tags: req.body.tags,
-            picture: req.body.picture
+            tags: req.body.tags
           });
           item.save(function (err, i) {
             if (err) {
@@ -207,21 +206,29 @@ router.post("/add-item", function (req, res) {
 });
 
 router.post('/edit-item-photo', type, function (req, res) {
-  if (!req.file) {
-    console.log("no file");
-    res.status(400).json({message: 'no file'});
-  }
-  else {
-    const path = req.file.path;
-    if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
-      fs.unlinkSync(path);
-      res.status(400).json({message: 'wrong file'});
-      console.log("wrong file type");
+  Item.findOne({_id: req.body.id}, function (err, item) {
+    if (err) {
+      console.log("error in /edit-item-photo");
+      res.status(500).json({message: err});
     }
     else {
-      uploader.uploadItemPic(req.file, path, req.user, ("profiles/" + req.user.id + "profile"), res);
+      if (!req.file) {
+        console.log("no file");
+        res.status(400).json({message: 'no file'});
+      }
+      else {
+        const path = req.file.path;
+        if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+          fs.unlinkSync(path);
+          res.status(400).json({message: 'wrong file'});
+          console.log("wrong file type");
+        }
+        else {
+          uploader.uploadItemPic(req.file, path, item, res);
+        }
+      }
     }
-  }
+  });
 });
 
 router.post('/edit-item', function (req, res) {
@@ -237,7 +244,6 @@ router.post('/edit-item', function (req, res) {
         item.price = req.body.price ? req.body.price : item.price;
         item.available = req.body.available ? req.body.available : item.available;
         item.tags = req.body.tags ? req.body.tags : item.tags;
-        item.picture = req.body.picture ? req.body.picture : item.picture;
         item.save(function (err, item) {
           if (err) {
             console.log(err);
@@ -246,7 +252,7 @@ router.post('/edit-item', function (req, res) {
           else {
             res.status(200).json({message: 'item edited'});
           }
-        })
+        });
       }
       else {
         return res.status(404).json({message: 'no such item'});
@@ -342,6 +348,22 @@ router.post('/post-profile-image', type, function (req, res) {
   }
 });
 
+router.get('/get-menu',function (req, res) {
+  Restaurant.findOne({_id: req.body.id}, function (err, rest) {
+    if (err) {
+      console.log("error in /get-menu");
+      res.status(500).json({message: err});
+    }
+    else {
+      if(rest){
+        res.status(200).json({menu: rest.menu})
+      }
+      else{
+        res.status(404).json({message: 'no such restaurant ' + req.phone_number})
+      }
+    }
+  });
+});
 module.exports = router;
 
 
