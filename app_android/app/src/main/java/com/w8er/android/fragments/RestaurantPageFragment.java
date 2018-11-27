@@ -125,7 +125,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private ReviewsAdapter adapterReview;
     private RecyclerView recyclerView;
     private boolean first = true;
-    private  boolean profile;
+    private boolean profile;
 
     @Nullable
     @Override
@@ -417,14 +417,19 @@ public class RestaurantPageFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            double lat = Double.parseDouble(restaurant.getCoordinates().getLat());
-            double lng = Double.parseDouble(restaurant.getCoordinates().getLng());
+            try {
+                double lat = Double.parseDouble(restaurant.getCoordinates().getLat());
+                double lng = Double.parseDouble(restaurant.getCoordinates().getLng());
 
 
-            LatLng latLng = new LatLng(lat, lng);
+                LatLng latLng = new LatLng(lat, lng);
 
-            GoogleMapUtils.goToLocation(latLng, 13, googleMap);
-            GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
+                GoogleMapUtils.goToLocation(latLng, 13, googleMap);
+                GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
 
             mMap.getUiSettings().setAllGesturesEnabled(false);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -657,7 +662,7 @@ public class RestaurantPageFragment extends BaseFragment {
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
         } else {
-            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadImage(restaurant.getPhone_number(), body)
+            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadImage(restaurant.get_id(), body)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));

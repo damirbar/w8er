@@ -52,7 +52,7 @@ public interface RetrofitInterface {
     @POST("user/review")
     Observable<Response> postReview(@Body Review review);
 
-    @GET("user/get-rest")
+    @GET("user/get-favorites")
     Observable<List<Restaurant>> getFavRest();
 
     //////////////////Restaurant//////////////////
@@ -61,22 +61,23 @@ public interface RetrofitInterface {
     Observable<Restaurant> createRestaurant(@Body Restaurant restaurant);
 
     @GET("rest/get-rest")
-    Observable<Restaurant> getRest(@Query("id") String id);
+    Observable<Restaurant> getRest(@Query("restId") String restId);
 
-    @POST("rest/edit-rest")
+    //////////////////Restaurant - Auth//////////////////
+
+    @POST("restAuth/edit-rest")
     Observable<Response> updateRestaurant(@Body Restaurant restaurant);
 
-    @POST("rest/edit-item")
-    Observable<Response> postMenuItem(@Body MenuItem menuItem);
+    @Multipart
+    @POST("restAuth/add-pic")
+    Observable<Response> uploadImage(@Query("restId") String restId , @Part MultipartBody.Part file);
+
+    @POST("restAuth/add-item")
+    Observable<Response> postMenuItem(@Query("restId") String restId , @Body MenuItem menuItem);
 
     @Multipart
-    @POST("rest/add-pic")
-    Observable<Response> uploadImage(@Query("phone_number") String phone_number , @Part MultipartBody.Part file);
-
-    @Multipart
-    @POST("rest/post-profile-image")
-    Observable<Response> uploadProfileImageRes(@Query("phone_number") String phone_number , @Part MultipartBody.Part file);
-
+    @POST("restAuth/post-profile-image")
+    Observable<Response> uploadProfileImageRes(@Query("restId") String restId , @Part MultipartBody.Part file);
 
     //////////////////Tools//////////////////
 
