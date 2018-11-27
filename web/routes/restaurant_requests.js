@@ -38,10 +38,9 @@ router.post('/create', function (req, res) {
         address: req.body.address,
         country: req.body.country,
         hours: req.body.hours,
-        coordinates: {
-          lat: req.body.coordinates.lat,
-          lng: req.body.coordinates.lng
-        }
+        location: {
+          coordinates: [parseFloat(req.body.coordinates.lng), parseFloat(req.body.coordinates.lat)]
+        },
       });
       rest.save(function (err, rest) {
         if (err) {

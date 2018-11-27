@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let geocoder = require('../config/config').geocoder;
+let Restaurant = require('../schemas/restaurant');
 
 router.get('/address-to-coord', function (req, res) {
     geocoder.geocode(req.query.address).then(function (result) {
@@ -17,5 +18,25 @@ router.get('/address-to-coord', function (req, res) {
         return res.status(404).json({message: "problem with address"});
     });
 });
+
+//fix
+router.get('/find-near-location', function(req, res){
+  Restaurant.find({
+    location: {
+      $near: {
+        $maxDistance: 1000,
+        $geometry: {
+          type: "Point",
+          coordinates: [35, 32]
+        }
+      }
+    }
+  }).find((error, results) => {
+    if (error) console.log(error);
+    console.log(JSON.stringify(results, 0, 2));
+  });
+});
+
+
 
 module.exports = router;
