@@ -69,6 +69,15 @@ public interface RetrofitInterface {
     @POST("rest/edit-item")
     Observable<Response> postMenuItem(@Body MenuItem menuItem);
 
+    @Multipart
+    @POST("rest/add-pic")
+    Observable<Response> uploadImage(@Query("phone_number") String phone_number , @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("rest/post-profile-image")
+    Observable<Response> uploadProfileImageRes(@Query("phone_number") String phone_number , @Part MultipartBody.Part file);
+
+
     //////////////////Tools//////////////////
 
     @GET("tool/address-to-coord")

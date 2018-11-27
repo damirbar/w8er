@@ -97,4 +97,9 @@ dependencies {
 
     //Android side Swipe Layout
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    //ProgressHUD
+    implementation 'com.kaopiz:kprogresshud:1.0.2'
+    
+
 }
