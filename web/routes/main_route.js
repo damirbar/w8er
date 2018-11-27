@@ -5,7 +5,7 @@ let config = require('../config/config');
 let User = require('../schemas/user');
 let path = require('path');
 
-router.all("/", function (req, res, next) {
+router.all("*", function (req, res, next) {
 
   if (req.url === '/' || req.url === '/favicon.ico' ||
     req.url.includes('/auth/login-signup') ||
