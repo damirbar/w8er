@@ -64,7 +64,7 @@ router.post('/create', function (req, res) {
 });
 
 router.get('/get-rest', function (req, res) {
-  Restaurant.findOne({_id: req.query.id}, function (err, rest) {
+  Restaurant.findOne({_id: req.query.restId}, function (err, rest) {
     if (err) {
       console.log("error in /get-rest");
       res.status(500).json({message: err});
