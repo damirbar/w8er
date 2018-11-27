@@ -168,7 +168,7 @@ public class AddToMenuActivity extends AppCompatActivity {
     }
 
     private void postMenuItem(MenuItem item) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().postMenuItem(item)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().postMenuItem(resID, item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseGet, this::handleErrorUpdate));
@@ -193,7 +193,7 @@ public class AddToMenuActivity extends AppCompatActivity {
         String name = mName.getText().toString().trim();
         String desc = mDesc.getText().toString().trim();
         String type = typeBtn.getText().toString().trim();
-        String price = moneyEditText.getFormattedString();
+        String price = moneyEditText.getValueString();
 
         if (!validateFields(name)) {
 
