@@ -138,8 +138,8 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
         new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
         Bundle i = new Bundle();
-        String resID = adapter.getItemID(position);
-        i.putString("resID", resID);
+        String restId = adapter.getItemID(position);
+        i.putString("restId", restId);
         RestaurantPageFragment frag = new RestaurantPageFragment();
         frag.setArguments(i);
 

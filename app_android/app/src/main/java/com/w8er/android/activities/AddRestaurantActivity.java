@@ -20,6 +20,7 @@ import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.address.AddAddressActivity;
 import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.Location;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
@@ -333,7 +334,11 @@ public class AddRestaurantActivity extends AppCompatActivity {
         Restaurant restaurant = new Restaurant();
         restaurant.setAddress(address);
         restaurant.setName(name);
-        restaurant.setCoordinates(coordinates);
+
+        Location location = new Location();
+        location.setCoordinates(coordinates);
+
+        restaurant.setLocation(location);
         restaurant.setPhone_number(phone);
         restaurant.setTags(allHashTags);
         restaurant.setCountry(country);

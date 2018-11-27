@@ -1,8 +1,11 @@
 package com.w8er.android.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class MenuItem {
+public class MenuItem implements Parcelable {
 
     private String name;
     private String description;
@@ -11,6 +14,30 @@ public class MenuItem {
     private List<String> tags;
     private String picture;
     private String type;
+
+    public MenuItem(){}
+
+    protected MenuItem(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        price = in.readString();
+        available = in.readByte() != 0;
+        tags = in.createStringArrayList();
+        picture = in.readString();
+        type = in.readString();
+    }
+
+    public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
+        @Override
+        public MenuItem createFromParcel(Parcel in) {
+            return new MenuItem(in);
+        }
+
+        @Override
+        public MenuItem[] newArray(int size) {
+            return new MenuItem[size];
+        }
+    };
 
     public String getType() {
         return type;
@@ -66,5 +93,21 @@ public class MenuItem {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(price);
+        dest.writeByte((byte) (available ? 1 : 0));
+        dest.writeStringList(tags);
+        dest.writeString(picture);
+        dest.writeString(type);
     }
 }
