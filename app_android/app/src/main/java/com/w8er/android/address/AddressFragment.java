@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 
 import com.w8er.android.R;
 import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
@@ -106,7 +107,8 @@ public class AddressFragment extends Fragment {
         Bundle i = new Bundle();
         i.putString("address", capitalize);
         i.putString("country", country);
-        i.putParcelable("coordinates", coordinates);
+        LocationPoint locationPoint = new LocationPoint(coordinates.getLat(),coordinates.getLng());
+        i.putParcelable("locationPoint", locationPoint);
         AddressCoordinatesFragment fragment = new AddressCoordinatesFragment();
         fragment.setArguments(i);
 

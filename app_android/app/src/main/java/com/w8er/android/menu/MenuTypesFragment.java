@@ -1,5 +1,7 @@
 package com.w8er.android.menu;
 
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.w8er.android.R;
+import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.model.MenuRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -28,7 +31,7 @@ public class MenuTypesFragment extends Fragment {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private String resID;
+    private String restId;
     private LinearLayout mAppetizerBtn;
     private LinearLayout mMainCourseBtn;
     private LinearLayout mDessertBtn;
@@ -59,6 +62,9 @@ public class MenuTypesFragment extends Fragment {
 
         ImageButton mBCancel = v.findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> getActivity().finish());
+        ImageButton addItemBtn = v.findViewById(R.id.image_Button_add);
+        addItemBtn.setOnClickListener(view -> openAddItem());
+
         mAppetizerBtn = v.findViewById(R.id.appetizer);
         mMainCourseBtn = v.findViewById(R.id.main_course);
         mDessertBtn = v.findViewById(R.id.dessert);
@@ -73,6 +79,15 @@ public class MenuTypesFragment extends Fragment {
         mDealsBtn.setOnClickListener(view -> openMenuType(4));
         mSpecialsBtn.setOnClickListener(view -> openMenuType(5));
     }
+
+    private void openAddItem() {
+        Intent i = new Intent(getContext(), AddToMenuActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("restId", restId);
+        i.putExtras(extra);
+        startActivity(i);
+    }
+
 
     private void openMenuType(int s) {
         if (menuItems != null) {
@@ -96,6 +111,7 @@ public class MenuTypesFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentFrame, fragment, MenuItemsFragment.TAG).commit();
         }
+
     }
 
 
@@ -103,7 +119,7 @@ public class MenuTypesFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            resID = bundle.getString("resID");
+            restId = bundle.getString("resID");
         }
     }
 
@@ -127,7 +143,7 @@ public class MenuTypesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getMenuProcess(resID);
+        getMenuProcess(restId);
     }
 
 

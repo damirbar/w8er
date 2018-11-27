@@ -238,11 +238,11 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String resID = getIntent().getExtras().getString("resID");
-            if (resID != null) {
+            String restId = getIntent().getExtras().getString("restId");
+            if (restId != null) {
                 mBSave.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.VISIBLE);
-                getResProcess(resID);
+                getResProcess(restId);
                 return true;
             } else
                 return false;
@@ -281,8 +281,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         restaurant = _restaurant;
 
-        LatLng latLngMarker = new LatLng(Double.parseDouble(restaurant.getLocation().getCoordinates().getLat()),
-                Double.parseDouble(restaurant.getLocation().getCoordinates().getLng()));
+        LatLng latLngMarker = new LatLng(restaurant.getLocation().getLatdInDuble(),
+                restaurant.getLocation().getLngdInDuble());
         initMap(latLngMarker);
 
         eTname.setText(restaurant.getName());

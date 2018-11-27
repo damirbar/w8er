@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.w8er.android.R;
-import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.utils.GoogleMapUtils;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
@@ -37,7 +37,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private final int REQ_PERMISSION = 888;
-    private Coordinates coordinates;
+    private LocationPoint locationPoint;
     private TextView textViewName;
     private LatLng latLngMarker;
     private Button navigationButton;
@@ -66,8 +66,8 @@ public class RestaurantMarkerFragment extends BaseFragment {
     }
 
     private void goToNavigation() {
-        if (coordinates != null) {
-            String uri = "geo: " + coordinates.getLat() + "," + coordinates.getLng();
+        if (locationPoint != null) {
+            String uri = "geo: " + locationPoint.getLat() + "," + locationPoint.getLng();
             startActivity(new Intent(android.content.Intent.ACTION_VIEW,
                     Uri.parse(uri)));
         }
@@ -77,7 +77,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            coordinates = bundle.getParcelable("coordinates");
+            locationPoint = bundle.getParcelable("locationPoint");
             String name = bundle.getString("restName");
             textViewName.setText(name);
         }
@@ -96,8 +96,8 @@ public class RestaurantMarkerFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            if (coordinates != null) {
-                latLngMarker = new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng()));
+            if (locationPoint != null) {
+                latLngMarker = new LatLng(locationPoint.getLatdInDuble(), locationPoint.getLngdInDuble());
 
                 GoogleMapUtils.addMapMarker(latLngMarker, "", "", googleMap);
 

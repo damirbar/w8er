@@ -1,6 +1,7 @@
 package com.w8er.android.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.address.AddAddressActivity;
-import com.w8er.android.model.Coordinates;
-import com.w8er.android.model.Location;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
@@ -58,7 +58,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private EditText eTwebsite;
     private EditText eTtags;
     private EditText eTHours;
-    private Coordinates coordinates;
+    private LocationPoint locationPoint;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -143,9 +143,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 String address = extra.getString("address");
-                coordinates = extra.getParcelable("coordinates");
+                locationPoint = extra.getParcelable("locationPoint");
                 eTaddress.setText(address);
-                initMap(new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng())));
+                initMap(new LatLng(locationPoint.getLatdInDuble(), locationPoint.getLngdInDuble()));
                 mMapView.setVisibility(View.VISIBLE);
             } else if (resultCode == RESULT_CANCELED) {
             }
@@ -335,10 +335,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         restaurant.setAddress(address);
         restaurant.setName(name);
 
-        Location location = new Location();
-        location.setCoordinates(coordinates);
-
-        restaurant.setLocation(location);
+        restaurant.setLocation(locationPoint);
         restaurant.setPhone_number(phone);
         restaurant.setTags(allHashTags);
         restaurant.setCountry(country);

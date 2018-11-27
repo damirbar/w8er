@@ -31,7 +31,7 @@ public class ReviewActivity extends AppCompatActivity {
     private Button mBSave;
     private TextView mTextCount;
     private final int MAX_COUNT = 300;
-    private String resID;
+    private String restId;
     private RotationRatingBar ratingReview;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -68,10 +68,10 @@ public class ReviewActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            resID = getIntent().getExtras().getString("resID");
+            restId = getIntent().getExtras().getString("restId");
             float rating = getIntent().getExtras().getFloat("rating");
             ratingReview.setRating(rating);
-            if (resID != null) {
+            if (restId != null) {
                 return true;
             } else
                 return false;
@@ -86,7 +86,7 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         Review review = new Review();
-        review.setId(resID);
+        review.setId(restId);
         int r = (int) ratingReview.getRating();
         review.setAmount(r);
         review.setMessage(mReviewText.getText().toString().trim());

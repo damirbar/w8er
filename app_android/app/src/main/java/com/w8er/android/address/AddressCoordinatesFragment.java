@@ -2,6 +2,7 @@ package com.w8er.android.address;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,12 +18,10 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.w8er.android.R;
-import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.utils.GoogleMapUtils;
 import com.w8er.android.utils.SoftKeyboard;
 
@@ -31,7 +30,7 @@ public class AddressCoordinatesFragment extends Fragment {
     public static final String TAG = AddressCoordinatesFragment.class.getSimpleName();
     private MapView mMapView;
     private GoogleMap googleMap;
-    private Coordinates coordinates;
+    private LocationPoint locationPoint;
     private String address;
     private TextView mTVinfo;
     private Button mBSave;
@@ -65,15 +64,12 @@ public class AddressCoordinatesFragment extends Fragment {
 
         new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
-        coordinates.setLat(String.valueOf(currentCenter.latitude));
-        coordinates.setLng(String.valueOf(currentCenter.longitude));
-
-
+        locationPoint.setLocationPoint(currentCenter);
 
         Intent i = new Intent();
         Bundle extra = new Bundle();
         extra.putString("address", address);
-        extra.putParcelable("coordinates", coordinates);
+        extra.putParcelable("locationPoint", locationPoint);
 
         i.putExtras(extra);
         getActivity().setResult(Activity.RESULT_OK, i);
@@ -86,7 +82,7 @@ public class AddressCoordinatesFragment extends Fragment {
         if (bundle != null) {
             address = bundle.getString("address");
             String country = bundle.getString("country");
-            coordinates = bundle.getParcelable("coordinates");
+            locationPoint = bundle.getParcelable("locationPoint");
             mTVinfo.setText(mTVinfo.getText().toString() + address + "," + " " + country);
         }
     }
@@ -106,7 +102,7 @@ public class AddressCoordinatesFragment extends Fragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            LatLng latLng = new LatLng(Double.parseDouble(coordinates.getLat()),Double.parseDouble(coordinates.getLng()));
+            LatLng latLng = new LatLng(locationPoint.getLatdInDuble(),locationPoint.getLngdInDuble());
 
             GoogleMapUtils.goToLocation(latLng,17,googleMap);
 

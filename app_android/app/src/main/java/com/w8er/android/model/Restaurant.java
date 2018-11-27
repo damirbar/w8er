@@ -13,7 +13,7 @@ public class Restaurant {
     private List<String> pictures;
     private boolean kosher;
     private ArrayList<Review> reviews;
-    private Location location;
+    private LocationPoint location;
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
@@ -81,11 +81,11 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Location getLocation() {
+    public LocationPoint getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationPoint location) {
         this.location = location;
     }
 

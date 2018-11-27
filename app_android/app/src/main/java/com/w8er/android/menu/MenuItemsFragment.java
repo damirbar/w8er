@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 
 import com.w8er.android.R;
 import com.w8er.android.adapters.ItemsAdapter;
-import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.fragments.BaseFragment;
 import com.w8er.android.model.MenuItem;
 

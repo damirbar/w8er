@@ -332,7 +332,7 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void goToNavigation() {
-        String uri = "geo: " + restaurant.getLocation().getCoordinates().getLat() + "," + restaurant.getLocation().getCoordinates().getLng();
+        String uri = "geo: " + restaurant.getLocation().getLat() + "," + restaurant.getLocation().getLng();
         startActivity(new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse(uri)));
     }
@@ -392,7 +392,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void goToMap() {
         if (mFragmentNavigation != null) {
             Bundle i = new Bundle();
-            i.putParcelable("coordinates", restaurant.getLocation().getCoordinates());
+            i.putParcelable("locationPoint", restaurant.getLocation());
             i.putString("restName", restaurant.getName());
 
             RestaurantMarkerFragment fragment = new RestaurantMarkerFragment();
@@ -416,8 +416,8 @@ public class RestaurantPageFragment extends BaseFragment {
             googleMap = mMap;
 
             if(restaurant.getLocation().getCoordinates()!=null) {
-                double lat = Double.parseDouble(restaurant.getLocation().getCoordinates().getLat());
-                double lng = Double.parseDouble(restaurant.getLocation().getCoordinates().getLng());
+                double lat = Double.parseDouble(restaurant.getLocation().getLat());
+                double lng = Double.parseDouble(restaurant.getLocation().getLng());
 
 
                 LatLng latLng = new LatLng(lat, lng);
