@@ -80,6 +80,23 @@ router.get('/get-rest', function (req, res) {
   })
 });
 
+router.get('/get-menu', function (req, res) {
+  Restaurant.findOne({_id: req.query.restId}, function (err, rest) {
+    if (err) {
+      console.log("error in /get-menu");
+      res.status(500).json({message: err});
+    }
+    else {
+      if (rest) {
+        res.status(200).json(rest.menu);
+      }
+      else {
+        res.status(404).json({message: 'restaurant ' + req.query.id + ' dose not exist'});
+      }
+    }
+  })
+});
+
 module.exports = router;
 
 
