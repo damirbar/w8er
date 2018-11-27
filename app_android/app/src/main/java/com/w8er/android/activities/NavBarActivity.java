@@ -47,6 +47,7 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
         firstTime();
     }
 
+
     private void initViews() {
         navigationTabBar = findViewById(R.id.ntb_horizontal);
     }
@@ -206,7 +207,7 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
                 mNavController.popFragment();
                 break;
         }
-        return true;
+        return false;
     }
 
 }
