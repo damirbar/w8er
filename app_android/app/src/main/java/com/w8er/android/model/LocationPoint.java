@@ -7,45 +7,31 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 
 public class LocationPoint implements Parcelable {
-    private String[] coordinates;
+    private double[] coordinates;
 
     public LocationPoint() {
     }
 
     public LocationPoint(String lat, String lng) {
-        coordinates = new String[]{lng,lat};
+        coordinates = new double[]{Double.parseDouble(
+                lng),Double.parseDouble(
+                lat)};
     }
+
+    public LocationPoint(double lat, double lng) {
+        coordinates = new double[]{lng,lat};
+    }
+
 
     public LocationPoint(Location location) {
 
         if (location != null)
-            coordinates = new String[]{String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude())};
+            coordinates = new double[]{location.getLongitude(),location.getLatitude()};
     }
-
-
-
-    public void setLocationPoint(LatLng latLng) {
-        if (latLng != null)
-            coordinates = new String[]{String.valueOf(latLng.longitude),String.valueOf(latLng.latitude)};
-
-    }
-
-
-    public void setLocationPoint(String lat, String lng) {
-        coordinates = new String[]{lng,lat};
-    }
-
-    public void setLocationPoint(Location location) {
-
-        if (location != null)
-            coordinates = new String[]{String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude())};
-    }
-
-
 
 
     protected LocationPoint(Parcel in) {
-        coordinates = in.createStringArray();
+        coordinates = in.createDoubleArray();
     }
 
     public static final Creator<LocationPoint> CREATOR = new Creator<LocationPoint>() {
@@ -60,29 +46,40 @@ public class LocationPoint implements Parcelable {
         }
     };
 
-    public String getLat() {
+    public void setLocationPoint(LatLng latLng) {
+        if (latLng != null)
+            coordinates = new double[]{latLng.longitude,latLng.latitude};
+
+    }
+
+
+    public void setLocationPoint(String lat, String lng) {
+        coordinates = new double[]{Double.parseDouble(
+                lng),Double.parseDouble(
+                lat)};
+    }
+
+    public void setLocationPoint(Location location) {
+
+        if (location != null)
+            coordinates = new double[]{location.getLongitude(),location.getLatitude()};
+    }
+
+
+    public double getLat() {
         return coordinates[1];
     }
 
-    public double getLatdInDuble() {
-        return Double.parseDouble(coordinates[1]);
-    }
-
-    public double getLngdInDuble() {
-        return Double.parseDouble(coordinates[0]);
-    }
-
-
-    public String getLng() {
+    public double getLng() {
         return coordinates[0];
     }
 
 
-    public String[] getCoordinates() {
+    public double[] getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(String[] coordinates) {
+    public void setCoordinates(double[] coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -93,7 +90,6 @@ public class LocationPoint implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(coordinates);
+        dest.writeDoubleArray(coordinates);
     }
-
 }

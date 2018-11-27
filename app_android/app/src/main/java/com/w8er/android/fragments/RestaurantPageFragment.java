@@ -416,8 +416,8 @@ public class RestaurantPageFragment extends BaseFragment {
             googleMap = mMap;
 
             if(restaurant.getLocation().getCoordinates()!=null) {
-                double lat = Double.parseDouble(restaurant.getLocation().getLat());
-                double lng = Double.parseDouble(restaurant.getLocation().getLng());
+                double lat = restaurant.getLocation().getLat();
+                double lng = restaurant.getLocation().getLng();
 
 
                 LatLng latLng = new LatLng(lat, lng);

@@ -1,7 +1,6 @@
 package com.w8er.android.activities;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -145,7 +144,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 String address = extra.getString("address");
                 locationPoint = extra.getParcelable("locationPoint");
                 eTaddress.setText(address);
-                initMap(new LatLng(locationPoint.getLatdInDuble(), locationPoint.getLngdInDuble()));
+                initMap(new LatLng(locationPoint.getLat(), locationPoint.getLng()));
                 mMapView.setVisibility(View.VISIBLE);
             } else if (resultCode == RESULT_CANCELED) {
             }

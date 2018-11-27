@@ -2,7 +2,6 @@ package com.w8er.android.address;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -102,7 +101,7 @@ public class AddressCoordinatesFragment extends Fragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            LatLng latLng = new LatLng(locationPoint.getLatdInDuble(),locationPoint.getLngdInDuble());
+            LatLng latLng = new LatLng(locationPoint.getLat(),locationPoint.getLng());
 
             GoogleMapUtils.goToLocation(latLng,17,googleMap);
 

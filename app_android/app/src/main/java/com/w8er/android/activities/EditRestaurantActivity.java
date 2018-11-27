@@ -14,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.hbb20.CountryCodePicker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
@@ -281,8 +280,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         restaurant = _restaurant;
 
-        LatLng latLngMarker = new LatLng(restaurant.getLocation().getLatdInDuble(),
-                restaurant.getLocation().getLngdInDuble());
+        LatLng latLngMarker = new LatLng(restaurant.getLocation().getLat(),
+                restaurant.getLocation().getLng());
         initMap(latLngMarker);
 
         eTname.setText(restaurant.getName());

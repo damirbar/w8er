@@ -97,7 +97,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
             googleMap = mMap;
 
             if (locationPoint != null) {
-                latLngMarker = new LatLng(locationPoint.getLatdInDuble(), locationPoint.getLngdInDuble());
+                latLngMarker = new LatLng(locationPoint.getLat(), locationPoint.getLng());
 
                 GoogleMapUtils.addMapMarker(latLngMarker, "", "", googleMap);
 
