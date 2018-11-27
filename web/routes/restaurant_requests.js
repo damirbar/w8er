@@ -14,9 +14,9 @@ router.post('/create', function (req, res) {
     req.checkBody("address", "Address required").notEmpty();
     req.checkBody("country", "Country is required").notEmpty();
     req.checkBody("hours", "Hours are required").notEmpty();
-    req.checkBody("coordinates", "Coordinates are required").notEmpty();
-    req.checkBody("coordinates.lat", "Latitude is required").notEmpty();
-    req.checkBody("coordinates.lng", "Longitude is required").notEmpty();
+    req.checkBody("location", "Location is required").notEmpty();
+    req.checkBody("location.coordinates[0]", "Longitude is required").notEmpty();
+    req.checkBody("location.coordinates[1]", "Latitude is required").notEmpty();
 
     const errors = req.validationErrors();
 
@@ -38,9 +38,7 @@ router.post('/create', function (req, res) {
         address: req.body.address,
         country: req.body.country,
         hours: req.body.hours,
-        location: {
-          coordinates: [parseFloat(req.body.coordinates.lng), parseFloat(req.body.coordinates.lat)]
-        },
+        location: req.body.location
       });
       rest.save(function (err, rest) {
         if (err) {

@@ -116,7 +116,7 @@ router.post('/review', function (req, res) {
 
 //test if restaurant exists?
 router.post('/add-to-favorites', function (req, res) {
-  if(!req.user.favorite_restaurants.includes(req.body.rest)) {
+  if (!req.user.favorite_restaurants.includes(req.body.rest)) {
     req.user.updateOne({'$push': {favorite_restaurants: req.body.rest}}, function (err, usr) {
         if (err) {
           console.log(err);
@@ -128,7 +128,7 @@ router.post('/add-to-favorites', function (req, res) {
       }
     );
   }
-  else{
+  else {
     res.status(200).json({message: 'restaurant already in favorites'});
   }
 });
@@ -147,7 +147,7 @@ router.post('/remove-from-favorites', function (req, res) {
 });
 
 router.get('/get-favorites', function (req, res) {
-        res.status(200).json({restaurants: req.user.favorite_restaurants});
+  res.status(200).json({restaurants: req.user.favorite_restaurants});
 });
 
 module.exports = router;
