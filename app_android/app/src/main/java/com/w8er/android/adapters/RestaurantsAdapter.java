@@ -6,8 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
@@ -17,8 +22,7 @@ import java.util.List;
 
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
 
-public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
-
+public class RestaurantsAdapter extends RecyclerSwipeAdapter<RestaurantsAdapter.ViewHolder> {
     private List<Restaurant> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -35,13 +39,19 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.restaurant_item, parent, false);
+        View view = mInflater.inflate(R.layout.feed_restaurant_item, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+            }
+        });
         String name = mData.get(position).getName();
         holder.mTextViewName.setText(name);
         float r = roundToHalf(mData.get(position).getRating());
@@ -75,20 +85,29 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         this.mData = mData;
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
+
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        SwipeLayout swipeLayout;
         TextView mTextViewName;
         ImageView mResImage;
         BaseRatingBar ratingBar;
+        RelativeLayout relativeLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
+            relativeLayout = itemView.findViewById(R.id.relative_layout);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             mTextViewName = itemView.findViewById(R.id.title_res);
             mResImage = itemView.findViewById(R.id.imageView);
             ratingBar = itemView.findViewById(R.id.simple_rating_bar);
             ratingBar.setEnabled(false);
             ratingBar.setClickable(false);
-            itemView.setOnClickListener(this);
+            relativeLayout.setOnClickListener(this);
         }
 
         @Override
