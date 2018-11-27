@@ -22,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
-// import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
+import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +30,8 @@ import { MessageService } from './message.service';
     HeaderComponent,
     PostCreateComponent,
     PostListComponent,
-    LoginComponent//,
-    // RestRequestsComponent
+    LoginComponent,
+    RestRequestsComponent
   ],
   imports: [
     BrowserModule,

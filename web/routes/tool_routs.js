@@ -18,5 +18,4 @@ router.get('/address-to-coord', function (req, res) {
     });
 });
 
-
 module.exports = router;

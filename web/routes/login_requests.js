@@ -90,7 +90,6 @@ router.post('/login-signup', function (req, res) {
     });
 });
 
-
 router.post('/verify', function (req, res) {
     if (!req.body.phone_number) {
         res.status(404).json({message: 'no user found to verify'})
@@ -136,7 +135,6 @@ router.post('/verify', function (req, res) {
     }
 });
 
-
 function generate(length) {
     let chars = '0123456789';
     let result = "";
@@ -144,6 +142,5 @@ function generate(length) {
         result += chars[Math.round(Math.random() * (chars.length - 1))]
     return result
 }
-
 
 module.exports = router;
