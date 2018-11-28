@@ -19,7 +19,17 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.w8er.android.R;
+import com.w8er.android.model.Response;
+import com.w8er.android.model.Restaurant;
+import com.w8er.android.network.RetrofitRequests;
+import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
@@ -29,11 +39,15 @@ public class MainMapsFragment extends BaseFragment {
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private final int REQ_PERMISSION = 888;
-
+    private ServerResponse mServerResponse;
+    private CompositeSubscription mSubscriptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        mSubscriptions = new CompositeSubscription();
+        mServerResponse = new ServerResponse(rootView.findViewById(R.id.layout));
+
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -144,6 +158,7 @@ public class MainMapsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        addToFavoritesProcess(10);
     }
 
     @Override
@@ -163,4 +178,16 @@ public class MainMapsFragment extends BaseFragment {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+    private void addToFavoritesProcess(double dist) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(List<Restaurant> restaurants) {
+
+    }
+
 }

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -123,8 +123,8 @@ public class RestaurantPageFragment extends BaseFragment {
     private String mToken;
     private ReviewsAdapter adapterReview;
     private RecyclerView recyclerView;
-    private boolean first = true;
     private boolean profile;
+    private CheckBox mBookMark;
 
     @Nullable
     @Override
@@ -149,6 +149,7 @@ public class RestaurantPageFragment extends BaseFragment {
         Toolbar toolbar = v.findViewById(R.id.tool_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+        mBookMark = v.findViewById(R.id.bookmark_checkbox);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
         ccp = v.findViewById(R.id.ccp);
@@ -180,6 +181,11 @@ public class RestaurantPageFragment extends BaseFragment {
         infoButton.setOnClickListener(view -> openInfo());
         openReviewsButton.setOnClickListener(view -> openReviews());
         restName = v.findViewById(R.id.resr_name);
+
+        mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            favoritesProcess(isChecked);
+        });
+
         tVaddress.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -220,6 +226,7 @@ public class RestaurantPageFragment extends BaseFragment {
             }
         });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -356,37 +363,6 @@ public class RestaurantPageFragment extends BaseFragment {
         multiSnapRecyclerView.setLayoutManager(firstManager);
         multiSnapRecyclerView.setAdapter(adapterPics);
 
-        if (first) {
-            first = false;
-            autoScroll();
-        }
-
-    }
-
-    private void autoScroll() {
-        final int speedScroll = 7000;
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            int count = 0;
-            boolean flag = true;
-
-            @Override
-            public void run() {
-                if (count < adapterPics.getItemCount()) {
-                    if (count == adapterPics.getItemCount() - 1) {
-                        flag = false;
-                    } else if (count == 0) {
-                        flag = true;
-                    }
-                    if (flag) count++;
-                    else count--;
-
-                    multiSnapRecyclerView.smoothScrollToPosition(count);
-                    handler.postDelayed(this, speedScroll);
-                }
-            }
-        };
-        handler.postDelayed(runnable, speedScroll);
     }
 
     private void goToMap() {
@@ -673,6 +649,39 @@ public class RestaurantPageFragment extends BaseFragment {
     private void handleErrorUploadImage(Throwable error) {
         hud.dismiss();
         mServerResponse.handleError(error);
+    }
+
+
+    private void favoritesProcess(boolean isChecked) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.set_id(restId);
+
+//        if(isChecked){
+//            addToFavoritesProcess(restaurant);
+//        }
+//        else
+//            removeFavoritesProcess(restaurant);
+    }
+
+    ///////////////////////Add-to-favorites////////////////////////////
+
+    private void addToFavoritesProcess(Restaurant restaurant) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().addToFavorites(restaurant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(Response response) {
+    }
+
+    ///////////////////////Remove-from-favorites///////////////////////
+
+    private void removeFavoritesProcess(Restaurant restaurant) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeFromFavorites(restaurant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
 }
