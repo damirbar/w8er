@@ -1,4 +1,4 @@
-package com.w8er.android.activities;
+package com.w8er.android.restMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
-import com.w8er.android.model.MenuItem;
+import com.w8er.android.activities.AddTagsActivity;
+import com.w8er.android.activities.ItemDescriptionActivity;
 import com.w8er.android.model.Response;
-import com.w8er.android.model.TimeSlot;
+import com.w8er.android.model.RestItem;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
@@ -30,7 +30,7 @@ import rx.subscriptions.CompositeSubscription;
 import static com.w8er.android.utils.Validation.validateFields;
 
 
-public class AddToMenuActivity extends AppCompatActivity {
+public class EditMenuItemActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_UPDATE_TAGS = 0x1;
     public static final int REQUEST_CODE_UPDATE_DESC = 0x2;
@@ -40,7 +40,6 @@ public class AddToMenuActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private Button mBSave;
     private ProgressBar mProgressBar;
-    private String resID;
     private String itemType[];
     private NumberPicker mNumberPicker;
     private Button typeBtn;
@@ -49,11 +48,13 @@ public class AddToMenuActivity extends AppCompatActivity {
     private EditText mDesc;
     private HashTagHelper mTextHashTagHelper;
     private EasyMoneyEditText moneyEditText;
+    private RestItem restItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_to_menu);
+        setContentView(R.layout.activity_edit_menu_item);
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
@@ -149,14 +150,44 @@ public class AddToMenuActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            resID = getIntent().getExtras().getString("resID");
+            restItem = getIntent().getExtras().getParcelable("menuItem");
+            initEditItem();
             return true;
         } else
             return false;
     }
 
+    private void initEditItem() {
+
+        StringBuilder type = new StringBuilder(restItem.getType().replaceAll("_", " "));
+
+        String []words = type.toString().split(" ");
+        type = new StringBuilder();
+        for(String w: words) {
+            //This line is an easy way to capitalize a word
+            w = w.toUpperCase().replace(w.substring(1), w.substring(1).toLowerCase());
+            type.append(w);
+        }
+
+        typeBtn.setText(type.toString());
+        mName.setText(restItem.getName());
+        mDesc.setText(restItem.getDescription());
+        int price = Integer.parseInt(restItem.getPrice());
+        moneyEditText.setText(price);
+        initHashTags(restItem.getTags());
+    }
+
+    private void initHashTags(List<String> tags) {
+        StringBuilder orgTags = new StringBuilder();
+        for (String s : tags)
+            orgTags.append("#").append(s).append(" ");
+        eTtags.setText(orgTags);
+    }
+
+
     private void initTypePicker() {
-        itemType = new String[]{"Main Course", "Appetizer", "Dessert", "Drinks", "Deals", "Specials"};
+        itemType = new String[]{"Appetizer", "Main Course", "Dessert", "Drinks", "Deals", "Specials"};
+
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(itemType.length - 1);
         mNumberPicker.setDisplayedValues(itemType);
@@ -167,8 +198,8 @@ public class AddToMenuActivity extends AppCompatActivity {
         typeBtn.setText(type);
     }
 
-    private void postMenuItem(MenuItem item) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().postMenuItem(resID, item)
+    private void postMenuItem(RestItem item) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editMenuItem(item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseGet, this::handleErrorUpdate));
@@ -192,7 +223,7 @@ public class AddToMenuActivity extends AppCompatActivity {
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
         String name = mName.getText().toString().trim();
         String desc = mDesc.getText().toString().trim();
-        String type = typeBtn.getText().toString().trim();
+        String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
         String price = moneyEditText.getValueString();
 
         if (!validateFields(name)) {
@@ -213,14 +244,14 @@ public class AddToMenuActivity extends AppCompatActivity {
             return;
         }
 
-        MenuItem item = new MenuItem();
-        item.setName(name);
-        item.setDescription(desc);
-        item.setType(type);
-        item.setTags(allHashTags);
-        item.setPrice(price);
+        RestItem newItem = new RestItem();
+        newItem.setName(name);
+        newItem.setDescription(desc);
+        newItem.setType(type);
+        newItem.setTags(allHashTags);
+        newItem.setPrice(price);
 
-        postMenuItem(item);
+        postMenuItem(newItem);
 
         mBSave.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);

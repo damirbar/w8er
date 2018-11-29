@@ -10,25 +10,20 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
-import com.w8er.android.model.MenuItem;
-import com.w8er.android.model.Review;
-import com.willy.ratingbar.BaseRatingBar;
+import com.w8er.android.model.RestItem;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-    private List<MenuItem> mData;
+    private List<RestItem> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context mContext;
 
 
     // data is passed into the constructor
-    public ItemsAdapter(Context context, List<MenuItem> data) {
+    public ItemsAdapter(Context context, List<RestItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.mContext =context;
@@ -64,11 +59,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     }
 
 
-    public List<MenuItem> getmData() {
+    public List<RestItem> getmData() {
         return mData;
     }
 
-    public void setmData(List<MenuItem> mData) {
+    public void setmData(List<RestItem> mData) {
         this.mData = mData;
     }
 

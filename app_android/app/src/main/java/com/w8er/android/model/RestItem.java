@@ -5,8 +5,9 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class MenuItem implements Parcelable {
+public class RestItem implements Parcelable {
 
+    private String _id;
     private String name;
     private String description;
     private String price;
@@ -15,9 +16,10 @@ public class MenuItem implements Parcelable {
     private String picture;
     private String type;
 
-    public MenuItem(){}
+    public RestItem(){}
 
-    protected MenuItem(Parcel in) {
+    protected RestItem(Parcel in) {
+        _id = in.readString();
         name = in.readString();
         description = in.readString();
         price = in.readString();
@@ -27,17 +29,25 @@ public class MenuItem implements Parcelable {
         type = in.readString();
     }
 
-    public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
+    public static final Creator<RestItem> CREATOR = new Creator<RestItem>() {
         @Override
-        public MenuItem createFromParcel(Parcel in) {
-            return new MenuItem(in);
+        public RestItem createFromParcel(Parcel in) {
+            return new RestItem(in);
         }
 
         @Override
-        public MenuItem[] newArray(int size) {
-            return new MenuItem[size];
+        public RestItem[] newArray(int size) {
+            return new RestItem[size];
         }
     };
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getType() {
         return type;
@@ -102,6 +112,7 @@ public class MenuItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(price);

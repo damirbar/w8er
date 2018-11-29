@@ -99,8 +99,8 @@ public class FavoritesResFragment extends BaseFragment implements RestaurantsAda
         new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
         Bundle i = new Bundle();
-        String resID = adapter.getItemID(position);
-        i.putString("resID", resID);
+        String restId = adapter.getItemID(position);
+        i.putString("restId", restId);
         RestaurantPageFragment frag = new RestaurantPageFragment();
         frag.setArguments(i);
 

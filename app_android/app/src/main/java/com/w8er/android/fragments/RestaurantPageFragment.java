@@ -46,11 +46,12 @@ import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
 import com.w8er.android.entry.EntryActivity;
-import com.w8er.android.menu.MenuActivity;
+import com.w8er.android.restMenu.MenuActivity;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.TimeSlot;
+import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
@@ -76,6 +77,7 @@ import rx.subscriptions.CompositeSubscription;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.w8er.android.network.RetrofitRequests.getBytes;
+import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
 import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
 import static com.w8er.android.utils.PhoneUtils.getCountryCode;
@@ -126,6 +128,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private boolean profile;
     private CheckBox mBookMark;
     private boolean mBookMarkCheck = false;
+    String mPhone;
 
 
     @Nullable
@@ -186,8 +189,10 @@ public class RestaurantPageFragment extends BaseFragment {
 
         mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-            if(isChecked == mBookMarkCheck
-            favoritesProcess(isChecked);
+            if (isChecked != mBookMarkCheck) {
+                mBookMarkCheck = isChecked;
+                favoritesProcess(isChecked);
+            }
         });
 
         tVaddress.setOnLongClickListener(new View.OnLongClickListener() {
@@ -222,6 +227,9 @@ public class RestaurantPageFragment extends BaseFragment {
 
                     if (oldState == STATE_DRAG_START_SIDE) {
                         getResProcess(restId);
+                        if (!mPhone.isEmpty()) {
+                            loadProfile();
+                        }
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
                     } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
                         // View is starting to bounce back from the *right-end*.
@@ -284,6 +292,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private void initSharedPreferences() {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mToken = mSharedPreferences.getString(TOKEN, "");
+        mPhone = mSharedPreferences.getString(PHONE, "");
     }
 
 
@@ -395,7 +404,7 @@ public class RestaurantPageFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            if(restaurant.getLocation().getCoordinates()!=null) {
+            if (restaurant.getLocation().getCoordinates() != null) {
                 double lat = restaurant.getLocation().getLat();
                 double lng = restaurant.getLocation().getLng();
 
@@ -556,6 +565,9 @@ public class RestaurantPageFragment extends BaseFragment {
         super.onResume();
         mMapView.onResume();
         getResProcess(restId);
+        if (!mPhone.isEmpty()) {
+            loadProfile();
+        }
     }
 
 
@@ -656,14 +668,33 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
 
+    private void loadProfile() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mPhone)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleError(i)));
+    }
+
+    public void handleResponseProfile(User user) {
+        for (String s : user.getFavorite_restaurants()) {
+
+            if (s.equalsIgnoreCase(restId)) {
+                mBookMarkCheck = true;
+                mBookMark.setChecked(true);
+                break;
+            }
+
+        }
+    }
+
+
     private void favoritesProcess(boolean isChecked) {
         Restaurant restaurant = new Restaurant();
         restaurant.set_id(restId);
 
-        if(isChecked){
+        if (isChecked) {
             addToFavoritesProcess(restaurant);
-        }
-        else
+        } else
             removeFavoritesProcess(restaurant);
     }
 
