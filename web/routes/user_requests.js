@@ -116,7 +116,7 @@ router.post('/review', function (req, res) {
 
 //test if restaurant exists?
 router.post('/add-to-favorites', function (req, res) {
-  if (!req.user.favorite_restaurants.includes(req.body.rest)) {
+  if (!req.user.favorite_restaurants.includes(req.body._id)) {
     req.user.updateOne({'$push': {favorite_restaurants: req.body._id}}, function (err, usr) {
         if (err) {
           console.log(err);
@@ -147,7 +147,18 @@ router.post('/remove-from-favorites', function (req, res) {
 });
 
 router.get('/get-favorites', function (req, res) {
-  res.status(200).json({restaurants: req.user.favorite_restaurants});
+  Restaurant.find({
+    '_id': { $in:req.user.favorite_restaurants}}, function(err, rests){
+    if (err) {
+      console.log(err);
+      res.status(500).json({message: err});
+    }
+    else {
+      res.status(200).json({restaurants: rests});
+    }
+  });
+
+
 });
 
 module.exports = router;
