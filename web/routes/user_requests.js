@@ -53,7 +53,7 @@ router.post('/post-profile-image', type, function (req, res) {
       console.log("wrong file type");
     }
     else {
-      uploader.uploadProfileImage(req.file, path, req.user, ("profiles/" + req.user.id + "profile"), res);
+      uploader.uploadProfileImage(req.file, path, req.user, ("profiles/" + req.user.id + "_profile"), res);
     }
   }
 });
@@ -175,4 +175,5 @@ router.get('/get-my-restaurants', function (req, res) {
     }
   });
 });
+
 module.exports = router;
