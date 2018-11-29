@@ -166,6 +166,26 @@ public class MenuTypesFragment extends Fragment {
 
     private void handleResponse(MenuRest menu) {
         menuItems = menu;
+
+        if(menuItems.getAppetizer().size()==0) mAppetizerBtn.setVisibility(View.GONE);
+        else mAppetizerBtn.setVisibility(View.VISIBLE);
+
+        if(menuItems.getMain_course().size()==0) mMainCourseBtn.setVisibility(View.GONE);
+        else mMainCourseBtn.setVisibility(View.VISIBLE);
+
+        if(menuItems.getDessert().size()==0) mDessertBtn.setVisibility(View.GONE);
+        else mDessertBtn.setVisibility(View.VISIBLE);
+
+        if(menuItems.getDrinks().size()==0) mDrinksBtn.setVisibility(View.GONE);
+        else mDrinksBtn.setVisibility(View.VISIBLE);
+
+        if(menuItems.getDeals().size()==0) mDealsBtn.setVisibility(View.GONE);
+        else mDealsBtn.setVisibility(View.VISIBLE);
+
+        if(menuItems.getSpecials().size()==0) mSpecialsBtn.setVisibility(View.GONE);
+        else mSpecialsBtn.setVisibility(View.VISIBLE);
+
+
     }
 
     private void handleError(Throwable error) {
