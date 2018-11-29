@@ -628,7 +628,7 @@ public class RestaurantPageFragment extends BaseFragment {
         RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
         if (profile) {
-            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImageRes(restaurant.getPhone_number(), body)
+            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImageRes(restaurant.get_id(), body)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
@@ -656,11 +656,11 @@ public class RestaurantPageFragment extends BaseFragment {
         Restaurant restaurant = new Restaurant();
         restaurant.set_id(restId);
 
-//        if(isChecked){
-//            addToFavoritesProcess(restaurant);
-//        }
-//        else
-//            removeFavoritesProcess(restaurant);
+        if(isChecked){
+            addToFavoritesProcess(restaurant);
+        }
+        else
+            removeFavoritesProcess(restaurant);
     }
 
     ///////////////////////Add-to-favorites////////////////////////////
