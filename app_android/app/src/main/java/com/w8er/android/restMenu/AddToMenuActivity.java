@@ -208,12 +208,6 @@ public class AddToMenuActivity extends AppCompatActivity {
             return;
         }
 
-        if (allHashTags.isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
-
         RestItem item = new RestItem();
         item.setName(name);
         item.setDescription(desc);
@@ -227,5 +221,12 @@ public class AddToMenuActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
 
 }

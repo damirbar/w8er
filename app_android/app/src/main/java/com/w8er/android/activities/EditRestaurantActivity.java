@@ -147,12 +147,6 @@ public class EditRestaurantActivity extends AppCompatActivity {
             return;
         }
 
-        if (newRestaurant.getTags().isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
-
         if (newRestaurant.getHours().isEmpty()) {
 
             mServerResponse.showSnackBarMessage("Opening Hours should not be empty.");

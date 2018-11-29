@@ -9,15 +9,16 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
+import com.w8er.android.model.RestPictures;
 
 import java.util.List;
 
 public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontalAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<String> pics;
+    private List<RestPictures> pics;
 
-    public ImageHorizontalAdapter(Context context, List<String> titles) {
+    public ImageHorizontalAdapter(Context context, List<RestPictures> titles) {
         this.pics = titles;
         this.mContext =context;
     }
@@ -30,7 +31,7 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public void onBindViewHolder(ImageHorizontalAdapter.ViewHolder holder, int position) {
-        String url = pics.get(position);
+        String url = pics.get(position).getUrl();
 
         if (url != null && !(url.isEmpty()))
             Picasso.with(mContext)

@@ -106,6 +106,20 @@ public class RestItem implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof RestItem)) {
+            return false;
+        }
+        RestItem u = (RestItem) other;
+        return this.getName().equals(u.getName()) &&
+                this.getDescription().equals(u.getDescription()) &&
+                this.getPrice().equals(u.getPrice()) &&
+                this.getType().equals(u.getType()) &&
+                this.getTags().equals(u.getTags());
+    }
+
+
+    @Override
     public int describeContents() {
         return 0;
     }

@@ -14,8 +14,12 @@ import android.widget.ScrollView;
 
 import com.w8er.android.R;
 import com.w8er.android.model.MenuRest;
+import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Review;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+
+import java.util.List;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -23,6 +27,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.utils.PhoneUtils.getCountryCode;
+import static com.w8er.android.utils.RatingUtils.roundToHalf;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
@@ -32,7 +38,6 @@ public class MenuTypesFragment extends Fragment {
 
     public static final String TAG = MenuTypesFragment.class.getSimpleName();
     private CompositeSubscription mSubscriptions;
-    private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String restId;
     private LinearLayout mAppetizerBtn;
@@ -41,7 +46,6 @@ public class MenuTypesFragment extends Fragment {
     private LinearLayout mDrinksBtn;
     private LinearLayout mDealsBtn;
     private LinearLayout mSpecialsBtn;
-    private MenuRest menuItems;
 
 
     @Nullable
@@ -50,7 +54,6 @@ public class MenuTypesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_menu_types, container, false);
         mSubscriptions = new CompositeSubscription();
-        mRetrofitRequests = new RetrofitRequests(getActivity());
         mServerResponse = new ServerResponse(view.findViewById(R.id.layout));
 
         initViews(view);
@@ -76,7 +79,7 @@ public class MenuTypesFragment extends Fragment {
                 case STATE_BOUNCE_BACK:
 
                     if (oldState == STATE_DRAG_START_SIDE) {
-                        getMenuProcess(restId);
+                        getResProcess(restId);
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
                     } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
                         // View is starting to bounce back from the *right-end*.
@@ -115,26 +118,25 @@ public class MenuTypesFragment extends Fragment {
 
 
     private void openMenuType(int s) {
-        if (menuItems != null) {
             Bundle i = new Bundle();
             switch (s) {
                 case 0:
-                    i.putParcelableArrayList("items", menuItems.getAppetizer());
+                    i.putString("type", "appetizer");
                     break;
                 case 1:
-                    i.putParcelableArrayList("items", menuItems.getMain_course());
+                    i.putString("type", "main_course");
                     break;
                 case 2:
-                    i.putParcelableArrayList("items", menuItems.getDessert());
+                    i.putString("type", "dessert");
                     break;
                 case 3:
-                    i.putParcelableArrayList("items", menuItems.getDrinks());
+                    i.putString("type", "drinks");
                     break;
                 case 4:
-                    i.putParcelableArrayList("items", menuItems.getDeals());
+                    i.putString("type", "deals");
                     break;
                 default:
-                    i.putParcelableArrayList("items", menuItems.getSpecials());
+                    i.putString("type", "specials");
                     break;
             }
 
@@ -143,10 +145,7 @@ public class MenuTypesFragment extends Fragment {
             fragment.setArguments(i);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentFrame, fragment, MenuItemsFragment.TAG).commit();
-        }
-
     }
-
 
     private void getData() {
 
@@ -157,34 +156,32 @@ public class MenuTypesFragment extends Fragment {
     }
 
 
-    private void getMenuProcess(String id) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMenu(id)
+    private void getResProcess(String id) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().getRest(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError));
     }
 
-    private void handleResponse(MenuRest menu) {
-        menuItems = menu;
+    private void handleResponse(Restaurant restaurant) {
 
-        if(menuItems.getAppetizer().size()==0) mAppetizerBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getAppetizer().size()==0) mAppetizerBtn.setVisibility(View.GONE);
         else mAppetizerBtn.setVisibility(View.VISIBLE);
 
-        if(menuItems.getMain_course().size()==0) mMainCourseBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getMain_course().size()==0) mMainCourseBtn.setVisibility(View.GONE);
         else mMainCourseBtn.setVisibility(View.VISIBLE);
 
-        if(menuItems.getDessert().size()==0) mDessertBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getDessert().size()==0) mDessertBtn.setVisibility(View.GONE);
         else mDessertBtn.setVisibility(View.VISIBLE);
 
-        if(menuItems.getDrinks().size()==0) mDrinksBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getDrinks().size()==0) mDrinksBtn.setVisibility(View.GONE);
         else mDrinksBtn.setVisibility(View.VISIBLE);
 
-        if(menuItems.getDeals().size()==0) mDealsBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getDeals().size()==0) mDealsBtn.setVisibility(View.GONE);
         else mDealsBtn.setVisibility(View.VISIBLE);
 
-        if(menuItems.getSpecials().size()==0) mSpecialsBtn.setVisibility(View.GONE);
+        if(restaurant.getMenu().getSpecials().size()==0) mSpecialsBtn.setVisibility(View.GONE);
         else mSpecialsBtn.setVisibility(View.VISIBLE);
-
 
     }
 
@@ -196,7 +193,7 @@ public class MenuTypesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getMenuProcess(restId);
+        getResProcess(restId);
     }
 
 
