@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Restaurant = require('../schemas/restaurant');
+let Item = require('../schemas/item');
 
 const expressValidator = require('express-validator');
 router.use(expressValidator());
@@ -86,7 +87,17 @@ router.get('/get-menu', function (req, res) {
     }
     else {
       if (rest) {
-        res.status(200).json(rest.menu);
+        Item.find({
+          '_id': {$in: rest.items}
+        }, function (err, items) {
+          if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
+          }
+          else {
+            res.status(200).json({items: items});
+          }
+        });
       }
       else {
         res.status(404).json({message: 'restaurant ' + req.query.id + ' dose not exist'});

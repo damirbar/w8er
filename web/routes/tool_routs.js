@@ -38,7 +38,7 @@ router.get('/find-near-location', function (req, res) {
     }
     else {
       console.log(results.length);
-      res.status(200).json({restaurant: results});
+      res.status(200).json({restaurants: results});
     }
   });
 });
