@@ -1,4 +1,4 @@
-package com.w8er.android.menu;
+package com.w8er.android.restMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.w8er.android.R;
-import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.model.MenuRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;

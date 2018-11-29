@@ -1,5 +1,6 @@
-package com.w8er.android.menu;
+package com.w8er.android.restMenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,7 @@ import android.widget.ImageButton;
 import com.w8er.android.R;
 import com.w8er.android.adapters.ItemsAdapter;
 import com.w8er.android.fragments.BaseFragment;
-import com.w8er.android.model.MenuItem;
+import com.w8er.android.model.RestItem;
 
 import java.util.ArrayList;
 
@@ -22,10 +23,10 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_VERTICAL;
 
-public class MenuItemsFragment extends BaseFragment {
+public class MenuItemsFragment extends BaseFragment implements ItemsAdapter.ItemClickListener{
 
     public static final String TAG = MenuItemsFragment.class.getSimpleName();
-    private ArrayList<MenuItem> items;
+    private ArrayList<RestItem> items;
     private RecyclerView recyclerView;
     private ItemsAdapter adapter;
     private String restId;
@@ -97,5 +98,16 @@ public class MenuItemsFragment extends BaseFragment {
             }
             return false;
         });
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Intent i = new Intent(getContext(), MenuItemActivity.class);
+        Bundle extra = new Bundle();
+        RestItem restItem = items.get(position);
+        extra.putParcelable("restItem", restItem);
+        i.putExtras(extra);
+        startActivity(i);
     }
 }

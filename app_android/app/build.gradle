@@ -101,6 +101,7 @@ dependencies {
     //ProgressHUD
     implementation 'com.kaopiz:kprogresshud:1.0.2'
 
+    //Draw on screen
     implementation 'com.github.gcacace:signature-pad:1.2.1'
 
 }

@@ -1,7 +1,7 @@
 package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
-import com.w8er.android.model.MenuItem;
+import com.w8er.android.model.RestItem;
 import com.w8er.android.model.MenuRest;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
@@ -9,8 +9,6 @@ import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
-
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
@@ -80,15 +78,22 @@ public interface RetrofitInterface {
     Observable<Response> updateRestaurant(@Body Restaurant restaurant);
 
     @Multipart
+    @POST("restAuth/post-profile-image")
+    Observable<Response> uploadProfileImageRes(@Query("restId") String restId , @Part MultipartBody.Part file);
+
+    @Multipart
     @POST("restAuth/add-pic")
     Observable<Response> uploadImage(@Query("restId") String restId , @Part MultipartBody.Part file);
 
     @POST("restAuth/add-item")
-    Observable<Response> postMenuItem(@Query("restId") String restId , @Body MenuItem menuItem);
+    Observable<Response> postMenuItem(@Query("restId") String restId , @Body RestItem restItem);
 
-    @Multipart
-    @POST("restAuth/post-profile-image")
-    Observable<Response> uploadProfileImageRes(@Query("restId") String restId , @Part MultipartBody.Part file);
+    @POST("restAuth/remove-item")
+    Observable<Response> removeItem(@Body RestItem RestItem);
+
+    @POST("restAuth/edit-item")
+    Observable<Response> editMenuItem(@Body RestItem restItem);
+
 
     //////////////////Tools//////////////////
 
