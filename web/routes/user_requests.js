@@ -117,7 +117,7 @@ router.post('/review', function (req, res) {
 //test if restaurant exists?
 router.post('/add-to-favorites', function (req, res) {
   if (!req.user.favorite_restaurants.includes(req.body.rest)) {
-    req.user.updateOne({'$push': {favorite_restaurants: req.body.rest}}, function (err, usr) {
+    req.user.updateOne({'$push': {favorite_restaurants: req.body._id}}, function (err, usr) {
         if (err) {
           console.log(err);
           res.status(500).json({message: err});
@@ -134,7 +134,7 @@ router.post('/add-to-favorites', function (req, res) {
 });
 
 router.post('/remove-from-favorites', function (req, res) {
-  req.user.updateOne({'$pull': {favorite_restaurants: req.body.rest}}, function (err, usr) {
+  req.user.updateOne({'$pull': {favorite_restaurants: req.body._id}}, function (err, usr) {
       if (err) {
         console.log(err);
         res.status(500).json({message: err});

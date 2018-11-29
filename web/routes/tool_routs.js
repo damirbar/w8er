@@ -20,11 +20,10 @@ router.get('/address-to-coord', function (req, res) {
 });
 
 router.get('/find-near-location', function (req, res) {
-  let dist = parseFloat(req.query.dist) * 1000;
+  let dist = parseFloat(req.query.dist) * 1000; // for kilometers
   Restaurant.find({
     location: {
       $near: {
-        //ten kilometer
         $maxDistance: dist,
         $geometry: {
           type: "Point",
