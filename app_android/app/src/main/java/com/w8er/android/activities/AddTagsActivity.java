@@ -9,6 +9,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
@@ -21,6 +23,7 @@ public class AddTagsActivity extends AppCompatActivity {
     private EditText mTagsText;
     private Button mBSave;
     private HashTagHelper mTextHashTagHelper;
+    private LinearLayout mAddTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +37,22 @@ public class AddTagsActivity extends AppCompatActivity {
 
     private void initViews() {
         mTagsText = findViewById(R.id.tags_text);
+        mAddTag = findViewById(R.id.layoutTag);
         mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
         mTextHashTagHelper.handle(mTagsText);
+
+        mAddTag.setOnClickListener(view -> addTag());
 
 
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
-        mTagsText.addTextChangedListener(mTextEditorWatcher);
+    }
 
+    private void addTag() {
+        String tag = " #";
+        mTagsText.append(tag);
     }
 
     private boolean getData() {
@@ -62,7 +71,7 @@ public class AddTagsActivity extends AppCompatActivity {
 
         new SoftKeyboard(this).hideSoftKeyboard();
 
-        String tags = mTagsText.getText().toString().trim();
+        String tags = mTagsText.getText().toString().trim().replaceAll("###*","");
 
         Intent i = new Intent();
         Bundle extra = new Bundle();
@@ -71,27 +80,5 @@ public class AddTagsActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK, i);
         finish();
     }
-
-    private final TextWatcher mTextEditorWatcher = new TextWatcher() {
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
-
-            if (allHashTags.size() >= 2 || allHashTags.size() == 0) {
-                mBSave.setEnabled(true);
-                mBSave.setTextColor(Color.BLACK);
-            }
-            else{
-                mBSave.setEnabled(false);
-                mBSave.setTextColor(Color.WHITE);
-
-            }
-        }
-        public void afterTextChanged(Editable s) {
-        }
-    };
-
 
 }

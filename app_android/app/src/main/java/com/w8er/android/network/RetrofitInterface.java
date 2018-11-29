@@ -10,6 +10,8 @@ import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -69,7 +71,7 @@ public interface RetrofitInterface {
     Observable<Restaurant> getRest(@Query("restId") String restId);
 
     @GET("rest/get-menu")
-    Observable<MenuRest> getMenu(@Query("restId") String restId);
+    Observable<List<RestItem>> getMenu(@Query("restId") String restId, @Query("type") String type);
 
 
     //////////////////Restaurant - Auth//////////////////

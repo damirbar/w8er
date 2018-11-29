@@ -11,7 +11,7 @@ public class Restaurant {
     private String name;
     private String owner;
     private List<String> tags;
-    private List<String> pictures;
+    private List<RestPictures> pictures;
     private boolean kosher;
     private ArrayList<Review> reviews;
     private LocationPoint location;
@@ -20,6 +20,15 @@ public class Restaurant {
     private ArrayList<TimeSlot> hours;
     private float rating;
     private String profile_img;
+    private MenuItemsId menu;
+
+    public MenuItemsId getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuItemsId menu) {
+        this.menu = menu;
+    }
 
     public String getRestId() {
         return restId;
@@ -118,11 +127,11 @@ public class Restaurant {
         this.tags = tags;
     }
 
-    public List<String> getPictures() {
+    public List<RestPictures> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<String> pictures) {
+    public void setPictures(List<RestPictures> pictures) {
         this.pictures = pictures;
     }
 

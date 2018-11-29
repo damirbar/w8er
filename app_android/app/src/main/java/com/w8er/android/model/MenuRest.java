@@ -1,60 +1,60 @@
 package com.w8er.android.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MenuRest {
-    private ArrayList<RestItem> appetizer;
-    private ArrayList<RestItem> main_course;
-    private ArrayList<RestItem> dessert;
-    private ArrayList<RestItem> drinks;
-    private ArrayList<RestItem> deals;
-    private ArrayList<RestItem> specials;
+    private List<RestItem> appetizer;
+    private List<RestItem> main_course;
+    private List<RestItem> dessert;
+    private List<RestItem> drinks;
+    private List<RestItem> deals;
+    private List<RestItem> specials;
 
-    public ArrayList<RestItem> getAppetizer() {
+    public List<RestItem> getAppetizer() {
         return appetizer;
     }
 
-    public void setAppetizer(ArrayList<RestItem> appetizer) {
+    public void setAppetizer(List<RestItem> appetizer) {
         this.appetizer = appetizer;
     }
 
-    public ArrayList<RestItem> getMain_course() {
+    public List<RestItem> getMain_course() {
         return main_course;
     }
 
-    public void setMain_course(ArrayList<RestItem> main_course) {
+    public void setMain_course(List<RestItem> main_course) {
         this.main_course = main_course;
     }
 
-    public ArrayList<RestItem> getDessert() {
+    public List<RestItem> getDessert() {
         return dessert;
     }
 
-    public void setDessert(ArrayList<RestItem> dessert) {
+    public void setDessert(List<RestItem> dessert) {
         this.dessert = dessert;
     }
 
-    public ArrayList<RestItem> getDrinks() {
+    public List<RestItem> getDrinks() {
         return drinks;
     }
 
-    public void setDrinks(ArrayList<RestItem> drinks) {
+    public void setDrinks(List<RestItem> drinks) {
         this.drinks = drinks;
     }
 
-    public ArrayList<RestItem> getDeals() {
+    public List<RestItem> getDeals() {
         return deals;
     }
 
-    public void setDeals(ArrayList<RestItem> deals) {
+    public void setDeals(List<RestItem> deals) {
         this.deals = deals;
     }
 
-    public ArrayList<RestItem> getSpecials() {
+    public List<RestItem> getSpecials() {
         return specials;
     }
 
-    public void setSpecials(ArrayList<RestItem> specials) {
+    public void setSpecials(List<RestItem> specials) {
         this.specials = specials;
     }
 }

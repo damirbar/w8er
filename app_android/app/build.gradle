@@ -84,8 +84,6 @@ dependencies {
     //for managing multiple stacks of fragments
     implementation 'com.ncapdevi:frag-nav:2.4.0'
 
-    implementation 'com.github.danylovolokh:hashtag-helper:1.1.0'
-
     //HashTag Helper
     implementation 'com.github.danylovolokh:hashtag-helper:1.1.0'
 
