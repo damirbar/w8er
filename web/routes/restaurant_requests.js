@@ -88,7 +88,7 @@ router.get('/get-menu', function (req, res) {
     else {
       if (rest) {
         Item.find({
-          '_id': {$in: rest.items}
+          '_id': {$in: rest.menu[req.query.type]}
         }, function (err, items) {
           if (err) {
             console.log(err);
