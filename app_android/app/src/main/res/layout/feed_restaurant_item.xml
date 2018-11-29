@@ -84,7 +84,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:srb_drawableEmpty="@drawable/ic_star_empty"
                     app:srb_drawableFilled="@drawable/ic_star_full"
-                    app:srb_minimumStars="1"
+                    app:srb_minimumStars="0"
                     app:srb_numStars="5"
                     app:srb_scrollable="false"
                     app:srb_starHeight="15dp"

@@ -5,6 +5,7 @@ import com.w8er.android.model.MenuItem;
 import com.w8er.android.model.MenuRest;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.model.User;
@@ -53,7 +54,13 @@ public interface RetrofitInterface {
     Observable<Response> postReview(@Body Review review);
 
     @GET("user/get-favorites")
-    Observable<List<Restaurant>> getFavRest();
+    Observable<Restaurants> getFavoritesRest();
+
+    @POST("user/add-to-favorites")
+    Observable<Response> addToFavorites(@Body Restaurant restaurant);
+
+    @POST("user/remove-from-favorites")
+    Observable<Response> removeFromFavorites(@Body Restaurant restaurant);
 
     //////////////////Restaurant//////////////////
 
@@ -63,7 +70,7 @@ public interface RetrofitInterface {
     @GET("rest/get-rest")
     Observable<Restaurant> getRest(@Query("restId") String restId);
 
-    @GET("restAuth/get-menu")
+    @GET("rest/get-menu")
     Observable<MenuRest> getMenu(@Query("restId") String restId);
 
 
@@ -87,5 +94,9 @@ public interface RetrofitInterface {
 
     @GET("tool/address-to-coord")
     Observable<Coordinates> addressToCoord(@Query("address") String address);
+
+    @GET("tool/find-near-location")
+    Observable<List<Restaurant>> findNearLocation(@Query("dist") double dist);
+
 
 }

@@ -24,7 +24,6 @@ public class User {
     private String gender;
     private Date birthday;
     private String address;
-    private Coordinates coordinates;
     private String country;
 
     public String getCountry() {
@@ -33,14 +32,6 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public String getAddress() {

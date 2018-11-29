@@ -1,5 +1,6 @@
 package com.w8er.android.menu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.w8er.android.R;
+import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.model.MenuRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -22,13 +24,18 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
+
 public class MenuTypesFragment extends Fragment {
 
     public static final String TAG = MenuTypesFragment.class.getSimpleName();
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-    private String resID;
+    private String restId;
     private LinearLayout mAppetizerBtn;
     private LinearLayout mMainCourseBtn;
     private LinearLayout mDessertBtn;
@@ -57,8 +64,33 @@ public class MenuTypesFragment extends Fragment {
         ScrollView scrollView = v.findViewById(R.id.scroll_view);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
+        decor.setOverScrollStateListener((decor1, oldState, newState) -> {
+            switch (newState) {
+                case STATE_IDLE:
+                    // No over-scroll is in effect.
+                    break;
+                case STATE_DRAG_START_SIDE:
+                    // Dragging started at the left-end.
+                    break;
+                case STATE_DRAG_END_SIDE:
+                    break;
+                case STATE_BOUNCE_BACK:
+
+                    if (oldState == STATE_DRAG_START_SIDE) {
+                        getMenuProcess(restId);
+                        // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
+                    } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
+                        // View is starting to bounce back from the *right-end*.
+                    }
+                    break;
+            }
+        });
+
         ImageButton mBCancel = v.findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> getActivity().finish());
+        ImageButton addItemBtn = v.findViewById(R.id.image_Button_add);
+        addItemBtn.setOnClickListener(view -> openAddItem());
+
         mAppetizerBtn = v.findViewById(R.id.appetizer);
         mMainCourseBtn = v.findViewById(R.id.main_course);
         mDessertBtn = v.findViewById(R.id.dessert);
@@ -74,28 +106,46 @@ public class MenuTypesFragment extends Fragment {
         mSpecialsBtn.setOnClickListener(view -> openMenuType(5));
     }
 
+    private void openAddItem() {
+        Intent i = new Intent(getContext(), AddToMenuActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("restId", restId);
+        i.putExtras(extra);
+        startActivity(i);
+    }
+
+
     private void openMenuType(int s) {
         if (menuItems != null) {
             Bundle i = new Bundle();
             switch (s) {
                 case 0:
                     i.putParcelableArrayList("items", menuItems.getAppetizer());
+                    break;
                 case 1:
                     i.putParcelableArrayList("items", menuItems.getMain_course());
+                    break;
                 case 2:
                     i.putParcelableArrayList("items", menuItems.getDessert());
+                    break;
                 case 3:
                     i.putParcelableArrayList("items", menuItems.getDrinks());
+                    break;
                 case 4:
                     i.putParcelableArrayList("items", menuItems.getDeals());
+                    break;
                 default:
                     i.putParcelableArrayList("items", menuItems.getSpecials());
+                    break;
             }
+
+            i.putString("restId",restId);
             MenuItemsFragment fragment = new MenuItemsFragment();
             fragment.setArguments(i);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentFrame, fragment, MenuItemsFragment.TAG).commit();
         }
+
     }
 
 
@@ -103,7 +153,7 @@ public class MenuTypesFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            resID = bundle.getString("resID");
+            restId = bundle.getString("restId");
         }
     }
 
@@ -127,7 +177,7 @@ public class MenuTypesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getMenuProcess(resID);
+        getMenuProcess(restId);
     }
 
 

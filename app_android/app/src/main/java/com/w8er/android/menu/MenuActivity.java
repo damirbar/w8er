@@ -2,23 +2,14 @@ package com.w8er.android.menu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.widget.ImageButton;
 
 import com.w8er.android.R;
-import com.w8er.android.fragments.RestaurantPageFragment;
-import com.w8er.android.network.RetrofitRequests;
-import com.w8er.android.network.ServerResponse;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 
 public class MenuActivity extends AppCompatActivity {
 
     private MenuTypesFragment menuTypesFragment;
-    private String resID;
+    private String restId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +35,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
             Bundle i = new Bundle();
-            i.putString("resID", resID);
+            i.putString("restId", restId);
             menuTypesFragment.setArguments(i);
 
         }
@@ -53,7 +44,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            resID = getIntent().getExtras().getString("resID");
+            restId = getIntent().getExtras().getString("restId");
             return true;
         } else
             return false;

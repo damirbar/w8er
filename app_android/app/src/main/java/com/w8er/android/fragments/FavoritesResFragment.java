@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Searchable;
+import com.w8er.android.model.Restaurants;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
@@ -26,8 +25,6 @@ import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-
-import static com.w8er.android.utils.Validation.validateFields;
 
 public class FavoritesResFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
 
@@ -73,14 +70,14 @@ public class FavoritesResFragment extends BaseFragment implements RestaurantsAda
     }
 
     private void getFav() {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getFavRest()
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getFavoritesRest()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(List<Restaurant> restaurants) {
-        adapter.setmData(restaurants);
+    private void handleResponse(Restaurants restaurants) {
+        adapter.setmData(restaurants.getRestaurants());
         adapter.notifyDataSetChanged();
     }
 

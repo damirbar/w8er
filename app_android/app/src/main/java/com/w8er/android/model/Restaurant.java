@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Restaurant {
 
+    private String restId;
     private String _id;
     private String phone_number;
     private String name;
@@ -13,7 +14,7 @@ public class Restaurant {
     private List<String> pictures;
     private boolean kosher;
     private ArrayList<Review> reviews;
-    private Location location;
+    private LocationPoint location;
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
@@ -24,6 +25,14 @@ public class Restaurant {
     //        capacity: {},
     //        sessions: {}
 
+
+    public String getRestId() {
+        return restId;
+    }
+
+    public void setRestId(String restId) {
+        this.restId = restId;
+    }
 
     public MenuRest getMenu() {
         return menu;
@@ -81,11 +90,11 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Location getLocation() {
+    public LocationPoint getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationPoint location) {
         this.location = location;
     }
 

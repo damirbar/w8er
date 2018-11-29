@@ -14,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.hbb20.CountryCodePicker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
@@ -238,11 +237,11 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String resID = getIntent().getExtras().getString("resID");
-            if (resID != null) {
+            String restId = getIntent().getExtras().getString("restId");
+            if (restId != null) {
                 mBSave.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.VISIBLE);
-                getResProcess(resID);
+                getResProcess(restId);
                 return true;
             } else
                 return false;
@@ -281,8 +280,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         restaurant = _restaurant;
 
-        LatLng latLngMarker = new LatLng(Double.parseDouble(restaurant.getLocation().getCoordinates().getLat()),
-                Double.parseDouble(restaurant.getLocation().getCoordinates().getLng()));
+        LatLng latLngMarker = new LatLng(restaurant.getLocation().getLat(),
+                restaurant.getLocation().getLng());
         initMap(latLngMarker);
 
         eTname.setText(restaurant.getName());
