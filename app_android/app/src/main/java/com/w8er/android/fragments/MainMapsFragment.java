@@ -134,7 +134,7 @@ public class MainMapsFragment extends BaseFragment {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
                                 GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()), 15, googleMap);
-                                addToFavoritesProcess(9999999, location.getLatitude(), location.getLongitude());
+                                addToFavoritesProcess(100, location.getLatitude(), location.getLongitude());
                                 // Logic to handle location object
                             }
                         }
