@@ -96,7 +96,7 @@ public interface RetrofitInterface {
     Observable<Coordinates> addressToCoord(@Query("address") String address);
 
     @GET("tool/find-near-location")
-    Observable<List<Restaurant>> findNearLocation(@Query("dist") double dist);
+    Observable<Restaurants> findNearLocation(@Query("dist") double dist, @Query("lat") double lat, @Query("lng") double lng);
 
 
 }

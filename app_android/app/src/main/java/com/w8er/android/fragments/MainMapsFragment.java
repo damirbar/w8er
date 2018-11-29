@@ -24,11 +24,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Restaurants;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
-
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -53,14 +52,8 @@ public class MainMapsFragment extends BaseFragment {
         mServerResponse = new ServerResponse(rootView.findViewById(R.id.layout));
 
 
-
-
-
-
         SignaturePad mSignaturePad = (SignaturePad) rootView.findViewById(R.id.signature_pad);
-
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
-
             @Override
             public void onStartSigning() {
 
@@ -80,24 +73,19 @@ public class MainMapsFragment extends BaseFragment {
         });
 
 
-
         mSignaturePad.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int X = (int)event.getX();
-                int Y = (int)event.getY();
+                int X = (int) event.getX();
+                int Y = (int) event.getY();
 
-//                mServerResponse.showSnackBarMessage("x:" + X + " Y:" + Y );
-
-
-                LatLng L = googleMap.getProjection().fromScreenLocation(new Point(X,Y));
+                LatLng L = googleMap.getProjection().fromScreenLocation(new Point(X, Y));
 
 //                GoogleMapUtils.addMapMarker(L,"","",googleMap);
 
                 return false; // Pass on the touch to the map or shadow layer.
             }
         });
-
 
 
         initViews(rootView);
@@ -130,18 +118,6 @@ public class MainMapsFragment extends BaseFragment {
                 askPermission();
             }
 
-
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng point) {
-                    mServerResponse.showSnackBarMessage("Map clicked [" + point.latitude + " / " + point.longitude + "]");
-                    //Do your stuff with LatLng here
-                    //Then pass LatLng to other activity
-                }
-            });
-
-
-
         });
 
 
@@ -157,7 +133,8 @@ public class MainMapsFragment extends BaseFragment {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
-                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()),15,googleMap);
+                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()), 15, googleMap);
+                                addToFavoritesProcess(9999999, location.getLatitude(), location.getLongitude());
                                 // Logic to handle location object
                             }
                         }
@@ -170,7 +147,6 @@ public class MainMapsFragment extends BaseFragment {
         if (checkPermission()) {
 
             googleMap.setMyLocationEnabled(true);
-
             goToCurrentLocation();
 
             googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
@@ -222,7 +198,6 @@ public class MainMapsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-//        addToFavoritesProcess(10);
     }
 
     @Override
@@ -243,14 +218,21 @@ public class MainMapsFragment extends BaseFragment {
         mMapView.onLowMemory();
     }
 
-    private void addToFavoritesProcess(double dist) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist)
+    private void addToFavoritesProcess(double dist, double lat, double lng) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist, lat, lng)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(List<Restaurant> restaurants) {
+    private void handleResponse(Restaurants restaurants) {
+
+        if (googleMap!= null && restaurants.getRestaurants()!=null) {
+            for (Restaurant r : restaurants.getRestaurants()) {
+                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
+                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
+            }
+        }
 
     }
 
