@@ -148,7 +148,8 @@ router.post('/remove-from-favorites', function (req, res) {
 
 router.get('/get-favorites', function (req, res) {
   Restaurant.find({
-    '_id': { $in:req.user.favorite_restaurants}}, function(err, rests){
+    '_id': {$in: req.user.favorite_restaurants}
+  }, function (err, rests) {
     if (err) {
       console.log(err);
       res.status(500).json({message: err});
@@ -161,4 +162,17 @@ router.get('/get-favorites', function (req, res) {
 
 });
 
+router.get('/get-my-restaurants', function (req, res) {
+  Restaurant.find({
+    '_id': {$in: req.user.restaurants}
+  }, function (err, rests) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({message: err});
+    }
+    else {
+      res.status(200).json({restaurants: rests});
+    }
+  });
+});
 module.exports = router;

@@ -202,8 +202,4 @@ router.post('/post-profile-image', type, function (req, res) {
   }
 });
 
-router.get('/get-my-restaurants', function (req, res) {
-  res.status(200).json({menu: req.user.restaurants})
-});
-
 module.exports = router;
