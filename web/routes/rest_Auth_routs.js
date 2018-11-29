@@ -108,7 +108,7 @@ router.post('/edit-item-photo', type, function (req, res) {
           console.log("wrong file type");
         }
         else {
-          uploader.uploadItemPic(req.file, path, item, res);
+          uploader.uploadItemPic(req.file, path, "items/"+ req.rest.id + "/" + item.id + "_image", item, res);
         }
       }
     }
@@ -197,7 +197,7 @@ router.post('/post-profile-image', type, function (req, res) {
       console.log("wrong file type");
     }
     else {
-      uploader.uploadProfileImage(req.file, path, req.rest, ('restaurants/' + req.rest.id + "profile"), res);
+      uploader.uploadProfileImage(req.file, path, req.rest, ('restaurants/' + req.rest.id + "/rest_profile"), res);
     }
   }
 });
