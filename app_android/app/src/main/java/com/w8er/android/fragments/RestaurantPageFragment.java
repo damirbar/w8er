@@ -125,6 +125,8 @@ public class RestaurantPageFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private boolean profile;
     private CheckBox mBookMark;
+    private boolean mBookMarkCheck = false;
+
 
     @Nullable
     @Override
@@ -183,6 +185,8 @@ public class RestaurantPageFragment extends BaseFragment {
         restName = v.findViewById(R.id.resr_name);
 
         mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if(isChecked == mBookMarkCheck
             favoritesProcess(isChecked);
         });
 
