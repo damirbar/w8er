@@ -20,11 +20,6 @@ public class Restaurant {
     private ArrayList<TimeSlot> hours;
     private float rating;
     private String profile_img;
-    private MenuRest menu;
-    //        layout: {},
-    //        capacity: {},
-    //        sessions: {}
-
 
     public String getRestId() {
         return restId;
@@ -34,13 +29,6 @@ public class Restaurant {
         this.restId = restId;
     }
 
-    public MenuRest getMenu() {
-        return menu;
-    }
-
-    public void setMenu(MenuRest menu) {
-        this.menu = menu;
-    }
 
     public String get_id() {
         return _id;
