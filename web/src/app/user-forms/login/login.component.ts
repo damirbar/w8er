@@ -3,6 +3,7 @@ import {FormGroup, NgForm} from "@angular/forms";
 import {LoginService} from "../login.service";
 import {Router} from "@angular/router";
 import {IUser} from "../../i-user";
+import {UserHolderService} from "../../user-holder.service";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   // Saving the number for retrying
   numberSaveForRetry: string = "";
 
-  constructor(public loginService: LoginService, private router: Router){}
+  constructor(public loginService: LoginService, private router: Router, public userHolderService: UserHolderService){}
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -80,6 +81,7 @@ export class LoginComponent implements OnInit {
           console.log("Success. Authorized!");
           console.log(data);
           this.loginService.setToken(data.accessToken);
+          this.userHolderService.setUser(data);
 
         }
       );

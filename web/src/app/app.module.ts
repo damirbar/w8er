@@ -10,7 +10,10 @@ import { MatInputModule,
   MatCardModule,
   MatButtonModule,
   MatToolbarModule,
-  MatExpansionModule } from '@angular/material';
+  MatExpansionModule,
+  MatSidenavModule,
+  MatSidenavContent,
+  MatSidenav} from '@angular/material';
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PostCreateComponent} from "./posts/post-create/post-create.component";
@@ -23,6 +26,7 @@ import { HttpModule } from '@angular/http';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
 import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -31,7 +35,7 @@ import { RestRequestsComponent } from './rests/rest-requests/rest-requests.compo
     PostCreateComponent,
     PostListComponent,
     LoginComponent,
-    RestRequestsComponent
+    RestRequestsComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +49,8 @@ import { RestRequestsComponent } from './rests/rest-requests/rest-requests.compo
     MatExpansionModule,
     HttpClientModule,
     HttpModule,
+    FlexLayoutModule,
+    MatSidenavModule,
   ],
   providers: [PostsService, LoginService, HttpErrorHandler, MessageService],
   bootstrap: [AppComponent]
