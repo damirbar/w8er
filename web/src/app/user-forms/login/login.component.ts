@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, NgForm} from "@angular/forms";
 import {LoginService} from "../login.service";
 import {Router} from "@angular/router";
+import {IUser} from "../../i-user";
+import {UserHolderService} from "../../user-holder.service";
 
 @Component({
   selector: 'app-login',
@@ -12,24 +14,17 @@ export class LoginComponent implements OnInit {
 
   form:FormGroup;
 
-  constructor(public loginService: LoginService, private router: Router){}
+  localData = {};
+  codeRequestWasSuccessful: boolean = false;
 
-  // onAddPost(form: NgForm) {
-  //   // const post: Post = {title: this.enteredTitle, content: this.enteredContent};
-  //
-  //   if (form.invalid) {
-  //     return;
-  //   }
-  //   // const post: Post = {title: form.value.title, content: form.value.content};
-  //   // this.postCreated.emit(post);
-  //   this.postsService.addPost(form.value.title, form.value.content);
-  // }
+  // Saving the number for retrying
+  numberSaveForRetry: string = "";
+
+  constructor(public loginService: LoginService, private router: Router, public userHolderService: UserHolderService){}
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
-
-
   }
 
   login(form: NgForm) {
@@ -37,8 +32,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    console.log(form.value.phonenum);
     const val = form.value.phonenum;
+    this.numberSaveForRetry = val;
+    console.log("Phone = " + val);
 
 
     this.loginService.login(val)
@@ -47,15 +43,50 @@ export class LoginComponent implements OnInit {
           console.log(typeof(data));
           if (data instanceof Array && data.length == 0) {
             console.log("No data received");
+            this.codeRequestWasSuccessful = false;
             return;
           }
-          console.log("User is logged in");
-          // this.router.navigateByUrl('/');
+          this.codeRequestWasSuccessful = true;
+          console.log("The user got a code");
+
         }
       );
 
   }
 
+
+
+
+  verifyCode(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+
+    const val = form.value.vernum;
+
+    console.log("Verify number = " + val);
+
+
+    this.loginService.verify(this.numberSaveForRetry, val)
+      .subscribe(
+        (data: IUser) => {
+
+          console.log(typeof(data));
+          if (data instanceof Array && data.length == 0) {
+            console.log("Wrong code!");
+            this.codeRequestWasSuccessful = false;
+            return;
+          }
+          this.codeRequestWasSuccessful = true;
+          console.log("Success. Authorized!");
+          console.log(data);
+          this.loginService.setToken(data.accessToken);
+          this.userHolderService.setUser(data);
+
+        }
+      );
+
+  }
 
 
   ngOnInit() {
