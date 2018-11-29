@@ -42,6 +42,15 @@ public class TimeSlotsAdapter extends RecyclerView.Adapter<TimeSlotsAdapter.View
 
     }
 
+
+    public List<TimeSlot> getmData() {
+        return mData;
+    }
+
+    public void setmData(List<TimeSlot> mData) {
+        this.mData = mData;
+    }
+
     // total number of rows
     @Override
     public int getItemCount() {

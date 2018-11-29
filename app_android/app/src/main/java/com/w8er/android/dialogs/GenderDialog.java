@@ -13,6 +13,8 @@ import android.widget.NumberPicker;
 
 import com.w8er.android.R;
 
+import java.util.Arrays;
+
 
 public class GenderDialog extends BottomSheetDialogFragment {
 
@@ -56,15 +58,10 @@ public class GenderDialog extends BottomSheetDialogFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String gender = bundle.getString("gender");
-            if(gender!=null) {
-                int i = 0;
-                if (gender.equalsIgnoreCase("Female"))
-                    i = 1;
-                else if (gender.equalsIgnoreCase("Not Specified"))
-                    i = 2;
-                mNumberPicker.setValue(i);
-            }
+            String day = bundle.getString("gender");
+
+            int index = Arrays.asList(data).indexOf(day);
+            mNumberPicker.setValue(index);
         }
     }
 

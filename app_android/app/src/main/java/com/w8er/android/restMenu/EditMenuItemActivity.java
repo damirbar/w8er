@@ -22,6 +22,7 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
+import java.util.Arrays;
 import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -161,8 +162,16 @@ public class EditMenuItemActivity extends AppCompatActivity {
 
     private void initEditItem() {
 
-        StringBuilder type = new StringBuilder(restItem.getType().replaceAll("_", " "));
+        setTypePicker();
+        mName.setText(restItem.getName());
+        mDesc.setText(restItem.getDescription());
+        int price = Integer.parseInt(restItem.getPrice());
+        moneyEditText.setText(price);
+        initHashTags(restItem.getTags());
+    }
 
+    private void setTypePicker() {
+        StringBuilder type = new StringBuilder(restItem.getType().replaceAll("_", " "));
         String []words = type.toString().split(" ");
         type = new StringBuilder();
         for(String w: words) {
@@ -171,12 +180,9 @@ public class EditMenuItemActivity extends AppCompatActivity {
             type.append(w);
         }
 
+        int index = Arrays.asList(itemType).indexOf(type.toString());
+        mNumberPicker.setValue(index);
         typeBtn.setText(type.toString());
-        mName.setText(restItem.getName());
-        mDesc.setText(restItem.getDescription());
-        int price = Integer.parseInt(restItem.getPrice());
-        moneyEditText.setText(price);
-        initHashTags(restItem.getTags());
     }
 
     private void initHashTags(List<String> tags) {

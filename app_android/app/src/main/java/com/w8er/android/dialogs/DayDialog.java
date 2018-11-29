@@ -16,16 +16,15 @@ import com.w8er.android.R;
 import java.util.Arrays;
 
 
-public class CountryDialog extends BottomSheetDialogFragment {
+public class DayDialog extends BottomSheetDialogFragment {
 
-    public interface OnCallbackCountry {
-        void UpdateCountry(String country);
+    public interface OnCallbackDay {
+        void UpdateDay(String day);
     }
 
-    public static final String TAG = CountryDialog.class.getSimpleName();
-
+    public static final String TAG = DayDialog.class.getSimpleName();
     private NumberPicker mNumberPicker;
-    OnCallbackCountry mCallback;
+    OnCallbackDay mCallback;
     private String[] data;
 
     @Nullable
@@ -40,7 +39,7 @@ public class CountryDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
-        data = new String[]{"Israel", "United States"};
+        data = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(data.length-1);
         mNumberPicker.setDisplayedValues(data);
@@ -50,7 +49,7 @@ public class CountryDialog extends BottomSheetDialogFragment {
     private void initViews(View v) {
         mNumberPicker = v.findViewById(R.id.number_picker);
         Button mBtSetCountry = v.findViewById(R.id.button_ok);
-        mBtSetCountry.setOnClickListener(view -> onCountrySet());
+        mBtSetCountry.setOnClickListener(view -> onDaySet());
         Button mBtCancel = v.findViewById(R.id.button_cancel);
         mBtCancel.setOnClickListener(view -> dismiss());
     }
@@ -58,16 +57,16 @@ public class CountryDialog extends BottomSheetDialogFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String day = bundle.getString("country");
+            String day = bundle.getString("day");
 
             int index = Arrays.asList(data).indexOf(day);
-            mNumberPicker.setValue(index);
+                mNumberPicker.setValue(index);
         }
     }
 
-    public void onCountrySet() {
-        String country = data[mNumberPicker.getValue()];
-        mCallback.UpdateCountry(country);
+    public void onDaySet() {
+        String day = data[mNumberPicker.getValue()];
+        mCallback.UpdateDay(day);
         dismiss();
     }
 
@@ -76,7 +75,7 @@ public class CountryDialog extends BottomSheetDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (OnCallbackCountry) context;
+            mCallback = (OnCallbackDay) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
