@@ -15,5 +15,20 @@
 
   </form>
 
+  <form class="verify-code" (submit)="verifyCode(postForm)" #postForm="ngForm" *ngIf="codeRequestWasSuccessful">
+    <mat-form-field>
+
+      <input matInput type="text" ngModel name="vernum" required #vernum="ngModel" (keypress)="numberOnly($event)">
+
+      <mat-error *ngIf="vernum.invalid">Please a phone number</mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit">Verify</button>
+
+  </form>
+
 </mat-card>
 

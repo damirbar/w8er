@@ -6,14 +6,21 @@ let User = require('../schemas/user');
 let Restaurant = require('../schemas/restaurant');
 let path = require('path');
 
-router.all("*", function (req, res, next) {
+router.get("*", function (req, res, next) {
 
-  if (req.url === '/' || req.url === '/favicon.ico' ||
-    req.url.includes('/auth/') ||
-    req.url.includes('/free-text-search') ||
-    req.url.includes('/find-near-location') ||
-    req.url.includes('/get-menu') ||
-    req.url.includes('/get-rest')) {
+  if (req.url === '/'                         ||
+      req.url === '/favicon.ico'              ||
+      req.url === '/runtime.js'               ||
+      req.url === '/polyfills.js'             ||
+      req.url === '/styles.js'                ||
+      req.url === '/vendor.js'                ||
+      req.url === '/main.js'                  ||
+      req.url.includes('/auth/')              ||
+      req.url.includes('/free-text-search')   ||
+      req.url.includes('/find-near-location') ||
+      req.url.includes('/get-menu')           ||
+      req.url.includes('/get-rest')) {
+
 
     return next();
   }

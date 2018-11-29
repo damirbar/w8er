@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-import {User} from "../user";
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
+import {IUser} from "../i-user";
 
 
 @Injectable({
@@ -35,7 +35,28 @@ export class LoginService {
       .pipe(
         catchError(this.handleError('login', []))
       );
+  }
 
+  verify(phone_num:string, ver_num: string) {
+    console.log("CALLED VERIFY WITH PHONE = " + phone_num + " AND PASSWORD = " + ver_num);
+    return this.http.post<IUser>('/auth/verify', {phone_number: phone_num, password: ver_num},
+      {headers: this.httpOptions})
+      .pipe(
+        catchError(this.handleError('verify', []))
+      );
+  }
+
+
+  setToken(token: string) {
+   if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      console.log("Token NOT found in setToken");
+    }
+  }
+
+  removeToken() {
+    localStorage.removeItem('token');
   }
 
 }
