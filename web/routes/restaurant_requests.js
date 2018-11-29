@@ -95,7 +95,7 @@ router.get('/get-menu', function (req, res) {
             res.status(500).json({message: err});
           }
           else {
-            res.status(200).json({items: items});
+            res.status(200).json(items);
           }
         });
       }
