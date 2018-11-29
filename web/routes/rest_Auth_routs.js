@@ -164,11 +164,16 @@ router.post('/remove-item', function (req, res) {
             }
             else {
               res.status(200).json({message: 'removed item from menu'});
-              item.remove(function (err, item) {
-                if (err) {
-                  console.log('error in removing item ' + item.id);
-                  console.log('the error is in /remove-item');
-                }
+              cloudinary.uploader.destroy(item.picture, function(result) {
+                console.log(result);
+
+                item.remove(function (err, item) {
+                  if (err) {
+                    console.log('error in removing item ' + item.id);
+                    console.log('the error is in /remove-item');
+                  }
+
+                });
               });
             }
           });

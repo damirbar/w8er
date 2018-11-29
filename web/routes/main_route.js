@@ -36,7 +36,7 @@ router.all("*", function (req, res, next) {
               if (user) {
                 req.user = user;
                 if (req.url.includes('/restAuth')) {
-                  if (user.restaurants.includes(req.body.restId) || user.restaurants.includes(req.query.restId)) {
+                  // if (user.restaurants.includes(req.body.restId) || user.restaurants.includes(req.query.restId)) {
                     Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
                       if (err) {
                         console.log("error in /finding restaurant");
@@ -52,10 +52,10 @@ router.all("*", function (req, res, next) {
                         }
                       }
                     });
-                  }
-                  else {
-                    res.status(403).json({messasge: 'not permitted'})
-                  }
+                  // }
+                  // else {
+                  //   res.status(403).json({messasge: 'not permitted'})
+                  // }
                 }
                 else {
                   return next();
