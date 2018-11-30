@@ -9,16 +9,16 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
-import com.w8er.android.model.RestPictures;
+import com.w8er.android.model.Pictures;
 
 import java.util.List;
 
 public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontalAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<RestPictures> pics;
+    private List<Pictures> pics;
 
-    public ImageHorizontalAdapter(Context context, List<RestPictures> titles) {
+    public ImageHorizontalAdapter(Context context, List<Pictures> titles) {
         this.pics = titles;
         this.mContext =context;
     }

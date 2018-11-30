@@ -13,7 +13,7 @@ public class RestItem implements Parcelable {
     private String price;
     private boolean available;
     private List<String> tags;
-    private String picture;
+    private Pictures pictures;
     private String type;
 
     public RestItem(){}
@@ -25,8 +25,25 @@ public class RestItem implements Parcelable {
         price = in.readString();
         available = in.readByte() != 0;
         tags = in.createStringArrayList();
-        picture = in.readString();
+        pictures = in.readParcelable(Pictures.class.getClassLoader());
         type = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(price);
+        dest.writeByte((byte) (available ? 1 : 0));
+        dest.writeStringList(tags);
+        dest.writeParcelable(pictures, flags);
+        dest.writeString(type);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<RestItem> CREATOR = new Creator<RestItem>() {
@@ -97,12 +114,12 @@ public class RestItem implements Parcelable {
         this.tags = tags;
     }
 
-    public String getPicture() {
-        return picture;
+    public Pictures getPicture() {
+        return pictures;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPicture(Pictures picture) {
+        this.pictures = picture;
     }
 
     @Override
@@ -118,20 +135,4 @@ public class RestItem implements Parcelable {
                 this.getTags().equals(u.getTags());
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(price);
-        dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeStringList(tags);
-        dest.writeString(picture);
-        dest.writeString(type);
-    }
 }
