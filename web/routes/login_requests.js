@@ -14,7 +14,7 @@ router.post('/login-signup', function (req, res) {
         else {
             if (user) {
                 //user exists
-                let random = generate(6);
+                let random = generate(4);
                 let nowplus5 = new Date(Date.now());
                 nowplus5.setMinutes(nowplus5.getMinutes() + 5);
 
