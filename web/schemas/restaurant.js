@@ -35,6 +35,7 @@ var RestaurantSchema = new mongoose.Schema({
   reviews: [{
     amount: {type: Number},
     giver: {type: String, default: ""},
+    image: {type: String, default: "https://res.cloudinary.com/w8er/image/upload/v1541594267/w8er/default.png"},
     message: {type: String, default: ""},
     date: {type: Date, default: Date.now()}
   }],

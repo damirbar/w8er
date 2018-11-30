@@ -43,5 +43,9 @@ router.get('/find-near-location', function (req, res) {
   });
 });
 
-
+router.get('/coord-to-address', function (req, res) {
+  geocoder.reverse({lat: 45.767, lon: 4.833}, function (err, res) {
+    console.log(res);
+  });
+});
 module.exports = router;

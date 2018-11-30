@@ -142,8 +142,7 @@ router.post('/edit-item-photo', type, function (req, res) {
       }
     }
   });
-})
-;
+});
 
 router.post('/edit-item', function (req, res) {
   Item.findOne({id: req.id}, function (err, item) {

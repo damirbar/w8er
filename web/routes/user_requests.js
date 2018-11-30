@@ -69,6 +69,8 @@ router.post('/review', function (req, res) {
         amount: req.body.amount,
         giver: req.user.id,
         message: req.body.message,
+        image: req.user.profile_img
+
       };
       let query = {
         '$push': {},

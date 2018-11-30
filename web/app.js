@@ -43,12 +43,6 @@ mongoose.connect(config.mongo.mongoDB, {
   }
 });
 
-// let geocoder = require('./config/config').geocoder;
-//
-// geocoder.reverse({lat:45.767, lon:4.833}, function(err, res) {
-//     console.log(res);
-// });
-
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
 
