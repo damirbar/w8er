@@ -312,10 +312,10 @@ public class MenuItemActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Restaurant restaurant) {
-        if(mUserId.equals(restaurant.getOwner()))
-            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(true);
-        else
-            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(false);
+//        if(mUserId.equals(restaurant.getOwner()))
+//            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(true);
+//        else
+//            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(false);
 
     }
 
