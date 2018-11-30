@@ -171,7 +171,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private void intItem() {
 
-        String url = restItem.getPicture();
+        String url = restItem.getPicture().getUrl();
         if (url != null && !(url.isEmpty())) {
             Picasso.with(this)
                     .load(url)

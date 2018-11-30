@@ -5,7 +5,6 @@
     android:id="@+id/relative_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8.0dip"
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"

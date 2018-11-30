@@ -45,7 +45,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         String strPrice = "₪" + mData.get(position).getPrice();
         holder.price.setText(strPrice);
 
-        String pic = mData.get(position).getPicture();
+        String pic = mData.get(position).getPicture().getUrl();
         if (pic != null && !(pic.isEmpty())){
                 holder.image.setVisibility(View.VISIBLE);
                 Picasso.with(mContext)
