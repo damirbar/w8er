@@ -9,7 +9,7 @@ var itemSchema = new mongoose.Schema({
   price: {type: String, default: ""},
   available: {type: Boolean, default: true},
   tags: [String],
-  image_url: {type: String, default: ""},
+  image_url: {type: String, default: 'http://res.cloudinary.com/w8er/image/upload/v1543601007/w8er/item_default.jpg'},
   image_id: {type: String, default: ""}
 
 

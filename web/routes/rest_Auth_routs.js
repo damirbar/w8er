@@ -145,7 +145,7 @@ router.post('/edit-item-photo', type, function (req, res) {
 });
 
 router.post('/edit-item', function (req, res) {
-  Item.findOne({id: req.id}, function (err, item) {
+  Item.findOne({_id: req.body._id}, function (err, item) {
     if (err) {
       console.log("error in /edit-item");
       res.status(500).json({message: err});
@@ -160,7 +160,8 @@ router.post('/edit-item', function (req, res) {
         item.price = req.body.price ? req.body.price : item.price;
         item.available = req.body.available ? req.body.available : item.available;
         item.tags = req.body.tags ? req.body.tags : item.tags;
-        if (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials") {
+        if ((new_type !== old_type) &&
+          (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials")) {
           item.type = req.body.type ? req.body.type : item.type;
         }
         item.save(function (err, itm) {
@@ -169,14 +170,15 @@ router.post('/edit-item', function (req, res) {
             res.status(500).json({message: err});
           }
           else {
-            if ((new_type !== old_type) && (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials")) {
+            if ((new_type !== old_type) &&
+              (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials")) {
               let query = {
                 '$pull': {},
                 '$push': {}
               };
               query['$pull']['menu.' + old_type] = item.id;
               query['$push']['menu.' + new_type] = item.id;
-              req.rest.updateOne({query}, function (err, rest) {
+              req.rest.updateOne(query, function (err, rest) {
                 if (err) {
                   console.log(err);
                   res.status(500).json({message: err});
@@ -185,6 +187,9 @@ router.post('/edit-item', function (req, res) {
                   res.status(200).json({message: 'item edited'});
                 }
               });
+            }
+            else{
+              res.status(200).json({message: 'item edited'});
             }
           }
         });
@@ -215,18 +220,19 @@ router.post('/remove-item', function (req, res) {
             }
             else {
               res.status(200).json({message: 'removed item from menu'});
-              cloudinary.v2.uploader.destroy(item.image_id, function (err, result) {
+              item.remove(function (err, item) {
                 if (err) {
                   console.log(err);
-                  res.status(500).json({message: err});
                 }
                 else {
-                  item.remove(function (err, item) {
-                    if (err) {
-                      console.log('error in removing item ' + item.id);
-                      console.log('the error is in /remove-item');
-                    }
-                  });
+                  if (item.image_id !== ""){
+                    cloudinary.v2.uploader.destroy(item.image_id, function (err, result) {
+                      if (err) {
+                        console.log('error in removing item ' + item.id);
+                        console.log('the error is in /remove-item');
+                      }
+                    });
+                  }
                 }
               });
             }
