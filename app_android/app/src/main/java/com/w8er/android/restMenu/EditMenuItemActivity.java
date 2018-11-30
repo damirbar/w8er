@@ -283,6 +283,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
         newItem.setType(type);
         newItem.setTags(allHashTags);
         newItem.setPrice(price);
+        newItem.set_id(restItem.get_id());
 
         return  newItem;
     }

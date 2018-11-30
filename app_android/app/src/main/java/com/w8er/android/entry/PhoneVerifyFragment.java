@@ -120,7 +120,7 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void verifyProcess(User user) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().varify(user)
+        mSubscriptions.add(RetrofitRequests.getRetrofit().verify(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError));
