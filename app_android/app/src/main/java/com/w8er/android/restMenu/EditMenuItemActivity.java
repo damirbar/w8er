@@ -90,8 +90,6 @@ public class EditMenuItemActivity extends AppCompatActivity {
         typeBtn.setOnClickListener(view -> OpenCloseList());
         eTtags.setOnClickListener(view -> setTags());
         mDesc.setOnClickListener(view -> setDesc());
-
-
     }
 
     @Override
@@ -179,6 +177,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
             //This line is an easy way to capitalize a word
             w = w.substring(0, 1).toUpperCase() + w.substring(1);
             type.append(w);
+            type.append(" ");
         }
 
         String strType = type.toString().trim();

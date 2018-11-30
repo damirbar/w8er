@@ -374,8 +374,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+        String country = countryBtn.getText().toString().trim();
 
-        return (!name.isEmpty() || !address.isEmpty() || !fullPhone.isEmpty() || allHashTags.size() > 0 || timeSlots.size() > 0);
+        return (!name.isEmpty() || !address.isEmpty() || !fullPhone.isEmpty() || allHashTags.size() > 0 || timeSlots.size() > 0 || !country.equals(countryNames[0]));
 
     }
 

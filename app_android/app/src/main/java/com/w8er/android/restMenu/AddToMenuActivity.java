@@ -87,7 +87,6 @@ public class AddToMenuActivity extends AppCompatActivity {
         eTtags.setOnClickListener(view -> setTags());
         mDesc.setOnClickListener(view -> setDesc());
 
-
     }
 
     @Override
@@ -227,9 +226,10 @@ public class AddToMenuActivity extends AppCompatActivity {
         String name = mName.getText().toString().trim();
         String disc = mDesc.getText().toString().trim();
         String price  = moneyEditText.getValueString();
+        String type = typeBtn.getText().toString().trim();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
 
-        return (!name.isEmpty() || !disc.isEmpty() || !price.equalsIgnoreCase("0") || allHashTags.size() > 0);
+        return (!name.isEmpty() || !disc.isEmpty() || !price.equalsIgnoreCase("0") || allHashTags.size() > 0||!type.equals(itemType[0]));
 
     }
 

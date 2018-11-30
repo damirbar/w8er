@@ -41,6 +41,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_add_tolbar" />
 
             <ImageButton

@@ -13,8 +13,11 @@ public class RestItem implements Parcelable {
     private String price;
     private boolean available;
     private List<String> tags;
-    private Pictures pictures;
     private String type;
+    private String image_url;
+    private String image_id;
+
+
 
     public RestItem(){}
 
@@ -25,25 +28,9 @@ public class RestItem implements Parcelable {
         price = in.readString();
         available = in.readByte() != 0;
         tags = in.createStringArrayList();
-        pictures = in.readParcelable(Pictures.class.getClassLoader());
         type = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(price);
-        dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeStringList(tags);
-        dest.writeParcelable(pictures, flags);
-        dest.writeString(type);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        image_url = in.readString();
+        image_id = in.readString();
     }
 
     public static final Creator<RestItem> CREATOR = new Creator<RestItem>() {
@@ -57,6 +44,22 @@ public class RestItem implements Parcelable {
             return new RestItem[size];
         }
     };
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getImage_id() {
+        return image_id;
+    }
+
+    public void setImage_id(String image_id) {
+        this.image_id = image_id;
+    }
 
     public String get_id() {
         return _id;
@@ -114,14 +117,6 @@ public class RestItem implements Parcelable {
         this.tags = tags;
     }
 
-    public Pictures getPicture() {
-        return pictures;
-    }
-
-    public void setPicture(Pictures picture) {
-        this.pictures = picture;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof RestItem)) {
@@ -135,4 +130,21 @@ public class RestItem implements Parcelable {
                 this.getTags().equals(u.getTags());
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(price);
+        dest.writeByte((byte) (available ? 1 : 0));
+        dest.writeStringList(tags);
+        dest.writeString(type);
+        dest.writeString(image_url);
+        dest.writeString(image_id);
+    }
 }

@@ -59,7 +59,7 @@ public class MenuItemActivity extends AppCompatActivity {
     private KProgressHUD hud;
     private SharedPreferences mSharedPreferences;
     private String mUserId;
-    private Menu menu_change_language;
+    private Menu admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,8 +171,9 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private void intItem() {
 
-        String url = restItem.getPicture().getUrl();
+        String url = restItem.getImage_url();
         if (url != null && !(url.isEmpty())) {
+            mItemImage.setVisibility(View.VISIBLE);
             Picasso.with(this)
                     .load(url)
                     .error(R.drawable.default_user_image)
@@ -189,8 +190,9 @@ public class MenuItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-         getMenuInflater().inflate(R.menu.menu_rest_item, menu);
-         menu_change_language = menu;
+        getMenuInflater().inflate(R.menu.menu_rest_item, menu);
+        admin = menu;
+        getResProcess(restId);
         return true;
     }
 
@@ -260,8 +262,6 @@ public class MenuItemActivity extends AppCompatActivity {
         mServerResponse.handleError(error);
     }
 
-
-
     private void removeItem() {
         RestItem remove = new RestItem();
         remove.set_id(restItem.get_id());
@@ -293,16 +293,13 @@ public class MenuItemActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         getItemProcess(itemId);
-        getResProcess(restId);
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
-
 
     private void getResProcess(String id) {
         mSubscriptions.add(RetrofitRequests.getRetrofit().getRest(id)
@@ -312,14 +309,16 @@ public class MenuItemActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Restaurant restaurant) {
-//        if(mUserId.equals(restaurant.getOwner()))
-//            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(true);
-//        else
-//            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(false);
+        if(mUserId.equals(restaurant.getOwner())){
+            admin.findItem(R.id.action_add_image).setVisible(true);
+            admin.findItem(R.id.action_edit).setVisible(true);
+            admin.findItem(R.id.action_remove).setVisible(true);
+        }
+        else{
+            admin.findItem(R.id.action_add_image).setVisible(false);
+            admin.findItem(R.id.action_edit).setVisible(false);
+            admin.findItem(R.id.action_remove).setVisible(false);
 
+        }
     }
-
-
-
-
 }
