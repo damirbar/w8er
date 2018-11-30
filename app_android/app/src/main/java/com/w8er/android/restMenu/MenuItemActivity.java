@@ -35,9 +35,9 @@ public class MenuItemActivity extends AppCompatActivity {
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
-
+    private String restId;
     private TextView mAmount;
-    private int amount;
+    private int amount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,8 @@ public class MenuItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 amount++;
                 if(amount > 50) amount = 50;
-                mAmount.setText(amount);
+                String num = String.valueOf(amount);
+                mAmount.setText(num);
             }
         });
 
@@ -84,8 +85,9 @@ public class MenuItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 amount--;
                 if (amount < 0) amount = 0;
+                String num = String.valueOf(amount);
 
-                mAmount.setText(amount);
+                mAmount.setText(num);
             }
         });
     }
@@ -93,6 +95,8 @@ public class MenuItemActivity extends AppCompatActivity {
     private boolean getData() {
         if (getIntent().getExtras() != null) {
             restItem = getIntent().getExtras().getParcelable("menuItem");
+            restId = getIntent().getExtras().getString("restId");
+
             if (restItem != null) {
                 intItem();
                 return true;
@@ -151,7 +155,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
 
     private void removeItemProcess(RestItem restItem) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeItem(restItem)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeItem(restId, restItem)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
@@ -165,6 +169,7 @@ public class MenuItemActivity extends AppCompatActivity {
         Intent i = new Intent(this, EditMenuItemActivity.class);
         Bundle extra = new Bundle();
         extra.putParcelable("restItem", restItem);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }

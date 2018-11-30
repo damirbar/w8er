@@ -52,6 +52,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
     private HashTagHelper mTextHashTagHelper;
     private EasyMoneyEditText moneyEditText;
     private RestItem restItem;
+    private String restId;
 
 
     @Override
@@ -153,7 +154,8 @@ public class EditMenuItemActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            restItem = getIntent().getExtras().getParcelable("menuItem");
+            restItem = getIntent().getExtras().getParcelable("restItem");
+            restId = getIntent().getExtras().getString("restId");
             initEditItem();
             return true;
         } else
@@ -162,11 +164,10 @@ public class EditMenuItemActivity extends AppCompatActivity {
 
     private void initEditItem() {
 
-        setTypePicker();
+//        setTypePicker();
         mName.setText(restItem.getName());
         mDesc.setText(restItem.getDescription());
-        int price = Integer.parseInt(restItem.getPrice());
-        moneyEditText.setText(price);
+        moneyEditText.setText(restItem.getPrice());
         initHashTags(restItem.getTags());
     }
 
@@ -207,7 +208,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
     }
 
     private void postMenuItem(RestItem item) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editMenuItem(item)
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editMenuItem(restId, item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseGet, this::handleErrorUpdate));

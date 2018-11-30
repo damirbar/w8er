@@ -91,10 +91,10 @@ public interface RetrofitInterface {
     Observable<Response> postMenuItem(@Query("restId") String restId , @Body RestItem restItem);
 
     @POST("restAuth/remove-item")
-    Observable<Response> removeItem(@Body RestItem RestItem);
+    Observable<Response> removeItem(@Query("restId") String restId, @Body RestItem RestItem);
 
     @POST("restAuth/edit-item")
-    Observable<Response> editMenuItem(@Body RestItem restItem);
+    Observable<Response> editMenuItem(@Query("restId") String restId, @Body RestItem restItem);
 
 
     //////////////////Tools//////////////////

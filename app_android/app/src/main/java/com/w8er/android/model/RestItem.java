@@ -118,7 +118,6 @@ public class RestItem implements Parcelable {
                 this.getTags().equals(u.getTags());
     }
 
-
     @Override
     public int describeContents() {
         return 0;

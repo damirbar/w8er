@@ -93,10 +93,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
         restaurants = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
-//        recyclerView.setItemAnimator(new FadeInLeftAnimator());
-//        recyclerView.setOnScrollListener(onScrollListener);
-
 
         adapter = new RestaurantsAdapter(getContext(), restaurants);
         adapter.setClickListener(this);
