@@ -150,8 +150,8 @@ public class MenuItemsFragment extends BaseFragment implements ItemsAdapter.Item
 
         Intent i = new Intent(getContext(), MenuItemActivity.class);
         Bundle extra = new Bundle();
-        RestItem restItem = adapter.getmData().get(position);
-        extra.putParcelable("menuItem", restItem);
+        String id = adapter.getmData().get(position).get_id();
+        extra.putString("id", id);
         extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
@@ -51,6 +52,8 @@ public class MyResFragment extends BaseFragment implements RestaurantsAdapter.It
     }
 
     private void initViews(View v) {
+        ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
+        buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
         recyclerView = v.findViewById(R.id.rvRes);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {

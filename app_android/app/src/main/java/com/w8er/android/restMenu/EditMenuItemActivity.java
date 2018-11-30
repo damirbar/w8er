@@ -164,7 +164,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
 
     private void initEditItem() {
 
-//        setTypePicker();
+        setTypePicker();
         mName.setText(restItem.getName());
         mDesc.setText(restItem.getDescription());
         moneyEditText.setText(restItem.getPrice());

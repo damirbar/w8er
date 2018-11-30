@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.RestItem;
+import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
@@ -49,6 +50,7 @@ public class MenuItemActivity extends AppCompatActivity {
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
     private String restId;
+    private String itemId;
     private TextView mAmount;
     private int amount = 0;
     private KProgressHUD hud;
@@ -108,14 +110,9 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            restItem = getIntent().getExtras().getParcelable("menuItem");
+            itemId = getIntent().getExtras().getString("id");
             restId = getIntent().getExtras().getString("restId");
-
-            if (restItem != null) {
-                intItem();
-                return true;
-            } else
-                return false;
+            return true;
         } else
             return false;
     }
@@ -139,6 +136,24 @@ public class MenuItemActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void getItemProcess(String id) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().getMenuItem(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError));
+    }
+
+    private void handleResponse(RestItem _restItem) {
+        restItem = _restItem;
+        intItem();
+    }
+
+    private void handleError(Throwable error) {
+        mServerResponse.handleError(error);
+    }
+
 
 
     private void intItem() {
@@ -258,6 +273,12 @@ public class MenuItemActivity extends AppCompatActivity {
         extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getItemProcess(itemId);
     }
 
 
