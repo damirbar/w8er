@@ -229,7 +229,7 @@ public class AddToMenuActivity extends AppCompatActivity {
         String price  = moneyEditText.getValueString();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
 
-        return (!name.isEmpty() || !disc.isEmpty() || !price.isEmpty() || allHashTags.size() > 0);
+        return (!name.isEmpty() || !disc.isEmpty() || !price.equalsIgnoreCase("0") || allHashTags.size() > 0);
 
     }
 

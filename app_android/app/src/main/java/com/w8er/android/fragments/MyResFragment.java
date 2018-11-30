@@ -4,34 +4,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Searchable;
+import com.w8er.android.model.Restaurants;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.w8er.android.utils.Validation.validateFields;
-
-public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
+public class MyResFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
 
     private RestaurantsAdapter adapter;
     private RecyclerView recyclerView;
@@ -39,17 +34,17 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     private ArrayList<Restaurant> restaurants;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-    private SearchView editSearch;
-    private String saveQuery = "";
+    private RetrofitRequests mRetrofitRequests;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_res, container, false);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(view.findViewById(R.id.parent));
+        mRetrofitRequests = new RetrofitRequests(getActivity());
         initViews(view);
         initRecyclerView();
 
@@ -57,69 +52,41 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     }
 
     private void initViews(View v) {
+        ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
+        buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
         recyclerView = v.findViewById(R.id.rvRes);
-
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        editSearch = v.findViewById(R.id.searchView);
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            if (validateFields(saveQuery)) {
-                sendQuery(saveQuery);
-
-            }
+            getMyRest();
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
-
-        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                callSearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-
-            private void callSearch(String query) {
-                new SoftKeyboard(getActivity()).hideSoftKeyboard();
-                saveQuery = query;
-                sendQuery(query);
-            }
-        });
     }
 
     private void initRecyclerView() {
         restaurants = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         adapter = new RestaurantsAdapter(getContext(), restaurants);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
     }
 
-    private void sendQuery(String query) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().getFreeTextSearch(query)
+    private void getMyRest() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getMyRest()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Searchable searchable) {
-        if (!saveQuery.isEmpty()) {
-            adapter.setmData(searchable.getRestaurants());
-            adapter.notifyDataSetChanged();
-        }
+    private void handleResponse(Restaurants restaurants) {
+        adapter.setmData(restaurants.getRestaurants());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (validateFields(saveQuery)) {
-            sendQuery(saveQuery);
-        }
+        getMyRest();
     }
 
 

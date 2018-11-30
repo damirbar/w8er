@@ -209,6 +209,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         newRestaurant.setName(name);
         newRestaurant.setTags(allHashTags);
         newRestaurant.setHours(timeSlots);
+        newRestaurant.setRestId(restaurant.get_id());
 
         return newRestaurant;
 

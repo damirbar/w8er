@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -45,11 +46,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         holder.price.setText(strPrice);
 
         String pic = mData.get(position).getPicture();
-        if (pic != null && !(pic.isEmpty()))
-            Picasso.with(mContext)
-                    .load(pic)
-                    .error(R.drawable.default_user_image)
-                    .into(holder.image);
+        if (pic != null && !(pic.isEmpty())){
+                holder.image.setVisibility(View.VISIBLE);
+                Picasso.with(mContext)
+                        .load(pic)
+                        .error(R.drawable.default_user_image)
+                        .into(holder.image);
+        }
+        else{
+            holder.image.setVisibility(View.GONE);
+        }
     }
 
     // total number of rows
@@ -73,14 +79,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         TextView name;
         TextView info;
         TextView price;
+        RelativeLayout relativeLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
+            relativeLayout = itemView.findViewById(R.id.relative_layout);
             image = itemView.findViewById(R.id.item_pic);
             name = itemView.findViewById(R.id.item_name);
             info = itemView.findViewById(R.id.item_info);
             price = itemView.findViewById(R.id.item_price);
             itemView.setOnClickListener(this);
+            relativeLayout.setOnClickListener(this);
         }
 
         @Override

@@ -56,6 +56,10 @@ public interface RetrofitInterface {
     @GET("user/get-favorites")
     Observable<Restaurants> getFavoritesRest();
 
+    @GET("user/get-my-restaurants")
+    Observable<Restaurants> getMyRest();
+
+
     @POST("user/add-to-favorites")
     Observable<Response> addToFavorites(@Body Restaurant restaurant);
 
@@ -73,6 +77,8 @@ public interface RetrofitInterface {
     @GET("rest/get-menu")
     Observable<List<RestItem>> getMenu(@Query("restId") String restId, @Query("type") String type);
 
+    @GET("rest/get-item")
+    Observable<RestItem> getMenuItem(@Query("id") String id);
 
     //////////////////Restaurant - Auth//////////////////
 
@@ -91,11 +97,14 @@ public interface RetrofitInterface {
     Observable<Response> postMenuItem(@Query("restId") String restId , @Body RestItem restItem);
 
     @POST("restAuth/remove-item")
-    Observable<Response> removeItem(@Body RestItem RestItem);
+    Observable<Response> removeItem(@Query("restId") String restId, @Body RestItem RestItem);
 
     @POST("restAuth/edit-item")
-    Observable<Response> editMenuItem(@Body RestItem restItem);
+    Observable<Response> editMenuItem(@Query("restId") String restId, @Body RestItem restItem);
 
+    @Multipart
+    @POST("restAuth/edit-item-photo")
+    Observable<Response> editItemImage(@Query("restId") String restId, @Query("id") String id, @Part MultipartBody.Part file);
 
     //////////////////Tools//////////////////
 

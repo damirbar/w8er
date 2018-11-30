@@ -128,7 +128,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private boolean profile;
     private CheckBox mBookMark;
     private boolean mBookMarkCheck = false;
-    String mPhone;
+    private String mPhone;
 
 
     @Nullable

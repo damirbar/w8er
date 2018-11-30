@@ -113,7 +113,7 @@ router.post("/add-item", function (req, res) {
 });
 
 router.post('/edit-item-photo', type, function (req, res) {
-  Item.findOne({_id: req.body.id}, function (err, item) {
+  Item.findOne({id: req.body.id}, function (err, item) {
     if (err) {
       console.log("error in /edit-item-photo");
       res.status(500).json({message: err});
@@ -169,7 +169,7 @@ router.post('/edit-item', function (req, res) {
 });
 
 router.post('/remove-item', function (req, res) {
-  Item.findOne({_id: req.body.id}, function (err, item) {
+  Item.findOne({id: req.body.id}, function (err, item) {
     if (err) {
       console.log("error in /remove-item");
       res.status(500).json({message: err});

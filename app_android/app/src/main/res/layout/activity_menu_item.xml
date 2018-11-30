@@ -143,8 +143,8 @@
                     <ImageButton
                         android:id="@+id/image_remove"
                         style="@style/Widget.AppCompat.ImageButton"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="30dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:scaleX="0.6"
@@ -164,8 +164,8 @@
                     <ImageButton
                         android:id="@+id/image_add"
                         style="@style/Widget.AppCompat.ImageButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="30dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:scaleX="0.6"

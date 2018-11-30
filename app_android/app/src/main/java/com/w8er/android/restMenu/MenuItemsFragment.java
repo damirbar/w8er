@@ -103,6 +103,7 @@ public class MenuItemsFragment extends BaseFragment implements ItemsAdapter.Item
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new ItemsAdapter(getContext(), items);
+        adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
     }
@@ -149,8 +150,9 @@ public class MenuItemsFragment extends BaseFragment implements ItemsAdapter.Item
 
         Intent i = new Intent(getContext(), MenuItemActivity.class);
         Bundle extra = new Bundle();
-        RestItem restItem = adapter.getmData().get(position);
-        extra.putParcelable("type", restItem);
+        String id = adapter.getmData().get(position).get_id();
+        extra.putString("id", id);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }
