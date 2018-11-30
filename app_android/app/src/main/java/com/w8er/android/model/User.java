@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class User {
+    private String _id;
     private String first_name;
     private String phone_number;
     private String last_name;
@@ -25,6 +26,14 @@ public class User {
     private Date birthday;
     private String address;
     private String country;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getCountry() {
         return country;

@@ -12,6 +12,8 @@ public class Constants {
     public static final String TOKEN_HEADER = "x-access-token";
     public static final String TOKEN = "token";
     public static final String PHONE = "phone";
+    public static final String USER_ID = "id";
+
 
 }
 

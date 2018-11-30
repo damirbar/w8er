@@ -79,6 +79,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.w8er.android.network.RetrofitRequests.getBytes;
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
+import static com.w8er.android.utils.Constants.USER_ID;
 import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
 import static com.w8er.android.utils.PhoneUtils.getCountryCode;
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
@@ -129,7 +130,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private CheckBox mBookMark;
     private boolean mBookMarkCheck = false;
     private String mPhone;
-
+    private String mUserId;
 
     @Nullable
     @Override
@@ -153,10 +154,10 @@ public class RestaurantPageFragment extends BaseFragment {
     private void initViews(View v) {
         Toolbar toolbar = v.findViewById(R.id.tool_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
         mBookMark = v.findViewById(R.id.bookmark_checkbox);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
+
         ccp = v.findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(textEditPhone);
         openReviewsButton = v.findViewById(R.id.button_reviews);
@@ -176,8 +177,10 @@ public class RestaurantPageFragment extends BaseFragment {
         callButton.setOnClickListener(view -> callNum());
         navigationButton = v.findViewById(R.id.navigation_button);
         navigationButton.setOnClickListener(view -> goToNavigation());
+
         editButton = v.findViewById(R.id.button_edit);
         editButton.setOnClickListener(view -> openEditRest());
+
         ScrollView scrollView = v.findViewById(R.id.scroll_view);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         menuButton = v.findViewById(R.id.menu_button);
@@ -293,6 +296,7 @@ public class RestaurantPageFragment extends BaseFragment {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mToken = mSharedPreferences.getString(TOKEN, "");
         mPhone = mSharedPreferences.getString(PHONE, "");
+        mUserId = mSharedPreferences.getString(USER_ID, "");
     }
 
 
@@ -443,6 +447,19 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void handleResponse(Restaurant _restaurant) {
         restaurant = _restaurant;
+
+        if(mUserId.equals(restaurant.getOwner()))
+            setHasOptionsMenu(true);
+        else
+            setHasOptionsMenu(false);
+
+
+        if(mUserId.equals(restaurant.getOwner())) {
+            editButton.setVisibility(View.VISIBLE);
+        }
+        else
+            editButton.setVisibility(View.GONE);
+
         initRestaurantPics();
         initMap();
 
@@ -593,8 +610,8 @@ public class RestaurantPageFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_restaurant_page, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+            inflater.inflate(R.menu.menu_restaurant_page, menu);
+            super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

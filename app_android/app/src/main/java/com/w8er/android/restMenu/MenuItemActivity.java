@@ -1,8 +1,10 @@
 package com.w8er.android.restMenu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -34,6 +36,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.network.RetrofitRequests.getBytes;
+import static com.w8er.android.utils.Constants.USER_ID;
 import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
 
 public class MenuItemActivity extends AppCompatActivity {
@@ -54,6 +57,9 @@ public class MenuItemActivity extends AppCompatActivity {
     private TextView mAmount;
     private int amount = 0;
     private KProgressHUD hud;
+    private SharedPreferences mSharedPreferences;
+    private String mUserId;
+    private Menu menu_change_language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +68,18 @@ public class MenuItemActivity extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
+        initSharedPreferences();
         initViews();
         if (!getData()) {
             finish();
         }
     }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mUserId = mSharedPreferences.getString(USER_ID, "");
+    }
+
 
     private void initViews() {
         ScrollView scrollView = findViewById(R.id.scroll_view);
@@ -176,7 +189,8 @@ public class MenuItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.menu_rest_item, menu);
+         getMenuInflater().inflate(R.menu.menu_rest_item, menu);
+         menu_change_language = menu;
         return true;
     }
 
@@ -238,7 +252,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private void handleResponseUploadImage(Response response) {
         hud.dismiss();
-//        getResProcess(restId);
+        getItemProcess(itemId);
     }
 
     private void handleErrorUploadImage(Throwable error) {
@@ -279,6 +293,7 @@ public class MenuItemActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         getItemProcess(itemId);
+        getResProcess(restId);
     }
 
 
@@ -287,6 +302,23 @@ public class MenuItemActivity extends AppCompatActivity {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+
+    private void getResProcess(String id) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().getRest(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(Restaurant restaurant) {
+        if(mUserId.equals(restaurant.getOwner()))
+            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(true);
+        else
+            menu_change_language.findItem(R.menu.menu_rest_item).setVisible(false);
+
+    }
+
 
 
 

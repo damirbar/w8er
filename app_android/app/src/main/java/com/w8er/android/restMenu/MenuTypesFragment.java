@@ -1,7 +1,9 @@
 package com.w8er.android.restMenu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.utils.Constants.PHONE;
+import static com.w8er.android.utils.Constants.TOKEN;
+import static com.w8er.android.utils.Constants.USER_ID;
 import static com.w8er.android.utils.PhoneUtils.getCountryCode;
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
@@ -46,7 +51,9 @@ public class MenuTypesFragment extends Fragment {
     private LinearLayout mDrinksBtn;
     private LinearLayout mDealsBtn;
     private LinearLayout mSpecialsBtn;
-
+    private SharedPreferences mSharedPreferences;
+    private String mUserId;
+    private ImageButton addItemBtn;
 
     @Nullable
     @Override
@@ -55,11 +62,17 @@ public class MenuTypesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu_types, container, false);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(view.findViewById(R.id.layout));
+        initSharedPreferences();
 
         initViews(view);
         getData();
 
         return view;
+    }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mUserId = mSharedPreferences.getString(USER_ID, "");
     }
 
     private void initViews(View v) {
@@ -90,7 +103,8 @@ public class MenuTypesFragment extends Fragment {
 
         ImageButton mBCancel = v.findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> getActivity().finish());
-        ImageButton addItemBtn = v.findViewById(R.id.image_Button_add);
+
+        addItemBtn = v.findViewById(R.id.image_Button_add);
         addItemBtn.setOnClickListener(view -> openAddItem());
 
         mAppetizerBtn = v.findViewById(R.id.appetizer);
@@ -164,6 +178,12 @@ public class MenuTypesFragment extends Fragment {
     }
 
     private void handleResponse(Restaurant restaurant) {
+
+        if(mUserId.equals(restaurant.getOwner())) {
+            addItemBtn.setVisibility(View.VISIBLE);
+        }
+        else
+            addItemBtn.setVisibility(View.GONE);
 
         if(restaurant.getMenu().getAppetizer().size()==0) mAppetizerBtn.setVisibility(View.GONE);
         else mAppetizerBtn.setVisibility(View.VISIBLE);
