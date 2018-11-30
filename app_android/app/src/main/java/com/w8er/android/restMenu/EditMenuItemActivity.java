@@ -63,10 +63,10 @@ public class EditMenuItemActivity extends AppCompatActivity {
         mRetrofitRequests = new RetrofitRequests(this);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
         initViews();
+        initTypePicker();
         if (!getData()) {
             finish();
         }
-        initTypePicker();
 
     }
 
@@ -177,11 +177,12 @@ public class EditMenuItemActivity extends AppCompatActivity {
         type = new StringBuilder();
         for(String w: words) {
             //This line is an easy way to capitalize a word
-            w = w.toUpperCase().replace(w.substring(1), w.substring(1).toLowerCase());
+            w = w.substring(0, 1).toUpperCase() + w.substring(1);
             type.append(w);
         }
 
-        int index = Arrays.asList(itemType).indexOf(type.toString());
+        String strType = type.toString().trim();
+        int index = Arrays.asList(itemType).indexOf(strType);
         mNumberPicker.setValue(index);
         typeBtn.setText(type.toString());
     }
