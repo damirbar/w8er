@@ -12,6 +12,7 @@ public class Review implements Parcelable {
     private String message;
     private Date date;
     private String id;
+    private String image;
 
     public  Review(){}
 
@@ -20,6 +21,7 @@ public class Review implements Parcelable {
         giver = in.readString();
         message = in.readString();
         id = in.readString();
+        image = in.readString();
     }
 
     public static final Creator<Review> CREATOR = new Creator<Review>() {
@@ -33,6 +35,14 @@ public class Review implements Parcelable {
             return new Review[size];
         }
     };
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getId() {
         return id;
@@ -85,5 +95,6 @@ public class Review implements Parcelable {
         dest.writeString(giver);
         dest.writeString(message);
         dest.writeString(id);
+        dest.writeString(image);
     }
 }

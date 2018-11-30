@@ -45,7 +45,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         String strPrice = "₪" + mData.get(position).getPrice();
         holder.price.setText(strPrice);
 
-        String pic = mData.get(position).getPicture().getUrl();
+        String pic = mData.get(position).getImage_url();
         if (pic != null && !(pic.isEmpty())){
                 holder.image.setVisibility(View.VISIBLE);
                 Picasso.with(mContext)
@@ -98,6 +98,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         }
     }
 
+    // convenience method for getting data at click position
+    public String getItemID(int id) {
+        return mData.get(id).get_id();
+    }
 
 
     // allows clicks events to be caught

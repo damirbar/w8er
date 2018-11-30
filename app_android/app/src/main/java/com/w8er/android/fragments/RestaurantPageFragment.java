@@ -131,6 +131,7 @@ public class RestaurantPageFragment extends BaseFragment {
     private boolean mBookMarkCheck = false;
     private String mPhone;
     private String mUserId;
+    private Menu admin;
 
     @Nullable
     @Override
@@ -154,6 +155,8 @@ public class RestaurantPageFragment extends BaseFragment {
     private void initViews(View v) {
         Toolbar toolbar = v.findViewById(R.id.tool_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+
         mBookMark = v.findViewById(R.id.bookmark_checkbox);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
@@ -448,10 +451,14 @@ public class RestaurantPageFragment extends BaseFragment {
     private void handleResponse(Restaurant _restaurant) {
         restaurant = _restaurant;
 
-        if(mUserId.equals(restaurant.getOwner()))
-            setHasOptionsMenu(true);
-        else
-            setHasOptionsMenu(false);
+        if(mUserId.equals(restaurant.getOwner())) {
+            admin.findItem(R.id.action_pic).setVisible(true);
+            admin.findItem(R.id.action_profile_pic).setVisible(true);
+        }
+        else {
+            admin.findItem(R.id.action_pic).setVisible(false);
+            admin.findItem(R.id.action_profile_pic).setVisible(false);
+        }
 
 
         if(mUserId.equals(restaurant.getOwner())) {
@@ -611,6 +618,7 @@ public class RestaurantPageFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             inflater.inflate(R.menu.menu_restaurant_page, menu);
+            admin = menu;
             super.onCreateOptionsMenu(menu, inflater);
     }
 
