@@ -88,7 +88,8 @@ router.post("/add-item", function (req, res) {
       description: req.body.description,
       price: req.body.price,
       available: req.body.available,
-      tags: req.body.tags
+      tags: req.body.tags,
+      type: type
     });
     item.save(function (err, i) {
       if (err) {
