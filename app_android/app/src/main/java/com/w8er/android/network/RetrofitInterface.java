@@ -77,7 +77,7 @@ public interface RetrofitInterface {
     @GET("rest/get-menu")
     Observable<List<RestItem>> getMenu(@Query("restId") String restId, @Query("type") String type);
 
-    @GET("rest/get-item")
+    @GET("rest/get-item-by-id")
     Observable<RestItem> getMenuItem(@Query("id") String id);
 
     //////////////////Restaurant - Auth//////////////////

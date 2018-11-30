@@ -145,8 +145,7 @@
                         android:text="Type"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/req_info"
@@ -219,8 +218,7 @@
                             android:paddingLeft="10dp"
                             android:text="Appetizer"
                             android:textAllCaps="false"
-                            android:textSize="16sp"
-                            android:visibility="gone" />
+                            android:textSize="16sp" />
 
                         <NumberPicker
                             android:id="@+id/number_picker"
