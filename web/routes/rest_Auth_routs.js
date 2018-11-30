@@ -146,18 +146,40 @@ router.post('/edit-item', function (req, res) {
     }
     else {
       if (item) {
+        let old_type = item.type;
+        let new_type = req.body.type;
+
         item.name = req.body.name ? req.body.name : item.name;
         item.description = req.body.description ? req.body.description : item.description;
         item.price = req.body.price ? req.body.price : item.price;
         item.available = req.body.available ? req.body.available : item.available;
         item.tags = req.body.tags ? req.body.tags : item.tags;
-        item.save(function (err, item) {
+        if (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials") {
+          item.type = req.body.type ? req.body.type : item.type;
+        }
+        item.save(function (err, itm) {
           if (err) {
             console.log(err);
             res.status(500).json({message: err});
           }
           else {
-            res.status(200).json({message: 'item edited'});
+            if ((new_type !== old_type) && (req.body.type === "appetizer" || req.body.type === "main_course" || req.body.type === "dessert" || req.body.type === "drinks" || req.body.type === "deals" || req.body.type === "specials")) {
+              let query = {
+                '$pull': {},
+                '$push': {}
+              };
+              query['$pull']['menu.' + old_type] = item.id;
+              query['$push']['menu.' + new_type] = item.id;
+              req.rest.updateOne({query}, function (err, rest) {
+                if (err) {
+                  console.log(err);
+                  res.status(500).json({message: err});
+                }
+                else {
+                  res.status(200).json({message: 'item edited'});
+                }
+              });
+            }
           }
         });
       }

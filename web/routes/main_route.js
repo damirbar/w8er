@@ -19,6 +19,7 @@ router.all('*', function (req, res, next) {
     req.url.includes('/free-text-search') ||
     req.url.includes('/find-near-location') ||
     req.url.includes('/get-menu') ||
+    req.url.includes('/get-item-by-id') ||
     req.url.includes('/get-rest')) {
 
 
