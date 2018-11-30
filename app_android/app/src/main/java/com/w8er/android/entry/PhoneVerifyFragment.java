@@ -32,6 +32,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
+import static com.w8er.android.utils.Constants.USER_ID;
 
 public class PhoneVerifyFragment extends Fragment {
 
@@ -130,6 +131,8 @@ public class PhoneVerifyFragment extends Fragment {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(TOKEN,user.getAccessToken());
         editor.putString(PHONE,user.getPhone_number());
+        editor.putString(USER_ID,user.get_id());
+
 
         editor.apply();
 
