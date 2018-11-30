@@ -103,9 +103,25 @@ router.get('/get-menu', function (req, res) {
         res.status(404).json({message: 'restaurant ' + req.query.id + ' dose not exist'});
       }
     }
-  })
+  });
 });
 
+router.get('/get-item-by-id', function (req, res) {
+  Item.findOne({_id: req.query.id}, function (err, item) {
+    if (err) {
+      console.log("error in /get-item-by-id");
+      res.status(500).json({message: err});
+    }
+    else {
+      if (item) {
+        res.status(200).json(item);
+      }
+      else {
+        res.status(404).json({message: 'item ' + req.query.id + ' dose not exist'});
+      }
+    }
+  });
+});
 module.exports = router;
 
 
