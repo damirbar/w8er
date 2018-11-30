@@ -6,20 +6,20 @@ let User = require('../schemas/user');
 let Restaurant = require('../schemas/restaurant');
 let path = require('path');
 
-router.get("*", function (req, res, next) {
+router.all('*', function (req, res, next) {
 
-  if (req.url === '/'                         ||
-      req.url === '/favicon.ico'              ||
-      req.url === '/runtime.js'               ||
-      req.url === '/polyfills.js'             ||
-      req.url === '/styles.js'                ||
-      req.url === '/vendor.js'                ||
-      req.url === '/main.js'                  ||
-      req.url.includes('/auth/')              ||
-      req.url.includes('/free-text-search')   ||
-      req.url.includes('/find-near-location') ||
-      req.url.includes('/get-menu')           ||
-      req.url.includes('/get-rest')) {
+  if (req.url === '/' ||
+    req.url === '/favicon.ico' ||
+    req.url === '/runtime.js' ||
+    req.url === '/polyfills.js' ||
+    req.url === '/styles.js' ||
+    req.url === '/vendor.js' ||
+    req.url === '/main.js' ||
+    req.url.includes('/auth/') ||
+    req.url.includes('/free-text-search') ||
+    req.url.includes('/find-near-location') ||
+    req.url.includes('/get-menu') ||
+    req.url.includes('/get-rest')) {
 
 
     return next();
@@ -44,21 +44,21 @@ router.get("*", function (req, res, next) {
                 req.user = user;
                 if (req.url.includes('/restAuth')) {
                   // if (user.restaurants.includes(req.body.restId) || user.restaurants.includes(req.query.restId)) {
-                    Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
-                      if (err) {
-                        console.log("error in /finding restaurant");
-                        res.status(500).json({message: err});
+                  Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
+                    if (err) {
+                      console.log("error in /finding restaurant");
+                      res.status(500).json({message: err});
+                    }
+                    else {
+                      if (rest) {
+                        req.rest = rest;
+                        return next();
                       }
                       else {
-                        if (rest) {
-                          req.rest = rest;
-                          return next();
-                        }
-                        else {
-                          res.status(404).json({message: 'no such restaurant'})
-                        }
+                        res.status(404).json({message: 'no such restaurant'})
                       }
-                    });
+                    }
+                  });
                   // }
                   // else {
                   //   res.status(403).json({messasge: 'not permitted'})

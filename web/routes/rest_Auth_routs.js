@@ -53,7 +53,7 @@ router.post('/add-pic', type, function (req, res) {
         res.status(403).json({message: "to many pictures"})
       }
       else {
-        uploader.uploadimagetorestaurant(req.file, path, "restaurants/" + req.rest.id + "/rest_image" + req.rest.pictures.length,  req.rest, res);
+        uploader.uploadimagetorestaurant(req.file, path, "restaurants/" + req.rest.id + "/rest_image" + req.rest.pictures.length, req.rest, res);
       }
     }
   }
