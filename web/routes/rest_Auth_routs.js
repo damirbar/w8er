@@ -53,21 +53,21 @@ router.post('/add-pic', type, function (req, res) {
         res.status(403).json({message: "to many pictures"})
       }
       else {
-        uploader.uploadimagetorestaurant(req.file, path, req.rest, res);
+        uploader.uploadimagetorestaurant(req.file, path, "restaurants/" + req.rest.id + "/rest_image" + req.rest.pictures.length,  req.rest, res);
       }
     }
   }
 });
 
 router.post('/remove-pic', function (req, res) {
-  let url = req.body.url;
-  cloudinary.v2.uploader.destroy(url, function (result) {
+  let id = req.body.id;
+  cloudinary.v2.uploader.destroy(id, function (err, result) {
     if (err) {
       console.log(err);
       res.status(500).json({message: err});
     }
     else {
-      req.rest.updateOne({$pull: {pictures: url}}, function (err) {
+      req.rest.updateOne({$pull: {pictures: {id: id}}}, function (err) {
         if (err) {
           console.log(err);
           res.status(500).json({message: err});

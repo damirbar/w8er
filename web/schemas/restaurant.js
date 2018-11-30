@@ -15,7 +15,10 @@ var RestaurantSchema = new mongoose.Schema({
   capacity: {},
   owner: {type: String, default: ""},
   tags: [String],
-  pictures: [String],
+  pictures: [{
+    url: {type: String, default: ""},
+    id: {type: String, default: ""}
+  }],
   last_modified: {type: Date, default: Date.now()},
   rating: {type: Number, default: 0},
   kosher: {type: Boolean, required: true, default: false},

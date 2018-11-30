@@ -35,11 +35,11 @@ let uploadService = {
       });
   },
 
-  uploadimagetorestaurant: function (file, path, rest, res) {
+  uploadimagetorestaurant: function (file, path, cloud_path, rest, res) {
     console.log("starting to upload " + file.originalname);
     cloudinary.v2.uploader.upload(path,
       {
-        public_id: "restaurants/" + rest.id + "/rest_image",
+        public_id: cloud_path,
         width: 1000,
         height: 1000,
         crop: 'thumb',
@@ -52,7 +52,7 @@ let uploadService = {
         }
         else {
           console.log("uploaded " + file.originalname);
-          rest.updateOne({$push: {pictures: result.url}}, function (err) {
+          rest.updateOne({$push: {pictures: {url: result.url, id: result.public_id}}}, function (err) {
             if (err) {
               console.log(err);
               res.status(500).json({message: err});
