@@ -27,4 +27,10 @@
         <item name="android:windowFullscreen" >true</item>
     </style>
 
+    <!--Search View-->
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
 </resources>

@@ -11,6 +11,10 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -39,7 +43,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     private ArrayList<Restaurant> restaurants;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
-    private SearchView editSearch;
     private String saveQuery = "";
 
 
@@ -57,10 +60,11 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     }
 
     private void initViews(View v) {
-        recyclerView = v.findViewById(R.id.rvRes);
+        FrameLayout frameLayout = v.findViewById(R.id.frame);
+        frameLayout.setOnClickListener(view -> openSearch());
 
+        recyclerView = v.findViewById(R.id.rvRes);
         mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        editSearch = v.findViewById(R.id.searchView);
         mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
             if (validateFields(saveQuery)) {
                 sendQuery(saveQuery);
@@ -69,25 +73,34 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000));
 
-        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                callSearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-
-            private void callSearch(String query) {
-                new SoftKeyboard(getActivity()).hideSoftKeyboard();
-                saveQuery = query;
-                sendQuery(query);
-            }
-        });
+//        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                callSearch(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return true;
+//            }
+//
+//            private void callSearch(String query) {
+//                new SoftKeyboard(getActivity()).hideSoftKeyboard();
+//                saveQuery = query;
+//                sendQuery(query);
+//            }
+//        });
     }
+
+    private void openSearch() {
+        HomeSearchFragment frag = new HomeSearchFragment();
+
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(frag);
+        }
+    }
+
 
     private void initRecyclerView() {
         restaurants = new ArrayList<>();
