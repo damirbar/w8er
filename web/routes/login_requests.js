@@ -28,21 +28,23 @@ router.post('/login-signup', function (req, res) {
                         const from = 'w8er';
                         const to = phone_number;
                         const text = 'your code is: ' + random + '                     .\n';
-                        nexmo.message.sendSms(from, to, text, function (err, data) {
-                            if (err) {
-                                console.log("error in sending text in login");
-                                res.status(404).json({message: err})
-                            }
-                            else {
-                                if (data.messages[0]['error-text']) {
-                                    console.log("error in sending text in login: " + data.messages[0]['error-text']);
-                                    res.status(404).json({message: data.messages[0]['error-text']})
-                                }
-                                else {
-                                    res.status(200).json({message: "verification sent"})
-                                }
-                            }
-                        });
+                        console.log(text);
+                        res.status(200).json({message: "verification sent"})
+                        // nexmo.message.sendSms(from, to, text, function (err, data) {
+                        //     if (err) {
+                        //         console.log("error in sending text in login");
+                        //         res.status(404).json({message: err})
+                        //     }
+                        //     else {
+                        //         if (data.messages[0]['error-text']) {
+                        //             console.log("error in sending text in login: " + data.messages[0]['error-text']);
+                        //             res.status(404).json({message: data.messages[0]['error-text']})
+                        //         }
+                        //         else {
+                        //             res.status(200).json({message: "verification sent"})
+                        //         }
+                        //     }
+                        // });
                     }
                 });
             }
@@ -68,21 +70,24 @@ router.post('/login-signup', function (req, res) {
                         const from = 'w8er';
                         const to = phone_number;
                         const text = 'your code is: ' + random + '                     .\n';
-                        nexmo.message.sendSms(from, to, text, function (err, data) {
-                            if (err) {
-                                console.log("error in sending text in login");
-                                res.status(404).json({message: err})
-                            }
-                            else {
-                                if (data.messages[0]['error-text']) {
-                                    console.log("error in sending text in login: " + data.messages[0]['error-text']);
-                                    res.status(404).json({message: data.messages[0]['error-text']})
-                                }
-                                else {
-                                    res.status(200).json({message: "verification sent"})
-                                }
-                            }
-                        });
+                        console.log(text);
+                        res.status(200).json({message: "verification sent"})
+
+                      // nexmo.message.sendSms(from, to, text, function (err, data) {
+                        //     if (err) {
+                        //         console.log("error in sending text in login");
+                        //         res.status(404).json({message: err})
+                        //     }
+                        //     else {
+                        //         if (data.messages[0]['error-text']) {
+                        //             console.log("error in sending text in login: " + data.messages[0]['error-text']);
+                        //             res.status(404).json({message: data.messages[0]['error-text']})
+                        //         }
+                        //         else {
+                        //             res.status(200).json({message: "verification sent"})
+                        //         }
+                        //     }
+                        // });
                     }
                 });
             }
@@ -110,7 +115,7 @@ router.post('/verify', function (req, res) {
                             user.accessToken = token;
                             user.save(function (err, usr) {
                                 if (err) {
-                                    console.log("Error while uptading user in /varify");
+                                    console.log("Error while uptading user in /verify");
                                     res.status(500).json({message: err})
                                 }
                                 else {

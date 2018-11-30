@@ -2,6 +2,7 @@ package com.w8er.android.restMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,12 @@ import com.w8er.android.activities.AddTagsActivity;
 import com.w8er.android.activities.ItemDescriptionActivity;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.RestItem;
+import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
+import java.util.Arrays;
 import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -80,7 +83,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveMenu());
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> exitAlert());
         mNumberPicker = findViewById(R.id.number_picker);
         mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> changeType());
         typeBtn.setOnClickListener(view -> OpenCloseList());
@@ -159,8 +162,16 @@ public class EditMenuItemActivity extends AppCompatActivity {
 
     private void initEditItem() {
 
-        StringBuilder type = new StringBuilder(restItem.getType().replaceAll("_", " "));
+        setTypePicker();
+        mName.setText(restItem.getName());
+        mDesc.setText(restItem.getDescription());
+        int price = Integer.parseInt(restItem.getPrice());
+        moneyEditText.setText(price);
+        initHashTags(restItem.getTags());
+    }
 
+    private void setTypePicker() {
+        StringBuilder type = new StringBuilder(restItem.getType().replaceAll("_", " "));
         String []words = type.toString().split(" ");
         type = new StringBuilder();
         for(String w: words) {
@@ -169,12 +180,9 @@ public class EditMenuItemActivity extends AppCompatActivity {
             type.append(w);
         }
 
+        int index = Arrays.asList(itemType).indexOf(type.toString());
+        mNumberPicker.setValue(index);
         typeBtn.setText(type.toString());
-        mName.setText(restItem.getName());
-        mDesc.setText(restItem.getDescription());
-        int price = Integer.parseInt(restItem.getPrice());
-        moneyEditText.setText(price);
-        initHashTags(restItem.getTags());
     }
 
     private void initHashTags(List<String> tags) {
@@ -220,29 +228,53 @@ public class EditMenuItemActivity extends AppCompatActivity {
     }
 
     private void saveMenu() {
-        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
-        String name = mName.getText().toString().trim();
-        String desc = mDesc.getText().toString().trim();
-        String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
-        String price = moneyEditText.getValueString();
 
-        if (!validateFields(name)) {
+        RestItem newItem = getNewItem();
+
+
+        if (!validateFields(getNewItem().getName())) {
 
             mServerResponse.showSnackBarMessage("Name should not be empty.");
             return;
         }
 
-        if (!validateFields(desc)) {
+        if (!validateFields(getNewItem().getDescription())) {
 
             mServerResponse.showSnackBarMessage("Description should not be empty.");
             return;
         }
 
-        if (allHashTags.isEmpty()) {
+        if (!(newItem.equals(restItem))) {
+            postMenuItem(newItem);
 
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
+            mBSave.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else
+            finish();
+
+    }
+
+    public void exitAlert() {
+        if(restItem!=null && !restItem.equals(getNewItem())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Discard Changes?");
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Discard Changes", (dialog, which) -> finish());
+            builder.setNegativeButton("Keep Editing", (dialog, which) -> {
+            });
+            builder.show();
         }
+        else
+            finish();
+    }
+
+    private RestItem getNewItem() {
+
+        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+        String name = mName.getText().toString().trim();
+        String desc = mDesc.getText().toString().trim();
+        String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
+        String price = moneyEditText.getValueString();
 
         RestItem newItem = new RestItem();
         newItem.setName(name);
@@ -251,11 +283,15 @@ public class EditMenuItemActivity extends AppCompatActivity {
         newItem.setTags(allHashTags);
         newItem.setPrice(price);
 
-        postMenuItem(newItem);
-
-        mBSave.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
-
+        return  newItem;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
+
 
 }

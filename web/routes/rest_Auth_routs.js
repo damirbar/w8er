@@ -78,155 +78,156 @@ router.post('/remove-pic', function (req, res) {
       });
     }
   });
+});
 
-  router.post("/add-item", function (req, res) {
-    let type = req.body.type;
-    if (type === "appetizer" || type === "main_course" || type === "dessert" || type === "drinks" || type === "deals" || type === "specials") {
-      let item = new Item({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        available: req.body.available,
-        tags: req.body.tags
-      });
-      item.save(function (err, i) {
-        if (err) {
-          console.log(err);
-          res.status(500).json({message: err});
+router.post("/add-item", function (req, res) {
+  let type = req.body.type;
+  if (type === "appetizer" || type === "main_course" || type === "dessert" || type === "drinks" || type === "deals" || type === "specials") {
+    let item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      available: req.body.available,
+      tags: req.body.tags
+    });
+    item.save(function (err, i) {
+      if (err) {
+        console.log(err);
+        res.status(500).json({message: err});
+      }
+      else {
+        let query = {$push: {}};
+        query['$push']['menu.' + type] = i.id;
+        req.rest.updateOne(query, function (err, rest) {
+          if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
+          }
+          else {
+            res.status(200).json({message: 'added item to menu'});
+          }
+        });
+      }
+    });
+  }
+});
+
+router.post('/edit-item-photo', type, function (req, res) {
+  Item.findOne({_id: req.body.id}, function (err, item) {
+    if (err) {
+      console.log("error in /edit-item-photo");
+      res.status(500).json({message: err});
+    }
+    else {
+      if (!req.file) {
+        console.log("no file");
+        res.status(400).json({message: 'no file'});
+      }
+      else {
+        const path = req.file.path;
+        if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+          fs.unlinkSync(path);
+          res.status(400).json({message: 'wrong file'});
+          console.log("wrong file type");
         }
         else {
-          let query = {$push: {}};
-          query['$push']['menu.' + type] = i.id;
+          uploader.uploadItemPic(req.file, path, "items/" + req.rest.id + "/" + item.id + "_image", item, res);
+        }
+      }
+    }
+  });
+});
+
+router.post('/edit-item', function (req, res) {
+  Item.findOne({id: req.id}, function (err, item) {
+    if (err) {
+      console.log("error in /edit-item");
+      res.status(500).json({message: err});
+    }
+    else {
+      if (item) {
+        item.name = req.body.name ? req.body.name : item.name;
+        item.description = req.body.description ? req.body.description : item.description;
+        item.price = req.body.price ? req.body.price : item.price;
+        item.available = req.body.available ? req.body.available : item.available;
+        item.tags = req.body.tags ? req.body.tags : item.tags;
+        item.save(function (err, item) {
+          if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
+          }
+          else {
+            res.status(200).json({message: 'item edited'});
+          }
+        });
+      }
+      else {
+        return res.status(404).json({message: 'no such item'});
+      }
+    }
+  });
+});
+
+router.post('/remove-item', function (req, res) {
+  Item.findOne({_id: req.body.id}, function (err, item) {
+    if (err) {
+      console.log("error in /remove-item");
+      res.status(500).json({message: err});
+    }
+    else {
+      if (item) {
+        let type = req.body.type;
+        if (req.rest.menu[type].includes(item.id)) {
+          let query = {$pull: {}};
+          query['$pull']['menu.' + type] = item.id;
           req.rest.updateOne(query, function (err, rest) {
             if (err) {
               console.log(err);
               res.status(500).json({message: err});
             }
             else {
-              res.status(200).json({message: 'added item to menu'});
+              res.status(200).json({message: 'removed item from menu'});
+              cloudinary.v2.uploader.destroy(item.picture, function (result) {
+                console.log(result);
+
+                item.remove(function (err, item) {
+                  if (err) {
+                    console.log('error in removing item ' + item.id);
+                    console.log('the error is in /remove-item');
+                  }
+
+                });
+              });
             }
           });
         }
-      });
+        else {
+          return res.status(404).json({message: 'item not in restaurant'});
+        }
+      }
+      else {
+        return res.status(404).json({message: 'no such item'});
+      }
     }
   });
+});
 
-  router.post('/edit-item-photo', type, function (req, res) {
-    Item.findOne({_id: req.body.id}, function (err, item) {
-      if (err) {
-        console.log("error in /edit-item-photo");
-        res.status(500).json({message: err});
-      }
-      else {
-        if (!req.file) {
-          console.log("no file");
-          res.status(400).json({message: 'no file'});
-        }
-        else {
-          const path = req.file.path;
-          if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
-            fs.unlinkSync(path);
-            res.status(400).json({message: 'wrong file'});
-            console.log("wrong file type");
-          }
-          else {
-            uploader.uploadItemPic(req.file, path, "items/" + req.rest.id + "/" + item.id + "_image", item, res);
-          }
-        }
-      }
-    });
-  });
-
-  router.post('/edit-item', function (req, res) {
-    Item.findOne({id: req.id}, function (err, item) {
-      if (err) {
-        console.log("error in /edit-item");
-        res.status(500).json({message: err});
-      }
-      else {
-        if (item) {
-          item.name = req.body.name ? req.body.name : item.name;
-          item.description = req.body.description ? req.body.description : item.description;
-          item.price = req.body.price ? req.body.price : item.price;
-          item.available = req.body.available ? req.body.available : item.available;
-          item.tags = req.body.tags ? req.body.tags : item.tags;
-          item.save(function (err, item) {
-            if (err) {
-              console.log(err);
-              res.status(500).json({message: err});
-            }
-            else {
-              res.status(200).json({message: 'item edited'});
-            }
-          });
-        }
-        else {
-          return res.status(404).json({message: 'no such item'});
-        }
-      }
-    });
-  });
-
-  router.post('/remove-item', function (req, res) {
-    Item.findOne({_id: req.body.id}, function (err, item) {
-      if (err) {
-        console.log("error in /remove-item");
-        res.status(500).json({message: err});
-      }
-      else {
-        if (item) {
-          let type = req.body.type;
-          if (req.rest.menu[type].includes(item.id)) {
-            let query = {$pull: {}};
-            query['$pull']['menu.' + type] = item.id;
-            req.rest.updateOne(query, function (err, rest) {
-              if (err) {
-                console.log(err);
-                res.status(500).json({message: err});
-              }
-              else {
-                res.status(200).json({message: 'removed item from menu'});
-                cloudinary.v2.uploader.destroy(item.picture, function (result) {
-                  console.log(result);
-
-                  item.remove(function (err, item) {
-                    if (err) {
-                      console.log('error in removing item ' + item.id);
-                      console.log('the error is in /remove-item');
-                    }
-
-                  });
-                });
-              }
-            });
-          }
-          else {
-            return res.status(404).json({message: 'item not in restaurant'});
-          }
-        }
-        else {
-          return res.status(404).json({message: 'no such item'});
-        }
-      }
-    });
-  });
-
-  router.post('/post-profile-image', type, function (req, res) {
-    if (!req.file) {
-      console.log("no file");
-      res.status(400).json({message: 'no file'});
+router.post('/post-profile-image', type, function (req, res) {
+  if (!req.file) {
+    console.log("no file");
+    res.status(400).json({message: 'no file'});
+  }
+  else {
+    const path = req.file.path;
+    if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+      fs.unlinkSync(path);
+      res.status(400).json({message: 'wrong file'});
+      console.log("wrong file type");
     }
     else {
-      const path = req.file.path;
-      if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
-        fs.unlinkSync(path);
-        res.status(400).json({message: 'wrong file'});
-        console.log("wrong file type");
-      }
-      else {
-        uploader.uploadProfileImage(req.file, path, req.rest, ('restaurants/' + req.rest.id + "/rest_profile"), res);
-      }
+      uploader.uploadProfileImage(req.file, path, req.rest, ('restaurants/' + req.rest.id + "/rest_profile"), res);
     }
-  });
+  }
+});
 
-  module.exports = router;
+module.exports = router;

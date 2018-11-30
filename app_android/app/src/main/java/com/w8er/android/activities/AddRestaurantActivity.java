@@ -314,11 +314,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
             mServerResponse.showSnackBarMessage("Phone should not be empty.");
             return;
         }
-        if (allHashTags.isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
 
         if (timeSlots.isEmpty()) {
 

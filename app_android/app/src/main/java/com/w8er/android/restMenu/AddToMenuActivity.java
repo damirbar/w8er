@@ -2,6 +2,7 @@ package com.w8er.android.restMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -79,7 +80,7 @@ public class AddToMenuActivity extends AppCompatActivity {
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveMenu());
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> exitAlert());
         mNumberPicker = findViewById(R.id.number_picker);
         mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> changeType());
         typeBtn.setOnClickListener(view -> OpenCloseList());
@@ -208,12 +209,6 @@ public class AddToMenuActivity extends AppCompatActivity {
             return;
         }
 
-        if (allHashTags.isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
-
         RestItem item = new RestItem();
         item.setName(name);
         item.setDescription(desc);
@@ -227,5 +222,35 @@ public class AddToMenuActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
+
+    public boolean isChanged() {
+        String name = mName.getText().toString().trim();
+        String disc = mDesc.getText().toString().trim();
+        String price  = moneyEditText.getValueString();
+        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
+        return (!name.isEmpty() || !disc.isEmpty() || !price.isEmpty() || allHashTags.size() > 0);
+
+    }
+
+    public void exitAlert() {
+
+        if (isChanged()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Leave", (dialog, which) -> finish());
+            builder.setNegativeButton("Stay", (dialog, which) -> { });
+            builder.show();
+        } else
+            finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
 
 }
