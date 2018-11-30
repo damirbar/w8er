@@ -114,30 +114,36 @@ router.post("/add-item", function (req, res) {
 });
 
 router.post('/edit-item-photo', type, function (req, res) {
-  Item.findOne({id: req.body.id}, function (err, item) {
+  Item.findOne({_id: req.query.id}, function (err, item) {
     if (err) {
       console.log("error in /edit-item-photo");
       res.status(500).json({message: err});
     }
     else {
-      if (!req.file) {
-        console.log("no file");
-        res.status(400).json({message: 'no file'});
-      }
-      else {
-        const path = req.file.path;
-        if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
-          fs.unlinkSync(path);
-          res.status(400).json({message: 'wrong file'});
-          console.log("wrong file type");
+      if (item) {
+        if (!req.file) {
+          console.log("no file");
+          res.status(400).json({message: 'no file'});
         }
         else {
-          uploader.uploadItemPic(req.file, path, "items/" + req.rest.id + "/" + item.id + "_image", item, res);
+          const path = req.file.path;
+          if (!req.file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)) {
+            fs.unlinkSync(path);
+            res.status(400).json({message: 'wrong file'});
+            console.log("wrong file type");
+          }
+          else {
+            uploader.uploadItemPic(req.file, path, "items/" + req.rest.id + "/" + item.id + "_image", item, res);
+          }
         }
+      }
+      else {
+        res.status(404).json({message: 'item not found'});
       }
     }
   });
-});
+})
+;
 
 router.post('/edit-item', function (req, res) {
   Item.findOne({id: req.id}, function (err, item) {
@@ -192,14 +198,14 @@ router.post('/edit-item', function (req, res) {
 });
 
 router.post('/remove-item', function (req, res) {
-  Item.findOne({id: req.body.id}, function (err, item) {
+  Item.findOne({_id: req.body._id}, function (err, item) {
     if (err) {
       console.log("error in /remove-item");
       res.status(500).json({message: err});
     }
     else {
       if (item) {
-        let type = req.body.type;
+        let type = item.type;
         if (req.rest.menu[type].includes(item.id)) {
           let query = {$pull: {}};
           query['$pull']['menu.' + type] = item.id;
@@ -210,16 +216,19 @@ router.post('/remove-item', function (req, res) {
             }
             else {
               res.status(200).json({message: 'removed item from menu'});
-              cloudinary.v2.uploader.destroy(item.image_id, function (result) {
-                console.log(result);
-
-                item.remove(function (err, item) {
-                  if (err) {
-                    console.log('error in removing item ' + item.id);
-                    console.log('the error is in /remove-item');
-                  }
-
-                });
+              cloudinary.v2.uploader.destroy(item.image_id, function (err, result) {
+                if (err) {
+                  console.log(err);
+                  res.status(500).json({message: err});
+                }
+                else {
+                  item.remove(function (err, item) {
+                    if (err) {
+                      console.log('error in removing item ' + item.id);
+                      console.log('the error is in /remove-item');
+                    }
+                  });
+                }
               });
             }
           });
