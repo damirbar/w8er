@@ -1,6 +1,7 @@
 package com.w8er.android.restMenu;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
@@ -19,12 +22,22 @@ import com.w8er.android.model.RestItem;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
+import java.io.InputStream;
+
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.network.RetrofitRequests.getBytes;
+import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
+
 public class MenuItemActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE_IMAGE_GALLERY = 0x1;
 
     private RestItem restItem;
     private TextView mItemNameBar;
@@ -38,6 +51,7 @@ public class MenuItemActivity extends AppCompatActivity {
     private String restId;
     private TextView mAmount;
     private int amount = 0;
+    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +120,27 @@ public class MenuItemActivity extends AppCompatActivity {
             return false;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
+
+        if (requestCode == REQUEST_CODE_IMAGE_GALLERY) {
+            if (resultCode == RESULT_OK) {
+                try {
+
+                    Uri uri = result.getData();
+                    String fileName = getFileDetailFromUri(this, uri);
+                    InputStream is = getContentResolver().openInputStream(result.getData());
+                    tryUploadImage(getBytes(is), fileName);
+                    is.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     private void intItem() {
 
         String url = restItem.getPicture();
@@ -133,6 +168,10 @@ public class MenuItemActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.action_add_image){
+            addImageGallery();
+            return true;
+        }
         if (id == R.id.action_edit){
             editItem();
             return true;
@@ -145,6 +184,53 @@ public class MenuItemActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void addImageGallery() {
+        try {
+            String mimeType = "image/*";
+
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            intent.setType(mimeType);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivityForResult(intent, REQUEST_CODE_IMAGE_GALLERY);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "No image source available", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+
+    private void tryUploadImage(byte[] bytes, String fileName) {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setDimAmount(0.5f)
+                .show();
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
+            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editItemImage(restId, restItem.get_id(), body)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
+
+    }
+
+    private void handleResponseUploadImage(Response response) {
+        hud.dismiss();
+//        getResProcess(restId);
+    }
+
+    private void handleErrorUploadImage(Throwable error) {
+        hud.dismiss();
+        mServerResponse.handleError(error);
+    }
+
 
 
     private void removeItem() {

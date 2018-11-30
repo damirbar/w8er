@@ -56,6 +56,10 @@ public interface RetrofitInterface {
     @GET("user/get-favorites")
     Observable<Restaurants> getFavoritesRest();
 
+    @GET("user/get-my-restaurants")
+    Observable<Restaurants> getMyRest();
+
+
     @POST("user/add-to-favorites")
     Observable<Response> addToFavorites(@Body Restaurant restaurant);
 
@@ -96,6 +100,9 @@ public interface RetrofitInterface {
     @POST("restAuth/edit-item")
     Observable<Response> editMenuItem(@Query("restId") String restId, @Body RestItem restItem);
 
+    @Multipart
+    @POST("restAuth/edit-item-photo")
+    Observable<Response> editItemImage(@Query("restId") String restId, @Query("id") String id, @Part MultipartBody.Part file);
 
     //////////////////Tools//////////////////
 

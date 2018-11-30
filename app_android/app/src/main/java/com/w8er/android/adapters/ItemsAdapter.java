@@ -46,11 +46,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         holder.price.setText(strPrice);
 
         String pic = mData.get(position).getPicture();
-        if (pic != null && !(pic.isEmpty()))
-            Picasso.with(mContext)
-                    .load(pic)
-                    .error(R.drawable.default_user_image)
-                    .into(holder.image);
+        if (pic != null && !(pic.isEmpty())){
+                holder.image.setVisibility(View.VISIBLE);
+                Picasso.with(mContext)
+                        .load(pic)
+                        .error(R.drawable.default_user_image)
+                        .into(holder.image);
+        }
+        else{
+            holder.image.setVisibility(View.GONE);
+        }
     }
 
     // total number of rows

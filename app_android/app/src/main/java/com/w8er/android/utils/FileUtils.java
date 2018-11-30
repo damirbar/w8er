@@ -4,7 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 
@@ -30,6 +33,20 @@ public class FileUtils {
         }
         return name;
     }
+
+    public static String getFilePathFromURI(Context context, Uri contentUri) {
+        //copy file and send new file path
+        String fileName = getFileDetailFromUri(context, contentUri);
+        if (!TextUtils.isEmpty(fileName)) {
+            String TEMP_DIR_PATH = Environment.getExternalStorageDirectory().getPath();
+            File copyFile = new File(TEMP_DIR_PATH + File.separator + fileName);
+            Log.d("DREG", "FilePath copyFile: " + copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+
 
 
 }

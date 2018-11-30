@@ -25,7 +25,7 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public ImageHorizontalAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.restaurant_image_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.feed_restaurant_image_item, viewGroup, false);
         return new ImageHorizontalAdapter.ViewHolder(view);
     }
 
