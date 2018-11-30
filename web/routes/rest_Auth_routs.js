@@ -210,7 +210,7 @@ router.post('/remove-item', function (req, res) {
             }
             else {
               res.status(200).json({message: 'removed item from menu'});
-              cloudinary.v2.uploader.destroy(item.picture, function (result) {
+              cloudinary.v2.uploader.destroy(item.picture.id, function (result) {
                 console.log(result);
 
                 item.remove(function (err, item) {
