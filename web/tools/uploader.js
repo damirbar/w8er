@@ -82,7 +82,7 @@ let uploadService = {
         }
         else {
           console.log("uploaded " + file.originalname);
-          item.updateOne({pictures: {url: result.url, id: result.public_id}}, function (err) {
+          item.updateOne({image_url: result.url, image_id: result.public_id}, function (err) {
             if (err) {
               console.log(err);
               res.status(500).json({message: err});

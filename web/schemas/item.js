@@ -9,10 +9,9 @@ var itemSchema = new mongoose.Schema({
   price: {type: String, default: ""},
   available: {type: Boolean, default: true},
   tags: [String],
-  pictures: [{
-    url: {type: String, default: ""},
-    id: {type: String, default: ""}
-  }],
+  image_url: {type: String, default: ""},
+  image_id: {type: String, default: ""}
+
 
 });
 
