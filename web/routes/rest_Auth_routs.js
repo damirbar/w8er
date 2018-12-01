@@ -270,7 +270,8 @@ router.post('/post-profile-image', type, function (req, res) {
 
 router.post('/new-session', function (req, res) {
   let sess = new Session({
-    sid: generate(5),
+    sid: generate_num(5),
+    pass: generate_letter(4)
   });
   sess.save(function (err, sess) {
     if (err) {
@@ -278,25 +279,33 @@ router.post('/new-session', function (req, res) {
       res.status(500).json({message: err});
     }
     else {
-      req.rest.update({$push : {sessions: sess.id}},function (err, rst) {
+      req.rest.updateOne({$push: {sessions: sess.id}}, function (err, rst) {
         if (err) {
           console.log(err);
           res.status(500).json({message: err});
         }
         else {
-          res.status(200).json({sid: sess.sid});
+          res.status(200).json({sid: sess.sid, pass: sess.pass});
         }
       });
     }
   });
 });
 
-
-function generate(length) {
+function generate_num(length) {
   let chars = '0123456789';
   let result = "";
   for (var i = length; i > 0; --i)
     result += chars[Math.round(Math.random() * (chars.length - 1))]
   return result
 }
+
+function generate_letter(length) {
+  let chars = 'abcdefghijklmnopqrstuvwxyz';
+  let result = "";
+  for (var i = length; i > 0; --i)
+    result += chars[Math.round(Math.random() * (chars.length - 1))]
+  return result
+}
+
 module.exports = router;
