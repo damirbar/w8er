@@ -4,35 +4,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
-import com.w8er.android.dialogs.MyDateDialog;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.SearchRest;
-import com.w8er.android.model.Searchable;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.SoftKeyboard;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -117,9 +106,9 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Searchable searchable) {
+    private void handleResponse(Restaurants restaurants) {
         if (!saveQuery.isEmpty()) {
-            adapter.setmData(searchable.getRestaurants());
+            adapter.setmData(restaurants.getRestaurants());
             adapter.notifyDataSetChanged();
         }
     }

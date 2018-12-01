@@ -1,13 +1,12 @@
 package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
-import com.w8er.android.model.RestItem;
-import com.w8er.android.model.MenuRest;
 import com.w8er.android.model.Response;
+import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.Review;
-import com.w8er.android.model.Searchable;
+import com.w8er.android.model.SearchRest;
 import com.w8er.android.model.User;
 
 import java.util.List;
@@ -27,8 +26,10 @@ public interface RetrofitInterface {
     //////////////////search//////////////////
 
     @GET("search/free-text-search")
-    Observable<Searchable> getFreeTextSearch(@Query("keyword") String keyword);
+    Observable<Restaurants> getFreeTextSearch(@Query("keyword") String keyword);
 
+    @POST("search/search-by-location-tags")
+    Observable<Restaurants> getSearchByLocationTags(@Body SearchRest searchRest);
 
     //////////////////Auth//////////////////
 
