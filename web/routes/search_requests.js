@@ -33,7 +33,7 @@ router.get('/free-text-search', function (req, res) {
   });
 });
 
-router.post('/search-by-location-tags', function (req, res) {
+router.post('/search-by-address-tags', function (req, res) {
   geocoder.geocode(req.body.address).then(function (result) {
     if (result.raw.status === "OK") {
       let dist = parseFloat(SET_DISTANCE_IN_CITY) * 1000; // for kilometers
@@ -75,6 +75,39 @@ router.post('/search-by-location-tags', function (req, res) {
     console.log("problem with geocoder in create restaurant:");
     console.error(e.message);
     return res.status(404).json({message: "problem with address"});
+  });
+});
+
+
+router.post('/search-by-coord-tags', function (req, res) {
+  let dist = parseFloat(SET_DISTANCE_IN_CITY) * 1000; // for kilometers
+  Restaurant.find({
+    location: {
+      $near: {
+        $maxDistance: dist,
+        $geometry: {
+          type: "Point",
+          coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+        }
+      }
+    }
+  }).find(function (err, results) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({message: err});
+    }
+    else {
+      let len = results.length;
+      let ans = [];
+      for (let i = 0; i < len; ++i) {
+        var target = req.body.tags;
+        var checkArray = results[i].tags;
+        if (target.some(x => checkArray.some(y => y === x))) {
+          ans.push(results[i]);
+        }
+      }
+      res.status(200).json({restaurants: ans});
+    }
   });
 });
 module.exports = router;
