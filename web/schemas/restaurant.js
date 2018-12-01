@@ -23,7 +23,6 @@ var RestaurantSchema = new mongoose.Schema({
   rating: {type: Number, default: 0},
   kosher: {type: Boolean, required: true, default: false},
   profile_img: {type: String, default: "http://res.cloudinary.com/w8er/image/upload/v1543601240/w8er/rest_default.jpg"},
-  sessions: {},
   hours: [time],
   // hours = [{open: '08:00', close: '12:00', days: 'Sunday-Thursday'}, {open: '14:00', close: '18:00', days: 'Sunday-Thursday'}, {open: '08:00', close: '14:00', days: 'Friday'}];
   address: {type: String, default: ""},
@@ -47,6 +46,7 @@ var RestaurantSchema = new mongoose.Schema({
     deals: [String],
     specials: [String]
   },
+  sessions: [String]
 
 }, {usePushEach: true});
 
