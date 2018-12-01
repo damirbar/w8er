@@ -19,7 +19,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collaptoolbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:background="@color/colorPrimaryDark"
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="exitUntilCollapsed|scroll">
@@ -49,25 +49,52 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax" />
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/searchView"
+            <FrameLayout
+                android:id="@+id/frame"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edittext_search"
-                android:baselineAligned="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:iconifiedByDefault="false"
-                android:maxLength="@integer/def_max"
-                android:queryBackground="@android:color/transparent"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@color/white"
-                app:queryHint="Search.." />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edittext_search"
+                    android:baselineAligned="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:iconifiedByDefault="false"
+                    android:inputType="none"
+                    android:maxLength="@integer/def_max"
+                    android:queryBackground="@android:color/transparent"
+                    android:visibility="visible"
+                    app:iconifiedByDefault="true"
+                    app:queryBackground="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Search  for burgers, delivery on W8er" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    app:srcCompat="@drawable/ic_searching_magnifying_glass" />
+
+            </FrameLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
