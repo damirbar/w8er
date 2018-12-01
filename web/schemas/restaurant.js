@@ -55,6 +55,7 @@ RestaurantSchema.index({location: "2dsphere"});
 RestaurantSchema.index({
     name: "text",
     tags: "text",
+
   },
   {
     weights: {
