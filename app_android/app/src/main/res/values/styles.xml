@@ -32,5 +32,14 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:displayOptions">homeAsUp</item>
+    </style>
+
+    <!--GPS Search View-->
+    <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_map_localization</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
 </resources>

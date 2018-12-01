@@ -102,4 +102,8 @@ dependencies {
     //Draw on screen
     implementation 'com.github.gcacace:signature-pad:1.2.1'
 
+    //Android Sliding Up Panel
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+
 }

@@ -8,12 +8,16 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -24,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Restaurants;
@@ -47,6 +52,7 @@ public class SearchResultsFragment extends BaseFragment {
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private TextView mQuery;
+    private SlidingUpPanelLayout mLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,10 +69,39 @@ public class SearchResultsFragment extends BaseFragment {
     }
 
     private void initViews(View v) {
+        Toolbar toolbar = v.findViewById(R.id.tool_bar);
+        ImageButton backButton = v.findViewById(R.id.image_Button_back);
+        mLayout = (SlidingUpPanelLayout) v.findViewById(R.id.sliding_layout);
+        mLayout.setAnchorPoint(0.7f);
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
+                    toolbar.setVisibility(View.VISIBLE);
+                else
+                    toolbar.setVisibility(View.GONE);
+
+            }
+        });
+        mLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
         mMapView = (MapView) v.findViewById(R.id.mapView);
-        mQuery =  v.findViewById(R.id.textViewQuery);
+        mQuery = v.findViewById(R.id.textViewQuery);
         FrameLayout frameLayout = v.findViewById(R.id.frame);
         frameLayout.setOnClickListener(view -> getActivity().onBackPressed());
+        backButton.setOnClickListener(view -> getActivity().onBackPressed());
     }
 
     private void getData() {
@@ -171,11 +206,6 @@ public class SearchResultsFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
 
     @Override
     public void onPause() {
@@ -204,13 +234,42 @@ public class SearchResultsFragment extends BaseFragment {
 
     private void handleResponse(Restaurants restaurants) {
 
-        if (googleMap!= null && restaurants.getRestaurants()!=null) {
+        if (googleMap != null && restaurants.getRestaurants() != null) {
             for (Restaurant r : restaurants.getRestaurants()) {
                 LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
                 GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
             }
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+
+        if (getView() == null) {
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (mLayout != null &&
+                            (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    } else {
+                        getActivity().onBackPressed();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 }
