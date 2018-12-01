@@ -8,9 +8,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,7 +23,9 @@ import android.widget.TextView;
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
+import com.w8er.android.dialogs.MyDateDialog;
 import com.w8er.android.model.Restaurant;
+import com.w8er.android.model.SearchRest;
 import com.w8er.android.model.Searchable;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -35,7 +40,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Validation.validateFields;
 
-public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
+public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener ,HomeSearchFragment.OnCallbackSearch {
 
     private RestaurantsAdapter adapter;
     private RecyclerView recyclerView;
@@ -93,14 +98,6 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
 //        });
     }
 
-    private void openSearch() {
-        HomeSearchFragment frag = new HomeSearchFragment();
-
-        if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(frag);
-        }
-    }
-
 
     private void initRecyclerView() {
         restaurants = new ArrayList<>();
@@ -156,4 +153,26 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
             mFragmentNavigation.pushFragment(frag);
         }
     }
+
+    private void openSearch() {
+        HomeSearchFragment newFragment = new HomeSearchFragment();
+        newFragment.setTargetFragment(this, 0);
+        newFragment.show(getActivity().getSupportFragmentManager(), HomeSearchFragment.TAG);
+    }
+
+
+    @Override
+    public void UpdateSearch(SearchRest query) {
+
+        Bundle i = new Bundle();
+        i.putParcelable("query", query);
+        SearchResultsFragment frag = new SearchResultsFragment();
+        frag.setArguments(i);
+
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(frag);
+        }
+    }
+
+
 }

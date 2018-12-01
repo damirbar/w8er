@@ -32,6 +32,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
@@ -107,8 +108,12 @@ public class SearchResultsFragment extends BaseFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String query = bundle.getString("query");
-            mQuery.setText(query);
+            SearchRest query = bundle.getParcelable("query");
+
+            if(query!=null) {
+                String strQuery = query.toString();
+                mQuery.setText(strQuery);
+            }
         }
     }
 
