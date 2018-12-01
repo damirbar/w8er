@@ -3,7 +3,6 @@ var router = express.Router();
 let geocoder = require('../config/config').geocoder;
 var Restaurant = require("../schemas/restaurant");
 
-
 let SET_DISTANCE_IN_CITY = 5;
 
 router.get('/free-text-search', function (req, res) {
@@ -86,7 +85,7 @@ router.post('/search-by-coord-tags', function (req, res) {
         $maxDistance: dist,
         $geometry: {
           type: "Point",
-          coordinates: req.body.coordinates
+          coordinates: req.body.location.coordinates
         }
       }
     }
@@ -109,4 +108,5 @@ router.post('/search-by-coord-tags', function (req, res) {
     }
   });
 });
+
 module.exports = router;
