@@ -1,7 +1,7 @@
  <!--<mat-toolbar color="primary">Text <a routerLink="/rest-requests">CLICK</a></mat-toolbar>-->
  <mat-toolbar color="primary">
 
-   <span>Responsive Navigation</span>
+   <span>W8er</span>
 
    <span class="example-spacer"></span>
 
@@ -10,17 +10,17 @@
      <!-- The following menu items will be hidden on both SM and XS screen sizes -->
 
 
-     <a href="" mat-button>Home</a>
+     <a routerLink="/" mat-button>Home</a>
 
-     <a href="" mat-button>Profile</a>
+     <a routerLink="/user-profile" mat-button>Profile</a>
 
-     <a href="" mat-button>Restaurants</a>
+     <a routerLink="/" mat-button>Restaurants</a>
 
    </div>
 
    <div fxShow="true" fxHide.gt-sm="true">
 
-     <a href="#" (click)="sidenav.toggle()">Show Side Menu</a>
+     <button (click)="sidenav.toggle()">Show Side Menu</button>
 
    </div>
 
@@ -32,13 +32,13 @@
 
      <div fxLayout="column">
 
-       <a (click)="sidenav.toggle()" href="#" mat-button>Close</a>
+       <button (click)="sidenav.toggle()" mat-button>Close</button>
 
-       <a href="" mat-button>Home</a>
+       <a routerLink="/" mat-button>Home</a>
 
-       <a href="" mat-button>Profile</a>
+       <a routerLink="/user-profile" mat-button>Profile</a>
 
-       <a href="" mat-button>Restaurants</a>
+       <a routerLink="/" mat-button>Restaurants</a>
 
      </div>
 
