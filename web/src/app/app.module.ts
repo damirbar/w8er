@@ -30,6 +30,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {AuthInterceptor} from "./auth-interceptor.service";
 import {RouterModule} from "@angular/router";
+import { AgmCoreModule } from '@agm/core'
 
 @NgModule({
   declarations: [
@@ -54,7 +55,10 @@ import {RouterModule} from "@angular/router";
     HttpClientModule,
     HttpModule,
     FlexLayoutModule,
-    MatSidenavModule
+    MatSidenavModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDgeD52T0OSxhoQ4K0_75-FDIKdACGg3pk'
+    })
   ],
   providers: [
     PostsService,
