@@ -16,7 +16,7 @@ router.all('*', function (req, res, next) {
     req.url === '/vendor.js' ||
     req.url === '/main.js' ||
     req.url.includes('/auth/') ||
-    req.url.includes('/free-text-search') ||
+    req.url.includes('/search/') ||
     req.url.includes('/find-near-location') ||
     req.url.includes('/get-menu') ||
     req.url.includes('/get-item-by-id') ||
