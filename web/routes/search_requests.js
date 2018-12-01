@@ -78,7 +78,6 @@ router.post('/search-by-address-tags', function (req, res) {
   });
 });
 
-
 router.post('/search-by-coord-tags', function (req, res) {
   let dist = parseFloat(SET_DISTANCE_IN_CITY) * 1000; // for kilometers
   Restaurant.find({
@@ -87,7 +86,7 @@ router.post('/search-by-coord-tags', function (req, res) {
         $maxDistance: dist,
         $geometry: {
           type: "Point",
-          coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+          coordinates: req.coordinates
         }
       }
     }

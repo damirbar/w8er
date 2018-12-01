@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Item = require('../schemas/item');
+let Session = require('../schemas/session');
 const multer = require('multer');
 const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
@@ -188,7 +189,7 @@ router.post('/edit-item', function (req, res) {
                 }
               });
             }
-            else{
+            else {
               res.status(200).json({message: 'item edited'});
             }
           }
@@ -225,7 +226,7 @@ router.post('/remove-item', function (req, res) {
                   console.log(err);
                 }
                 else {
-                  if (item.image_id !== ""){
+                  if (item.image_id !== "") {
                     cloudinary.v2.uploader.destroy(item.image_id, function (err, result) {
                       if (err) {
                         console.log('error in removing item ' + item.id);
@@ -267,4 +268,35 @@ router.post('/post-profile-image', type, function (req, res) {
   }
 });
 
+router.post('/new-session', function (req, res) {
+  let sess = new Session({
+    sid: generate(5),
+  });
+  sess.save(function (err, sess) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({message: err});
+    }
+    else {
+      req.rest.update({$push : {sessions: sess.id}},function (err, rst) {
+        if (err) {
+          console.log(err);
+          res.status(500).json({message: err});
+        }
+        else {
+          res.status(200).json({sid: sess.sid});
+        }
+      });
+    }
+  });
+});
+
+
+function generate(length) {
+  let chars = '0123456789';
+  let result = "";
+  for (var i = length; i > 0; --i)
+    result += chars[Math.round(Math.random() * (chars.length - 1))]
+  return result
+}
 module.exports = router;
