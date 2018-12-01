@@ -8,11 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
@@ -22,7 +18,7 @@ import java.util.List;
 
 import static com.w8er.android.utils.RatingUtils.roundToHalf;
 
-public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
+public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnapAdapter.ViewHolder> {
     private List<Restaurant> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -30,7 +26,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
 
     // data is passed into the constructor
-    public RestaurantsAdapter(Context context, List<Restaurant> data) {
+    public RestaurantsSnapAdapter(Context context, List<Restaurant> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.mContext =context;
@@ -39,7 +35,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.feed_restaurant_item, parent, false);
+        View view = mInflater.inflate(R.layout.restaurant_floating_item, parent, false);
         return new ViewHolder(view);
     }
 

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,24 +15,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
+import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.RestaurantsAdapter;
-import com.w8er.android.model.Coordinates;
+import com.w8er.android.adapters.RestaurantsSnapAdapter;
 import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.GoogleMapUtils;
 import com.w8er.android.utils.SoftKeyboard;
 
 import java.util.ArrayList;
@@ -45,7 +52,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
+public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener, GoogleMap.OnMarkerClickListener {
 
     private final int REQ_PERMISSION = 888;
 
@@ -59,6 +66,10 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     private RestaurantsAdapter adapter;
     private RecyclerView recyclerView;
     private SearchRest saveQuery;
+    private ImageView mDragView;
+    private ImageView toolbarImage;
+    private MultiSnapRecyclerView multiSnapRecyclerView;
+    private RestaurantsSnapAdapter adapterSnap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,18 +86,24 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     }
 
     private void initViews(View v) {
+        multiSnapRecyclerView = v.findViewById(R.id.res_snap);
+        mDragView = v.findViewById(R.id.imageViewLine);
         recyclerView = v.findViewById(R.id.rvRes);
         initRecyclerView();
-        Toolbar toolbar = v.findViewById(R.id.tool_bar);
+        initRestaurantSnapView();
+        toolbarImage = v.findViewById(R.id.tool_bar_image);
         ImageButton backButton = v.findViewById(R.id.image_Button_back);
         mLayout = (SlidingUpPanelLayout) v.findViewById(R.id.sliding_layout);
         mLayout.setAnchorPoint(0.7f);
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
         if (!mLayout.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-            toolbar.setVisibility(View.GONE);
-        } else
-            toolbar.setVisibility(View.VISIBLE);
+            toolbarImage.setVisibility(View.GONE);
+            mDragView.setVisibility(View.VISIBLE);
+        } else {
+            toolbarImage.setVisibility(View.VISIBLE);
+            mDragView.setVisibility(View.GONE);
+        }
 
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -95,10 +112,13 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
-                    toolbar.setVisibility(View.VISIBLE);
-                else
-                    toolbar.setVisibility(View.GONE);
+                if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                    toolbarImage.setVisibility(View.VISIBLE);
+                    mDragView.setVisibility(View.GONE);
+                } else {
+                    mDragView.setVisibility(View.VISIBLE);
+                    toolbarImage.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -156,9 +176,37 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
 
     private void handleResponseQuery(Restaurants restaurants) {
-        adapter.setmData(restaurants.getRestaurants());
-        adapter.notifyDataSetChanged();
+        if (!restaurants.getRestaurants().isEmpty()) {
+
+            adapter.setmData(restaurants.getRestaurants());
+            adapter.notifyDataSetChanged();
+
+            adapterSnap.setmData(restaurants.getRestaurants());
+            adapterSnap.notifyDataSetChanged();
+
+            googleMap.clear();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Restaurant r : restaurants.getRestaurants()) {
+                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
+                builder.include(latLng);
+                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
+            }
+
+            LatLngBounds bounds = builder.build();
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        }
+
     }
+
+    private void initRestaurantSnapView() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        adapterSnap = new RestaurantsSnapAdapter(getContext(), restaurants);
+        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        multiSnapRecyclerView.setLayoutManager(firstManager);
+        multiSnapRecyclerView.setAdapter(adapterSnap);
+
+    }
+
 
     private void initRecyclerView() {
         List<Restaurant> restaurants = new ArrayList<>();
@@ -167,25 +215,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
-
-
-//    private void getRestByLoc(double dist, double lat, double lng) {
-//        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist, lat, lng)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponseByLoc, i -> mServerResponse.handleError(i)));
-//    }
-//
-//    private void handleResponseByLoc(Restaurants restaurants) {
-//
-//        if (googleMap != null && restaurants.getRestaurants() != null) {
-//            for (Restaurant r : restaurants.getRestaurants()) {
-//                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
-//                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
-//            }
-//        }
-//
-//    }
 
 
     private void initMap() {
@@ -201,11 +230,8 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
+            googleMap.setOnMarkerClickListener(this);
 
-            // For showing a move to my location button
-//            if (!initMyLocation(googleMap)) {
-//                askPermission();
-//            }
 
         });
 
@@ -223,35 +249,16 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
 
-                                LocationPoint current =new LocationPoint(location);
+                                LocationPoint current = new LocationPoint(location);
                                 query.setLocation(current);
                                 sendQueryByCoord(query);
                             }
                         }
                     });
-        }
-        else
+        } else
             askPermission();
 
     }
-
-//    private Boolean initMyLocation(GoogleMap googleMap) {
-//        if (checkPermission()) {
-//
-////            googleMap.setMyLocationEnabled(true);
-//
-//            googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-//                @Override
-//                public boolean onMyLocationButtonClick() {
-//                    goToCurrentLocation();
-//                    return true;
-//                }
-//            });
-//
-//            return true;
-//        }
-//        return false;
-//    }
 
     // Check for permission to access Location
     private boolean checkPermission() {
@@ -347,6 +354,16 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
             mFragmentNavigation.pushFragment(frag);
         }
     }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+
+
+
+        return false;
+    }
+
 
 
 }

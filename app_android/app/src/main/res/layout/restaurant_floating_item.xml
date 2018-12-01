@@ -2,21 +2,19 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/edittext_search_shadow"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:clickable="true"
         android:elevation="5dp"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/imageView"
