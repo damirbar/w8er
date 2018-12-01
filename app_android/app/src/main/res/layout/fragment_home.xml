@@ -19,7 +19,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collaptoolbar"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="50dp"
             android:background="@color/colorPrimaryDark"
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="exitUntilCollapsed|scroll">
@@ -57,12 +57,12 @@
                 <TextView
                     android:id="@+id/searchView"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/edittext_search"
                     android:baselineAligned="false"
                     android:enabled="false"
@@ -83,15 +83,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="55dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Search  for burgers, delivery on W8er" />
+                    android:layout_marginTop="18dp"
+                    android:text="Search  for burgers, delivery on W8er"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     app:srcCompat="@drawable/ic_searching_magnifying_glass" />
 
             </FrameLayout>

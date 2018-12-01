@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimaryDark"
+        android:background="@color/background"
         app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
@@ -23,78 +23,95 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_search_shadow">
+
+            <ImageButton
+                android:id="@+id/imageButtonSearch"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/buttonshape"
+                app:srcCompat="@drawable/ic_searching_magnifying_glass_white" />
 
             <Button
-            android:id="@+id/search_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif"
-            android:text="Search"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
-
-            <Button
-            android:id="@+id/cancel_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/cancel"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
+                android:id="@+id/search_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:fontFamily="sans-serif"
+                android:text="Search"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:visibility="gone" />
 
             <android.support.v7.widget.SearchView
-            android:id="@+id/searchView_type"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@+id/search_button"
-            android:layout_marginLeft="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/edittext_search"
-            android:baselineAligned="false"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:iconifiedByDefault="false"
-            android:maxLength="@integer/def_max"
-            app:theme="@style/AppSearchView"
-            android:queryBackground="@android:color/transparent"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@color/white"
-            app:queryHint="Sushi, delivery, pizza, etc." />
+                android:id="@+id/searchView_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/search_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imageButtonSearch"
+                android:background="@drawable/edittext_search"
+
+                android:baselineAligned="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:iconifiedByDefault="false"
+                android:maxLength="@integer/def_max"
+                android:queryBackground="@android:color/transparent"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@color/white"
+                app:queryHint="Sushi, delivery, pizza, etc."
+                app:theme="@style/AppSearchView">
+
+            </android.support.v7.widget.SearchView>
+
+            <ImageView
+                android:id="@+id/divider_img"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/searchView_type"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="70dp"
+                android:background="?attr/colorButtonNormal"
+                android:visibility="visible" />
 
 
             <android.support.v7.widget.SearchView
-            android:id="@+id/searchView_loction"
-            style="@style/AppTheme.SearchView"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@+id/searchView_type"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/edittext_search"
-            android:baselineAligned="false"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:iconifiedByDefault="false"
-            android:maxLength="@integer/def_max"
-            android:queryBackground="@android:color/transparent"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@color/white"
-            app:queryHint="street or city"
-            app:theme="@style/AppTheme.SearchView" />
+                android:id="@+id/searchView_loction"
+                style="@style/AppTheme.SearchView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/searchView_type"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/imageButtonSearch"
+                android:background="@drawable/edittext_search"
+                android:baselineAligned="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:iconifiedByDefault="false"
+                android:maxLength="@integer/def_max"
+                android:queryBackground="@android:color/transparent"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@color/white"
+                app:queryHint="street or city"
+                app:theme="@style/AppTheme.SearchView" />
 
 
         </RelativeLayout>
