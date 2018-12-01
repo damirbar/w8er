@@ -3,18 +3,31 @@ package com.w8er.android.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Arrays;
-
 public class SearchRest implements Parcelable {
 
     private String address;
     private String [] tags;
+    private LocationPoint location;
 
     public SearchRest(){}
+
 
     protected SearchRest(Parcel in) {
         address = in.readString();
         tags = in.createStringArray();
+        location = in.readParcelable(LocationPoint.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeStringArray(tags);
+        dest.writeParcelable(location, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<SearchRest> CREATOR = new Creator<SearchRest>() {
@@ -28,6 +41,14 @@ public class SearchRest implements Parcelable {
             return new SearchRest[size];
         }
     };
+
+    public LocationPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationPoint location) {
+        this.location = location;
+    }
 
     public String getAddress() {
         return address;
@@ -45,16 +66,6 @@ public class SearchRest implements Parcelable {
         this.tags = tags;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(address);
-        dest.writeStringArray(tags);
-    }
 
     @Override
     public String toString() {
@@ -66,4 +77,5 @@ public class SearchRest implements Parcelable {
 
         return  address + ' ' + allTags.toString().trim();
     }
+
 }

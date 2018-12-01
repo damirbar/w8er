@@ -65,6 +65,9 @@ public class LocationPoint implements Parcelable {
             coordinates = new double[]{location.getLongitude(),location.getLatitude()};
     }
 
+    public static Creator<LocationPoint> getCREATOR() {
+        return CREATOR;
+    }
 
     public double getLat() {
         return coordinates[1];

@@ -28,8 +28,12 @@ public interface RetrofitInterface {
     @GET("search/free-text-search")
     Observable<Restaurants> getFreeTextSearch(@Query("keyword") String keyword);
 
-    @POST("search/search-by-location-tags")
+    @POST("search/search-by-address-tags")
     Observable<Restaurants> getSearchByLocationTags(@Body SearchRest searchRest);
+
+    @POST("search/search-by-coord-tags")
+    Observable<Restaurants> getSearchByCoordTags(@Body SearchRest searchRest);
+
 
     //////////////////Auth//////////////////
 
