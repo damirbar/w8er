@@ -86,7 +86,7 @@ router.post('/search-by-coord-tags', function (req, res) {
         $maxDistance: dist,
         $geometry: {
           type: "Point",
-          coordinates: req.coordinates
+          coordinates: req.body.coordinates
         }
       }
     }
