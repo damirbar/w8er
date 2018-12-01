@@ -1,41 +1,43 @@
 package com.w8er.android.fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.w8er.android.R;
+import com.w8er.android.adapters.RestaurantsAdapter;
+import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Restaurants;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
-import com.w8er.android.utils.GoogleMapUtils;
+import com.w8er.android.utils.SoftKeyboard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -43,7 +45,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class SearchResultsFragment extends BaseFragment {
+public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener {
 
     private final int REQ_PERMISSION = 888;
 
@@ -54,12 +56,15 @@ public class SearchResultsFragment extends BaseFragment {
     private CompositeSubscription mSubscriptions;
     private TextView mQuery;
     private SlidingUpPanelLayout mLayout;
+    private RestaurantsAdapter adapter;
+    private RecyclerView recyclerView;
+    private SearchRest saveQuery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
         mSubscriptions = new CompositeSubscription();
-        mServerResponse = new ServerResponse(rootView.findViewById(R.id.layout));
+        mServerResponse = new ServerResponse(rootView.findViewById(R.id.frame));
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -70,27 +75,33 @@ public class SearchResultsFragment extends BaseFragment {
     }
 
     private void initViews(View v) {
+        recyclerView = v.findViewById(R.id.rvRes);
+        initRecyclerView();
         Toolbar toolbar = v.findViewById(R.id.tool_bar);
         ImageButton backButton = v.findViewById(R.id.image_Button_back);
         mLayout = (SlidingUpPanelLayout) v.findViewById(R.id.sliding_layout);
         mLayout.setAnchorPoint(0.7f);
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
+        if (!mLayout.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+            toolbar.setVisibility(View.GONE);
+        } else
+            toolbar.setVisibility(View.VISIBLE);
+
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if(newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
+                if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED))
                     toolbar.setVisibility(View.VISIBLE);
                 else
                     toolbar.setVisibility(View.GONE);
-
             }
         });
+
         mLayout.setFadeOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,14 +119,74 @@ public class SearchResultsFragment extends BaseFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            SearchRest query = bundle.getParcelable("query");
+            saveQuery = bundle.getParcelable("query");
 
-            if(query!=null) {
-                String strQuery = query.toString();
+            if (saveQuery != null) {
+                String strQuery = saveQuery.toString();
                 mQuery.setText(strQuery);
+
             }
         }
     }
+
+
+    private void sendQuery(SearchRest query) {
+
+        if (query.getAddress().equals("Current Location")) {
+            searchByCurrent(query);
+        } else
+            sendQueryByLocation(query);
+
+
+    }
+
+    private void sendQueryByLocation(SearchRest searchRest) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().getSearchByLocationTags(searchRest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseQuery, i -> mServerResponse.handleError(i)));
+    }
+
+    private void sendQueryByCoord(SearchRest searchRest) {
+        mSubscriptions.add(RetrofitRequests.getRetrofit().getSearchByCoordTags(searchRest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseQuery, i -> mServerResponse.handleError(i)));
+    }
+
+
+    private void handleResponseQuery(Restaurants restaurants) {
+        adapter.setmData(restaurants.getRestaurants());
+        adapter.notifyDataSetChanged();
+    }
+
+    private void initRecyclerView() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new RestaurantsAdapter(getContext(), restaurants);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+//    private void getRestByLoc(double dist, double lat, double lng) {
+//        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist, lat, lng)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponseByLoc, i -> mServerResponse.handleError(i)));
+//    }
+//
+//    private void handleResponseByLoc(Restaurants restaurants) {
+//
+//        if (googleMap != null && restaurants.getRestaurants() != null) {
+//            for (Restaurant r : restaurants.getRestaurants()) {
+//                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
+//                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
+//            }
+//        }
+//
+//    }
+
 
     private void initMap() {
 
@@ -132,16 +203,16 @@ public class SearchResultsFragment extends BaseFragment {
             googleMap = mMap;
 
             // For showing a move to my location button
-            if (!initMyLocation(googleMap)) {
-                askPermission();
-            }
+//            if (!initMyLocation(googleMap)) {
+//                askPermission();
+//            }
 
         });
 
 
     }
 
-    private void goToCurrentLocation() {
+    private void searchByCurrent(SearchRest query) {
 
         if (checkPermission()) {
 
@@ -151,33 +222,36 @@ public class SearchResultsFragment extends BaseFragment {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
-                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()), 15, googleMap);
-                                addToFavoritesProcess(100, location.getLatitude(), location.getLongitude());
-                                // Logic to handle location object
+
+                                LocationPoint current =new LocationPoint(location);
+                                query.setLocation(current);
+                                sendQueryByCoord(query);
                             }
                         }
                     });
         }
+        else
+            askPermission();
 
     }
 
-    private Boolean initMyLocation(GoogleMap googleMap) {
-        if (checkPermission()) {
-
-//            googleMap.setMyLocationEnabled(true);
-
-            googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                @Override
-                public boolean onMyLocationButtonClick() {
-                    goToCurrentLocation();
-                    return true;
-                }
-            });
-
-            return true;
-        }
-        return false;
-    }
+//    private Boolean initMyLocation(GoogleMap googleMap) {
+//        if (checkPermission()) {
+//
+////            googleMap.setMyLocationEnabled(true);
+//
+//            googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+//                @Override
+//                public boolean onMyLocationButtonClick() {
+//                    goToCurrentLocation();
+//                    return true;
+//                }
+//            });
+//
+//            return true;
+//        }
+//        return false;
+//    }
 
     // Check for permission to access Location
     private boolean checkPermission() {
@@ -202,7 +276,7 @@ public class SearchResultsFragment extends BaseFragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    initMyLocation(googleMap);
+                    searchByCurrent(saveQuery);
                 } else {
                     // Permission denied
                 }
@@ -230,29 +304,11 @@ public class SearchResultsFragment extends BaseFragment {
         mMapView.onLowMemory();
     }
 
-    private void addToFavoritesProcess(double dist, double lat, double lng) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().findNearLocation(dist, lat, lng)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
-    }
-
-    private void handleResponse(Restaurants restaurants) {
-
-        if (googleMap != null && restaurants.getRestaurants() != null) {
-            for (Restaurant r : restaurants.getRestaurants()) {
-                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
-                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
-            }
-        }
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-
+        sendQuery(saveQuery);
         if (getView() == null) {
             return;
         }
@@ -276,5 +332,21 @@ public class SearchResultsFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        new SoftKeyboard(getActivity()).hideSoftKeyboard();
+
+        Bundle i = new Bundle();
+        String restId = adapter.getItemID(position);
+        i.putString("restId", restId);
+        RestaurantPageFragment frag = new RestaurantPageFragment();
+        frag.setArguments(i);
+
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(frag);
+        }
+    }
+
 
 }
