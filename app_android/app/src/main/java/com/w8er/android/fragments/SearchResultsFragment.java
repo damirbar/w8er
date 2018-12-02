@@ -34,7 +34,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.takusemba.multisnaprecyclerview.OnSnapListener;
 import com.w8er.android.R;
-import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.adapters.RestaurantsSnapAdapter;
 import com.w8er.android.dialogs.HomeSearchDialog;
@@ -76,6 +75,7 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
     private MultiSnapRecyclerView multiSnapRecyclerView;
     private RestaurantsSnapAdapter adapterSnap;
     private List<Marker> markers;
+    private boolean toolbarVis = false;
 //    private Marker pickMarkr;
 
     @Override
@@ -108,12 +108,12 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
         mLayout.setAnchorPoint(0.7f);
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
-        if (!mLayout.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-            toolbarImage.setVisibility(View.GONE);
-            mDragView.setVisibility(View.VISIBLE);
-        } else {
+        if (toolbarVis) {
             toolbarImage.setVisibility(View.VISIBLE);
             mDragView.setVisibility(View.GONE);
+        } else {
+            mDragView.setVisibility(View.VISIBLE);
+            toolbarImage.setVisibility(View.GONE);
         }
 
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -124,9 +124,11 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                    toolbarVis = true;
                     toolbarImage.setVisibility(View.VISIBLE);
                     mDragView.setVisibility(View.GONE);
                 } else {
+                    toolbarVis = false;
                     mDragView.setVisibility(View.VISIBLE);
                     toolbarImage.setVisibility(View.GONE);
                 }

@@ -107,6 +107,4 @@ dependencies {
 
     //Media Gallery(min sdk 17)
     implementation 'net.alhazmy13.mediagallery:library:1.0.1'
-
-
 }

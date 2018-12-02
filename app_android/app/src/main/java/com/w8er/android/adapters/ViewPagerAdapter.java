@@ -131,15 +131,15 @@ public class ViewPagerAdapter extends PagerAdapter {
         mPhotoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                if (isShowing) {
-                    isShowing = false;
-                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
-                    imagesHorizontalList.animate().translationY(imagesHorizontalList.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
-                } else {
-                    isShowing = true;
-                    toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-                    imagesHorizontalList.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-                }
+//                if (isShowing) {
+//                    isShowing = false;
+//                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+//                    imagesHorizontalList.animate().translationY(imagesHorizontalList.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+//                } else {
+//                    isShowing = true;
+//                    toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+//                    imagesHorizontalList.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+//                }
             }
 
             @Override
