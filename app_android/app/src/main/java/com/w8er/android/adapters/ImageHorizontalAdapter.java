@@ -17,6 +17,7 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     private Context mContext;
     private List<Pictures> pics;
+    private ItemClickListener mClickListener;
 
     public List<Pictures> getPics() {
         return pics;
@@ -56,14 +57,32 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
         return pics == null ? 0 : pics.size() * 2;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView pic;
 
         ViewHolder(final View itemView) {
             super(itemView);
             this.pic =  itemView.findViewById(R.id.rest_pic);
+            pic.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mClickListener != null) mClickListener.onItemClick(v, getAdapterPosition());
         }
     }
+
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
 
 }
 

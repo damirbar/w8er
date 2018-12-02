@@ -42,6 +42,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
 import com.w8er.android.activities.EditRestaurantActivity;
+import com.w8er.android.activities.RestMediaGalleryActivity;
 import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
@@ -88,7 +89,7 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_EN
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
-public class RestaurantPageFragment extends BaseFragment {
+public class RestaurantPageFragment extends BaseFragment implements ImageHorizontalAdapter.ItemClickListener {
 
     public static final int REQUEST_CODE_REVIEW = 0x1;
     private static final int REQUEST_CODE_IMAGE_GALLERY = 0x2;
@@ -197,7 +198,6 @@ public class RestaurantPageFragment extends BaseFragment {
                 }
             }
         });
-
 
         mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
@@ -377,6 +377,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void initRestaurantPics() {
         adapterPics = new ImageHorizontalAdapter(getContext(), restaurant.getPictures());
+        adapterPics.setClickListener(this);
         multiSnapRecyclerView.setAdapter(adapterPics);
     }
 
@@ -726,5 +727,14 @@ public class RestaurantPageFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent i = new Intent(getContext(), RestMediaGalleryActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("restId", restId);
+        i.putExtras(extra);
+        startActivity(i);
     }
 }
