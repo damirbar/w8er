@@ -418,7 +418,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
                 LatLng latLng = new LatLng(lat, lng);
 
-                GoogleMapUtils.goToLocation(latLng, 13, googleMap);
+                GoogleMapUtils.goToLocation(latLng, 13, googleMap,true);
                 GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
             }

@@ -113,7 +113,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            GoogleMapUtils.goToLocation(latLng, 17, googleMap);
+            GoogleMapUtils.goToLocation(latLng, 17, googleMap,true);
             GoogleMapUtils.addMapMarker(latLng, "", "", googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);

@@ -103,10 +103,10 @@
 
         <ImageView
             android:id="@+id/marker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_centerInParent="true"
-            app:srcCompat="@drawable/marker" />
+            app:srcCompat="@drawable/ic_pin" />
     </RelativeLayout>
 
 </RelativeLayout>

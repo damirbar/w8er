@@ -2,19 +2,22 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@drawable/edittext_search_shadow"
-    android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="20dp"
+    android:orientation="horizontal"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:id="@+id/relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="235dp"
+        android:layout_height="100dp"
+        android:background="@drawable/edittext_search_shadow"
         android:clickable="true"
         android:elevation="5dp"
-        android:focusable="true">
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/imageView"
@@ -66,17 +69,6 @@
             app:srb_starPadding="1dp"
             app:srb_starWidth="15dp"
             app:srb_stepSize="0" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/imageView"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="?attr/colorButtonNormal"
-            android:visibility="visible" />
 
     </RelativeLayout>
 

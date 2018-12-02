@@ -131,7 +131,7 @@ public class RestaurantMarkerFragment extends BaseFragment {
                                 googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
                             } else
-                                GoogleMapUtils.goToLocation(latLngMarker, 15, googleMap);
+                                GoogleMapUtils.goToLocation(latLngMarker, 15, googleMap,true);
                         }
                     });
         }
