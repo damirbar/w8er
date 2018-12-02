@@ -26,7 +26,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -39,7 +38,7 @@ import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.adapters.RestaurantsSnapAdapter;
 import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.ResponseRestaurants;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -211,7 +210,7 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     }
 
 
-    private void handleResponseQuery(Restaurants restaurants) {
+    private void handleResponseQuery(ResponseRestaurants restaurants) {
         if (!restaurants.getRestaurants().isEmpty()) {
 
             adapter.setmData(restaurants.getRestaurants());

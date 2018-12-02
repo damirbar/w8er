@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.ResponseRestaurants;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.w8er.android.utils.GoogleMapUtils;
@@ -225,7 +225,7 @@ public class MainMapsFragment extends BaseFragment {
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Restaurants restaurants) {
+    private void handleResponse(ResponseRestaurants restaurants) {
 
         if (googleMap!= null && restaurants.getRestaurants()!=null) {
             for (Restaurant r : restaurants.getRestaurants()) {

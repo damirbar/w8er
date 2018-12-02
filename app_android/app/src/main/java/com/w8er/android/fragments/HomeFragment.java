@@ -15,7 +15,7 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.ResponseRestaurants;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -106,7 +106,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Restaurants restaurants) {
+    private void handleResponse(ResponseRestaurants restaurants) {
         if (!saveQuery.isEmpty()) {
             adapter.setmData(restaurants.getRestaurants());
             adapter.notifyDataSetChanged();
