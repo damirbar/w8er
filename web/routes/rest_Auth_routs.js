@@ -268,10 +268,18 @@ router.post('/post-profile-image', type, function (req, res) {
   }
 });
 
+//
+// body =
+//   {
+//     "restId": "5c017d941b709c5aa81fa2bb",
+//     "sid": "67187",
+//     "table": "12"
+//   };
 router.post('/new-session', function (req, res) {
   let sess = new Session({
     sid: generate_num(5),
-    pass: generate_letter(4)
+    pass: generate_letter(4),
+    table: req.body.table
   });
   sess.save(function (err, sess) {
     if (err) {

@@ -6,12 +6,10 @@ var sessionSchema = new mongoose.Schema({
   sid: {type: String, unique: true, required: true},
   pass: {type: String, default: ""},
   members: [String],
-  items: [{
-    itemId: {type: String, default: ""},
-    purchaser: {type: String, default: ""}
-  }],
+  items: [{}],
   start_time: {type: Date, default: Date.now()},
   end_time: {type: Date},
+  table: {type: String, default: ""},
 
 });
 
