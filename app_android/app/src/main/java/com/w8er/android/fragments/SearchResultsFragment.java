@@ -34,6 +34,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.takusemba.multisnaprecyclerview.OnSnapListener;
 import com.w8er.android.R;
+import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.adapters.RestaurantsSnapAdapter;
 import com.w8er.android.model.LocationPoint;
@@ -85,7 +86,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         mMapView.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         initRecyclerView();
-        initRestaurantSnapView();
         markers = new ArrayList<>();
 
         initMap();
@@ -145,12 +145,30 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         frameLayout.setOnClickListener(view -> getActivity().onBackPressed());
         backButton.setOnClickListener(view -> getActivity().onBackPressed());
 
+        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        multiSnapRecyclerView.setLayoutManager(firstManager);
+        multiSnapRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(multiSnapRecyclerView, dx, dy);
+                int firstItemVisible;
+                if(adapterSnap.getmData().size() == 1)
+                    firstItemVisible = firstManager.findFirstCompletelyVisibleItemPosition()+1;
+                else
+                    firstItemVisible = firstManager.findFirstVisibleItemPosition();
+
+                if (firstItemVisible != 0 && firstItemVisible % adapterSnap.getmData().size() == 0) {
+                    multiSnapRecyclerView.getLayoutManager().scrollToPosition(0);
+                }
+            }
+        });
 
         multiSnapRecyclerView.setOnSnapListener(new OnSnapListener() {
             @Override
             public void snapped(int position) {
+                int pos = position % adapterSnap.getmData().size();
 
-                Restaurant r = adapterSnap.getmData().get(position);
+                Restaurant r = adapterSnap.getmData().get(pos);
                 LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
                 GoogleMapUtils.goToLocation(latLng,15,googleMap,false);
             }
@@ -213,6 +231,8 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     private void handleResponseQuery(ResponseRestaurants restaurants) {
         if (!restaurants.getRestaurants().isEmpty()) {
 
+            initRestaurantSnapView(restaurants.getRestaurants());
+
             adapter.setmData(restaurants.getRestaurants());
             adapter.notifyDataSetChanged();
 
@@ -237,14 +257,10 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
     }
 
-    private void initRestaurantSnapView() {
-        List<Restaurant> restaurants = new ArrayList<>();
+    private void initRestaurantSnapView(List<Restaurant> restaurants) {
         adapterSnap = new RestaurantsSnapAdapter(getContext(), restaurants);
-        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        multiSnapRecyclerView.setLayoutManager(firstManager);
-        adapterSnap.setClickListener(this);
         multiSnapRecyclerView.setAdapter(adapterSnap);
-
+        adapterSnap.setClickListener(this);
     }
 
 
@@ -383,7 +399,8 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         new SoftKeyboard(getActivity()).hideSoftKeyboard();
 
         Bundle i = new Bundle();
-        String restId = adapter.getItemID(position);
+        int pos = position % adapterSnap.getmData().size();
+        String restId = adapter.getItemID(pos);
         i.putString("restId", restId);
         RestaurantPageFragment frag = new RestaurantPageFragment();
         frag.setArguments(i);

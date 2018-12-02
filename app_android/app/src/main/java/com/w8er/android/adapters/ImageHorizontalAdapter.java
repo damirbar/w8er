@@ -18,6 +18,14 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
     private Context mContext;
     private List<Pictures> pics;
 
+    public List<Pictures> getPics() {
+        return pics;
+    }
+
+    public void setPics(List<Pictures> pics) {
+        this.pics = pics;
+    }
+
     public ImageHorizontalAdapter(Context context, List<Pictures> titles) {
         this.pics = titles;
         this.mContext =context;
@@ -31,7 +39,10 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public void onBindViewHolder(ImageHorizontalAdapter.ViewHolder holder, int position) {
-        String url = pics.get(position).getUrl();
+
+        int pos = position % pics.size();
+
+        String url = pics.get(pos).getUrl();
 
         if (url != null && !(url.isEmpty()))
             Picasso.with(mContext)
@@ -42,7 +53,7 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public int getItemCount() {
-        return pics.size();
+        return pics == null ? 0 : pics.size() * 2;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
