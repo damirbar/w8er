@@ -10,15 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.w8er.android.R;
+import com.w8er.android.adapters.HorizontalListAdapters;
+import com.w8er.android.adapters.ViewPagerAdapter;
 import com.w8er.android.model.Pictures;
 import com.w8er.android.model.Response;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
 import net.alhazmy13.mediagallery.library.activity.adapter.CustomViewPager;
-import net.alhazmy13.mediagallery.library.activity.adapter.HorizontalListAdapters;
-import net.alhazmy13.mediagallery.library.activity.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -36,12 +37,12 @@ public class RestMediaGallerySlideActivity extends AppCompatActivity implements 
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
-    private ArrayList<String> images;
     private int pos;
     private Toolbar mToolbar;
     private ArrayList<Pictures> picsId;
     private boolean admin;
     private String restId;
+    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +60,15 @@ public class RestMediaGallerySlideActivity extends AppCompatActivity implements 
     }
 
     private void initImages() {
-        mViewPager.setAdapter(new ViewPagerAdapter(this, images, mToolbar, imagesHorizontalList));
-        hAdapter = new HorizontalListAdapters(this, images, this,0);
+        mViewPager.setAdapter( new ViewPagerAdapter(this, picsId, mToolbar, imagesHorizontalList));
+        hAdapter = new HorizontalListAdapters(this, picsId, this,0);
         imagesHorizontalList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imagesHorizontalList.setAdapter(hAdapter);
         hAdapter.notifyDataSetChanged();
         mViewPager.addOnPageChangeListener(this);
         hAdapter.setSelectedItem(pos);
         mViewPager.setCurrentItem(pos);
+
         }
 
     private void initViews() {
@@ -80,7 +82,6 @@ public class RestMediaGallerySlideActivity extends AppCompatActivity implements 
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            images = getIntent().getExtras().getStringArrayList("images");
             pos = getIntent().getExtras().getInt("pos");
             picsId = getIntent().getExtras().getParcelableArrayList("picsId");
             admin = getIntent().getExtras().getBoolean("admin");
@@ -93,10 +94,17 @@ public class RestMediaGallerySlideActivity extends AppCompatActivity implements 
 
     private void removePic() {
 
-        int index = mViewPager.getCurrentItem();
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setDimAmount(0.5f)
+                .show();
+
+        pos = mViewPager.getCurrentItem();
 
         Pictures picture = new Pictures();
-        picture.setId(picsId.get(index).getId());
+        picture.setId(picsId.get(pos).getId());
         removePicProcess(restId, picture);
 
     }
@@ -105,20 +113,23 @@ public class RestMediaGallerySlideActivity extends AppCompatActivity implements 
         mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removePic(restId, picture)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+                .subscribe(this::handleResponseRemovePic, this::handleErrorRemovePic));
     }
 
-    private void handleResponse(Response response) {
+    private void handleResponseRemovePic(Response response) {
+        finish();
+        hud.dismiss();
     }
 
+    private void handleErrorRemovePic(Throwable error) {
+        hud.dismiss();
+        mServerResponse.handleError(error);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(com.w8er.android.R.menu.menu_rest_image, menu);
-//        if (admin)
-//            menu.findItem(R.id.action_add_image).setVisible(true);
-//        else
-//            menu.findItem(R.id.action_add_image).setVisible(false);
+        if (admin)
+            getMenuInflater().inflate(com.w8er.android.R.menu.menu_rest_image, menu);
         return true;
     }
 

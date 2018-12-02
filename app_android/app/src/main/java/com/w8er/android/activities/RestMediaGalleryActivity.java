@@ -182,7 +182,6 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
-
     }
 
     private void handleResponseUploadImage(Response response) {
@@ -195,12 +194,10 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
         mServerResponse.handleError(error);
     }
 
-
     @Override
     public void onImageClicked(int pos) {
         Intent i = new Intent(this, RestMediaGallerySlideActivity.class);
         Bundle extra = new Bundle();
-        extra.putStringArrayList("images", list);
         extra.putParcelableArrayList("picsId", picsId);
         extra.putBoolean("admin", admin);
         extra.putInt("pos", pos);

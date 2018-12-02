@@ -1,6 +1,7 @@
-package com.w8er.android.fragments;
+package com.w8er.android.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +20,7 @@ import com.w8er.android.R;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.utils.SoftKeyboard;
 
-public class HomeSearchFragment extends DialogFragment {
+public class HomeSearchDialog extends DialogFragment {
 
     public interface OnCallbackSearch {
         void UpdateSearch(SearchRest query);
@@ -31,7 +32,7 @@ public class HomeSearchFragment extends DialogFragment {
     private EditText searchEditText;
     private ImageButton imageButtonSearch;
     private String currentLocation = "Current Location";
-    public static final String TAG = HomeSearchFragment.class.getSimpleName();
+    public static final String TAG = HomeSearchDialog.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,13 @@ public class HomeSearchFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_home_search, container, false);
+        View view = inflater.inflate(R.layout.dialog_home_search, container, false);
         initViews(view);
 
 
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -84,7 +86,7 @@ public class HomeSearchFragment extends DialogFragment {
                 if (hasFocus) {
                     searchEditText.setTextColor(getResources().getColor(R.color.black));
                     closeBtn.setImageDrawable(drawableClose);
-                    if(currentLocation.equals(mSearchViewLocation.getQuery().toString())){
+                    if (currentLocation.equals(mSearchViewLocation.getQuery().toString())) {
                         mSearchViewLocation.setQuery("", false);
                     }
                 } else {
@@ -133,10 +135,10 @@ public class HomeSearchFragment extends DialogFragment {
     private void openSearch() {
         String location = mSearchViewLocation.getQuery().toString().trim();
 
-        String []words = mSearchViewWords.getQuery().toString().trim().split(" ");
+        String[] words = mSearchViewWords.getQuery().toString().trim().split(" ");
 
 
-        if(location.isEmpty()){
+        if (location.isEmpty()) {
             location = currentLocation;
         }
 
@@ -161,5 +163,22 @@ public class HomeSearchFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(android.content.DialogInterface dialog,
+                                 int keyCode, android.view.KeyEvent event) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+                    // To dismiss the fragment when the back-button is pressed.
+                    dismiss();
+                    return true;
+                }
+                // Otherwise, do nothing else
+                else return false;
+            }
+        });
+    }
 }

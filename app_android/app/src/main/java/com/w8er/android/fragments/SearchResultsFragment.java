@@ -37,6 +37,7 @@ import com.w8er.android.R;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.adapters.RestaurantsSnapAdapter;
+import com.w8er.android.dialogs.HomeSearchDialog;
 import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.ResponseRestaurants;
@@ -55,7 +56,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener,
+public class SearchResultsFragment extends BaseFragment implements HomeSearchDialog.OnCallbackSearch, RestaurantsAdapter.ItemClickListener,
         GoogleMap.OnMarkerClickListener ,RestaurantsSnapAdapter.ItemClickListener{
 
     private final int REQ_PERMISSION = 888;
@@ -142,7 +143,7 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mQuery = v.findViewById(R.id.textViewQuery);
         FrameLayout frameLayout = v.findViewById(R.id.frame);
-        frameLayout.setOnClickListener(view -> getActivity().onBackPressed());
+        frameLayout.setOnClickListener(view -> openSearch());
         backButton.setOnClickListener(view -> getActivity().onBackPressed());
 
         LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -189,6 +190,13 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
     }
 
+    private void openSearch() {
+        HomeSearchDialog newFragment = new HomeSearchDialog();
+        newFragment.setTargetFragment(this, 0);
+        newFragment.show(getActivity().getSupportFragmentManager(), HomeSearchDialog.TAG);
+
+    }
+
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -229,7 +237,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
 
     private void handleResponseQuery(ResponseRestaurants restaurants) {
-        if (!restaurants.getRestaurants().isEmpty()) {
 
             initRestaurantSnapView(restaurants.getRestaurants());
 
@@ -242,6 +249,7 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
             googleMap.clear();
             markers.clear();
 
+        if (!restaurants.getRestaurants().isEmpty()) {
 
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             for (Restaurant r : restaurants.getRestaurants()) {
@@ -250,11 +258,9 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 
                 markers.add(GoogleMapUtils.addMapMarker(latLng, "", "", googleMap));
             }
-
             LatLngBounds bounds = builder.build();
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         }
-
     }
 
     private void initRestaurantSnapView(List<Restaurant> restaurants) {
@@ -262,7 +268,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         multiSnapRecyclerView.setAdapter(adapterSnap);
         adapterSnap.setClickListener(this);
     }
-
 
     private void initRecyclerView() {
         List<Restaurant> restaurants = new ArrayList<>();
@@ -272,9 +277,7 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         recyclerView.setAdapter(adapter);
     }
 
-
     private void initMap() {
-
 
         mMapView.onResume(); // needed to get the map to display immediately
 
@@ -288,8 +291,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
             googleMap = mMap;
             googleMap.setOnMarkerClickListener(this);
         });
-
-
     }
 
     private void searchByCurrent(SearchRest query) {
@@ -426,9 +427,17 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
 //        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pin_white));
 //        multiSnapRecyclerView.scrollToPosition(position);
 //
-
         return false;
     }
 
+    @Override
+    public void UpdateSearch(SearchRest query) {
+        if (query != null) {
+            saveQuery = query;
+            String strQuery = query.toString();
+            mQuery.setText(strQuery);
+            sendQuery(saveQuery);
+        }
 
+    }
 }
