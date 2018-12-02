@@ -8,6 +8,9 @@ public class Pictures implements Parcelable {
     private String url;
     private String id;
 
+
+    public Pictures(){}
+
     protected Pictures(Parcel in) {
         url = in.readString();
         id = in.readString();

@@ -57,7 +57,6 @@ public class MenuItemActivity extends AppCompatActivity {
     private TextView mAmount;
     private int amount = 0;
     private KProgressHUD hud;
-    private SharedPreferences mSharedPreferences;
     private String mUserId;
     private Menu admin;
 
@@ -76,7 +75,7 @@ public class MenuItemActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUserId = mSharedPreferences.getString(USER_ID, "");
     }
 

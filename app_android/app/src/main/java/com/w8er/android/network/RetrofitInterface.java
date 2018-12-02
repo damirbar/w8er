@@ -1,6 +1,7 @@
 package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.Pictures;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Restaurant;
@@ -97,6 +98,10 @@ public interface RetrofitInterface {
     @Multipart
     @POST("restAuth/add-pic")
     Observable<Response> uploadImage(@Query("restId") String restId , @Part MultipartBody.Part file);
+
+    @POST("restAuth/remove-pic")
+    Observable<Response> removePic(@Query("restId") String restId, @Body Pictures picture);
+
 
     @POST("restAuth/add-item")
     Observable<Response> postMenuItem(@Query("restId") String restId , @Body RestItem restItem);

@@ -19,7 +19,6 @@ import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
-import net.alhazmy13.mediagallery.library.activity.MediaGallery;
 import net.alhazmy13.mediagallery.library.views.MediaGalleryView;
 
 import java.io.InputStream;
@@ -51,6 +50,8 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
     private MediaGalleryView view;
     private SharedPreferences mSharedPreferences;
     private ImageButton addImage;
+    private ArrayList<Pictures> picsId;
+    private boolean admin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,11 +106,16 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
 
     private void handleResponse(Restaurant _restaurant) {
 
+        picsId = _restaurant.getPictures();
+
         if(mUserId.equals(_restaurant.getOwner())){
             addImage.setVisibility(View.VISIBLE);
+            admin = true;
         }
-        else
+        else {
             addImage.setVisibility(View.GONE);
+            admin = false;
+        }
 
         setPicsList(_restaurant.getPictures());
         view.setImages(list);
@@ -122,8 +128,6 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
         for (Pictures pic : pictures) {
             list.add(pic.getUrl());
         }
-
-
     }
 
     @Override
@@ -144,7 +148,6 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
             }
         }
     }
-
 
     private void addImageGallery() {
         try {
@@ -195,11 +198,16 @@ public class RestMediaGalleryActivity extends AppCompatActivity implements Media
 
     @Override
     public void onImageClicked(int pos) {
-        MediaGallery.Builder(this, list)
-                .backgroundColor(R.color.background)
-                .selectedImagePosition(pos)
-                .show();
+        Intent i = new Intent(this, RestMediaGallerySlideActivity.class);
+        Bundle extra = new Bundle();
+        extra.putStringArrayList("images", list);
+        extra.putParcelableArrayList("picsId", picsId);
+        extra.putBoolean("admin", admin);
+        extra.putInt("pos", pos);
+        extra.putString("restId", restId);
 
+        i.putExtras(extra);
+        startActivity(i);
     }
 
     @Override
