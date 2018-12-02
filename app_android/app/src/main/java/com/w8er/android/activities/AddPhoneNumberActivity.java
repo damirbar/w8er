@@ -14,7 +14,7 @@ import com.hbb20.CountryCodePicker;
 import com.w8er.android.R;
 import com.w8er.android.utils.SoftKeyboard;
 
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
+import static com.w8er.android.utils.DataFormatter.getCountryCode;
 
 public class AddPhoneNumberActivity extends AppCompatActivity {
 

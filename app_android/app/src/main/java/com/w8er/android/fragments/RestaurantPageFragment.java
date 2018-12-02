@@ -46,7 +46,6 @@ import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
 import com.w8er.android.entry.EntryActivity;
-import com.w8er.android.restMenu.MenuActivity;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
@@ -54,6 +53,7 @@ import com.w8er.android.model.TimeSlot;
 import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.restMenu.MenuActivity;
 import com.w8er.android.utils.GoogleMapUtils;
 import com.willy.ratingbar.BaseRatingBar;
 
@@ -80,9 +80,9 @@ import static com.w8er.android.network.RetrofitRequests.getBytes;
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
 import static com.w8er.android.utils.Constants.USER_ID;
+import static com.w8er.android.utils.DataFormatter.getCountryCode;
+import static com.w8er.android.utils.DataFormatter.roundToHalf;
 import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
@@ -418,7 +418,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
                 LatLng latLng = new LatLng(lat, lng);
 
-                GoogleMapUtils.goToLocation(latLng, 13, googleMap);
+                GoogleMapUtils.goToLocation(latLng, 13, googleMap,true);
                 GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
             }

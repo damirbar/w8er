@@ -116,7 +116,7 @@ public class AddressCoordinatesFragment extends Fragment {
             googleMap = mMap;
 
             LatLng latLng = new LatLng(locationPoint.getLat(),locationPoint.getLng());
-            GoogleMapUtils.goToLocation(latLng,17,googleMap);
+            GoogleMapUtils.goToLocation(latLng,17,googleMap,true);
 
             googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                 @Override
@@ -165,7 +165,7 @@ public class AddressCoordinatesFragment extends Fragment {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations, this can be null.
                             if (location != null) {
-                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()), 15, googleMap);
+                                GoogleMapUtils.goToLocation(new LatLng(location.getLatitude(), location.getLongitude()), 15, googleMap,true);
                                 // Logic to handle location object
                             }
                         }

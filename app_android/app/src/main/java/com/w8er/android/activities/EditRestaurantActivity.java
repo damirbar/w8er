@@ -32,7 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
+import static com.w8er.android.utils.DataFormatter.getCountryCode;
 import static com.w8er.android.utils.Validation.validateFields;
 
 
@@ -113,7 +113,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            GoogleMapUtils.goToLocation(latLng, 17, googleMap);
+            GoogleMapUtils.goToLocation(latLng, 17, googleMap,true);
             GoogleMapUtils.addMapMarker(latLng, "", "", googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);

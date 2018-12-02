@@ -1,6 +1,7 @@
 package com.w8er.android.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,14 +26,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
+import com.takusemba.multisnaprecyclerview.OnSnapListener;
 import com.w8er.android.R;
-import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.RestaurantsAdapter;
 import com.w8er.android.adapters.RestaurantsSnapAdapter;
 import com.w8er.android.model.LocationPoint;
@@ -52,7 +55,8 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
-public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener, GoogleMap.OnMarkerClickListener {
+public class SearchResultsFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener,
+        GoogleMap.OnMarkerClickListener ,RestaurantsSnapAdapter.ItemClickListener{
 
     private final int REQ_PERMISSION = 888;
 
@@ -70,6 +74,8 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     private ImageView toolbarImage;
     private MultiSnapRecyclerView multiSnapRecyclerView;
     private RestaurantsSnapAdapter adapterSnap;
+    private List<Marker> markers;
+//    private Marker pickMarkr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,18 +85,23 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         initViews(rootView);
         mMapView.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        initRecyclerView();
+        initRestaurantSnapView();
+        markers = new ArrayList<>();
+
         initMap();
         getData();
+
 
         return rootView;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initViews(View v) {
         multiSnapRecyclerView = v.findViewById(R.id.res_snap);
         mDragView = v.findViewById(R.id.imageViewLine);
         recyclerView = v.findViewById(R.id.rvRes);
-        initRecyclerView();
-        initRestaurantSnapView();
+
         toolbarImage = v.findViewById(R.id.tool_bar_image);
         ImageButton backButton = v.findViewById(R.id.image_Button_back);
         mLayout = (SlidingUpPanelLayout) v.findViewById(R.id.sliding_layout);
@@ -134,6 +145,31 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         FrameLayout frameLayout = v.findViewById(R.id.frame);
         frameLayout.setOnClickListener(view -> getActivity().onBackPressed());
         backButton.setOnClickListener(view -> getActivity().onBackPressed());
+
+
+        multiSnapRecyclerView.setOnSnapListener(new OnSnapListener() {
+            @Override
+            public void snapped(int position) {
+
+                Restaurant r = adapterSnap.getmData().get(position);
+                LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
+                GoogleMapUtils.goToLocation(latLng,15,googleMap,false);
+            }
+        });
+
+
+        FrameLayout mapTouchLayer = v.findViewById(R.id.map_touch_layer);
+
+        mapTouchLayer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (multiSnapRecyclerView.getVisibility() == View.VISIBLE) {
+                    multiSnapRecyclerView.setVisibility(View.GONE);
+                }
+                return false; // Pass on the touch to the map or shadow layer.
+            }
+        });
+
     }
 
     private void getData() {
@@ -185,11 +221,15 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
             adapterSnap.notifyDataSetChanged();
 
             googleMap.clear();
+            markers.clear();
+
+
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             for (Restaurant r : restaurants.getRestaurants()) {
                 LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
                 builder.include(latLng);
-                GoogleMapUtils.addMapMarker(latLng, r.getName(), "", googleMap);
+
+                markers.add(GoogleMapUtils.addMapMarker(latLng, "", "", googleMap));
             }
 
             LatLngBounds bounds = builder.build();
@@ -203,6 +243,7 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         adapterSnap = new RestaurantsSnapAdapter(getContext(), restaurants);
         LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         multiSnapRecyclerView.setLayoutManager(firstManager);
+        adapterSnap.setClickListener(this);
         multiSnapRecyclerView.setAdapter(adapterSnap);
 
     }
@@ -231,8 +272,6 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
             googleMap.setOnMarkerClickListener(this);
-
-
         });
 
 
@@ -358,12 +397,22 @@ public class SearchResultsFragment extends BaseFragment implements RestaurantsAd
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-
-
+        if (multiSnapRecyclerView.getVisibility() != View.VISIBLE) {
+            multiSnapRecyclerView.setVisibility(View.VISIBLE);
+        }
+//
+//        if(pickMarkr!=null){
+//            pickMarkr.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pin));
+//        }
+//
+//        pickMarkr = marker;
+//        int position = markers.indexOf(marker);
+//        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pin_white));
+//        multiSnapRecyclerView.scrollToPosition(position);
+//
 
         return false;
     }
-
 
 
 }

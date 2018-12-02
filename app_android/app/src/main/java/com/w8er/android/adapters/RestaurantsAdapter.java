@@ -1,6 +1,7 @@
 package com.w8er.android.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Restaurant;
@@ -20,7 +17,8 @@ import com.willy.ratingbar.BaseRatingBar;
 
 import java.util.List;
 
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
+import static com.w8er.android.utils.DataFormatter.getRestStatus;
+import static com.w8er.android.utils.DataFormatter.roundToHalf;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
     private List<Restaurant> mData;
@@ -33,7 +31,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public RestaurantsAdapter(Context context, List<Restaurant> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.mContext =context;
+        this.mContext = context;
     }
 
     // inflates the row layout from xml when needed
@@ -51,6 +49,18 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         float r = roundToHalf(mData.get(position).getRating());
         holder.ratingBar.setRating(r);
 
+        holder.mTextViewAddress.setText(mData.get(position).getAddress());
+
+        String strStatus = getRestStatus(mData.get(position).getHours());
+        holder.mTextViewsStatus.setText(strStatus);
+        if (strStatus.equals("Open"))
+            holder.mTextViewsStatus.setTextColor(Color.GREEN);
+        else
+            holder.mTextViewsStatus.setTextColor(Color.RED);
+
+        initReviews(holder, position);
+
+
         String pic = mData.get(position).getProfile_img();
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(mContext)
@@ -58,6 +68,31 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     .error(R.drawable.default_user_image)
                     .into(holder.mResImage);
 
+    }
+
+    private void initReviews(ViewHolder holder, int position) {
+        int reviewsSize = mData.get(position).getReviews().size();
+
+        String reviewsSizeStr = Integer.toString(reviewsSize);
+        holder.mTextViewNum.setText(reviewsSizeStr);
+
+        if (reviewsSize == 1) {
+            String strReview = "Review";
+            holder.mTextViewReviews.setText(strReview);
+            holder.mTextViewReviews.setVisibility(View.VISIBLE);
+            holder.mTextViewNum.setVisibility(View.VISIBLE);
+        } else {
+            String strReviews = "Reviews";
+            holder.mTextViewReviews.setText(strReviews);
+
+            if (reviewsSize == 0) {
+                holder.mTextViewNum.setVisibility(View.GONE);
+                holder.mTextViewReviews.setVisibility(View.GONE);
+            } else {
+                holder.mTextViewReviews.setVisibility(View.VISIBLE);
+                holder.mTextViewNum.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     // total number of rows
@@ -87,8 +122,18 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         BaseRatingBar ratingBar;
         RelativeLayout relativeLayout;
 
+        TextView mTextViewAddress;
+        TextView mTextViewsStatus;
+        TextView mTextViewNum;
+        TextView mTextViewReviews;
+
         ViewHolder(View itemView) {
             super(itemView);
+            mTextViewAddress = itemView.findViewById(R.id.textViewAddress);
+            mTextViewsStatus = itemView.findViewById(R.id.status);
+            mTextViewNum = itemView.findViewById(R.id.textViewNum);
+            mTextViewReviews = itemView.findViewById(R.id.textViewReviews);
+
             relativeLayout = itemView.findViewById(R.id.relative_layout);
             mTextViewName = itemView.findViewById(R.id.title_res);
             mResImage = itemView.findViewById(R.id.imageView);
@@ -103,7 +148,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
 
 
     // allows clicks events to be caught

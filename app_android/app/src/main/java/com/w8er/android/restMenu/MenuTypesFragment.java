@@ -15,13 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.w8er.android.R;
-import com.w8er.android.model.MenuRest;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Review;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
-
-import java.util.List;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -29,11 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.w8er.android.utils.Constants.PHONE;
-import static com.w8er.android.utils.Constants.TOKEN;
 import static com.w8er.android.utils.Constants.USER_ID;
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
