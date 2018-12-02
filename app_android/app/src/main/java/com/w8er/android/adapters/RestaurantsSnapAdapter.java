@@ -1,6 +1,7 @@
 package com.w8er.android.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,8 @@ import com.willy.ratingbar.BaseRatingBar;
 
 import java.util.List;
 
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
+import static com.w8er.android.utils.DataFormatter.getRestStatus;
+import static com.w8er.android.utils.DataFormatter.roundToHalf;
 
 public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnapAdapter.ViewHolder> {
     private List<Restaurant> mData;
@@ -47,6 +49,17 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
         float r = roundToHalf(mData.get(position).getRating());
         holder.ratingBar.setRating(r);
 
+        holder.mTextViewAddress.setText(mData.get(position).getAddress());
+
+        String strStatus = getRestStatus(mData.get(position).getHours());
+        holder.mTextViewsStatus.setText(strStatus);
+        if (strStatus.equals("Open"))
+            holder.mTextViewsStatus.setTextColor(Color.GREEN);
+        else
+            holder.mTextViewsStatus.setTextColor(Color.RED);
+
+        initReviews(holder, position);
+
         String pic = mData.get(position).getProfile_img();
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(mContext)
@@ -54,6 +67,31 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
                     .error(R.drawable.default_user_image)
                     .into(holder.mResImage);
 
+    }
+
+    private void initReviews(ViewHolder holder, int position) {
+        int reviewsSize = mData.get(position).getReviews().size();
+
+        String reviewsSizeStr = Integer.toString(reviewsSize);
+        holder.mTextViewNum.setText(reviewsSizeStr);
+
+        if (reviewsSize == 1) {
+            String strReview = "Review";
+            holder.mTextViewReviews.setText(strReview);
+            holder.mTextViewReviews.setVisibility(View.VISIBLE);
+            holder.mTextViewNum.setVisibility(View.VISIBLE);
+        } else {
+            String strReviews = "Reviews";
+            holder.mTextViewReviews.setText(strReviews);
+
+            if (reviewsSize == 0) {
+                holder.mTextViewNum.setVisibility(View.GONE);
+                holder.mTextViewReviews.setVisibility(View.GONE);
+            } else {
+                holder.mTextViewReviews.setVisibility(View.VISIBLE);
+                holder.mTextViewNum.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     // total number of rows
@@ -82,9 +120,18 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
         ImageView mResImage;
         BaseRatingBar ratingBar;
         RelativeLayout relativeLayout;
+        TextView mTextViewAddress;
+        TextView mTextViewsStatus;
+        TextView mTextViewNum;
+        TextView mTextViewReviews;
 
         ViewHolder(View itemView) {
             super(itemView);
+            mTextViewAddress = itemView.findViewById(R.id.textViewAddress);
+            mTextViewsStatus = itemView.findViewById(R.id.status);
+            mTextViewNum = itemView.findViewById(R.id.textViewNum);
+            mTextViewReviews = itemView.findViewById(R.id.textViewReviews);
+
             relativeLayout = itemView.findViewById(R.id.relative_layout);
             mTextViewName = itemView.findViewById(R.id.title_res);
             mResImage = itemView.findViewById(R.id.imageView);
