@@ -37,7 +37,6 @@ router.get('/find-near-location', function (req, res) {
       res.status(500).json({message: err});
     }
     else {
-      console.log(results.length);
       res.status(200).json({restaurants: results});
     }
   });
