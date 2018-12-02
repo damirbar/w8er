@@ -11,8 +11,11 @@ router.all('*', function (req, res, next) {
   if (req.url === '/' ||
     req.url === '/favicon.ico' ||
     req.url === '/runtime.js' ||
+    req.url === '/runtime.js.map' ||
     req.url === '/polyfills.js' ||
+    req.url === '/polyfills.js.map' ||
     req.url === '/styles.js' ||
+    req.url === '/styles.js.map' ||
     req.url === '/vendor.js' ||
     req.url === '/main.js' ||
     req.url.includes('/auth/') ||
@@ -45,21 +48,21 @@ router.all('*', function (req, res, next) {
                 req.user = user;
                 if (req.url.includes('/restAuth')) {
                   if (user.restaurants.includes(req.body.restId) || user.restaurants.includes(req.query.restId)) {
-                  Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
-                    if (err) {
-                      console.log("error in /finding restaurant");
-                      res.status(500).json({message: err});
-                    }
-                    else {
-                      if (rest) {
-                        req.rest = rest;
-                        return next();
+                    Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
+                      if (err) {
+                        console.log("error in /finding restaurant");
+                        res.status(500).json({message: err});
                       }
                       else {
-                        res.status(404).json({message: 'no such restaurant'})
+                        if (rest) {
+                          req.rest = rest;
+                          return next();
+                        }
+                        else {
+                          res.status(404).json({message: 'no such restaurant'})
+                        }
                       }
-                    }
-                  });
+                    });
                   }
                   else {
                     res.status(403).json({messasge: 'not permitted'})
