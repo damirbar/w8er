@@ -28,6 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.w8er.android.restMenu.MenuActivity.REQUEST_CODE_ADD_TO_CART;
 import static com.w8er.android.restMenu.MenuActivity.REQUEST_CODE_UPDATE_CART;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
@@ -150,17 +151,13 @@ public class MenuItemsFragment extends BaseFragment implements ItemsAdapter.Item
     @Override
     public void onItemClick(View view, int position) {
 
-        MenuActivity activity = (MenuActivity) getActivity();
-        int amount = activity.getAmountForItem(adapter.getmData().get(position));
-
         Intent i = new Intent(getContext(), MenuItemActivity.class);
         Bundle extra = new Bundle();
         String id = adapter.getItemID(position);
         extra.putString("id", id);
         extra.putString("restId", restId);
-        extra.putInt("amount", amount);
         i.putExtras(extra);
-        getActivity().startActivityForResult(i,REQUEST_CODE_UPDATE_CART);
+        getActivity().startActivityForResult(i,REQUEST_CODE_ADD_TO_CART);
     }
 
     private void getItemsType(String id, String type) {

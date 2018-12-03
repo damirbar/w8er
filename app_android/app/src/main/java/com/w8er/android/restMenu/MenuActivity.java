@@ -7,22 +7,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.w8er.android.R;
 import com.w8er.android.model.RestItem;
-import com.w8er.android.model.TimeSlot;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.w8er.android.utils.DataFormatter.currencyFormat;
 
 public class MenuActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE_UPDATE_CART = 0x1;
+    public static final int REQUEST_CODE_ADD_TO_CART = 0x1;
+    public static final int REQUEST_CODE_UPDATE_CART = 0x2;
+
 
     private MenuTypesFragment menuTypesFragment;
     private String restId;
@@ -30,22 +27,12 @@ public class MenuActivity extends AppCompatActivity {
     private TextView mAmount;
     private int cartAmount = 0;
     private TextView mPrice;
-    private ArrayList<RestItem> cartItems;
     private BigDecimal cartPrice;
-//    private Map<String, RestItem> cartItems;
+    private ArrayList<RestItem> cartItems;
 
-    public int getAmountForItem(RestItem item){
-        int pos = cartItems.indexOf(item);
-        if(pos!=-1) {
-            return cartItems.get(pos).getAmount();
-        }
-        return 0;
-    }
-
-    public int getCartSize(){
+    public int getCartSize() {
         return cartItems.size();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +42,6 @@ public class MenuActivity extends AppCompatActivity {
         cartItems = new ArrayList<>();
         cartPrice = new BigDecimal(0);
 
-//        cartItems = new HashMap<String, RestItem>();
         if (!getData()) {
             finish();
         }
@@ -75,88 +61,34 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void openCart() {
-        Bundle i = new Bundle();
-        i.putParcelableArrayList("cartItems", cartItems);
-        CartFragment fragment = new CartFragment();
-        fragment.setArguments(i);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentFrame, fragment, CartFragment.TAG).commit();
+        Intent i = new Intent(this, CartActivity.class);
+        Bundle extra = new Bundle();
+        extra.putParcelableArrayList("cartItems", cartItems);
+        extra.putString("restId", restId);
+        extra.putInt("cartAmount", cartAmount);
+        extra.putSerializable("cartPrice", cartPrice);
+
+        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_CART);
     }
 
-    private void addToCart(RestItem newItem, int indexOldItem) {
+    private void addToCart(RestItem newItem) {
         BigDecimal price = new BigDecimal(0);
-        if(indexOldItem == -1) {
-            cartItems.add(newItem);
-
-            //Amount
-            cartAmount += newItem.getAmount();
-
-            //Price
-            price = (new BigDecimal( newItem.getPrice()).multiply(new BigDecimal(newItem.getAmount())));
-        }
-        else{
-            RestItem oldItem = cartItems.get(indexOldItem);
-            int dif = newItem.getAmount() - oldItem.getAmount();
-
-            //Amount
-            cartAmount += dif;
-
-            //Price
-            price = (new BigDecimal( oldItem.getPrice()).multiply(new BigDecimal(dif)));
-
-            oldItem.setAmount(newItem.getAmount());
-        }
+        cartItems.add(newItem);
 
         //Amount
+        cartAmount += newItem.getAmount();
         String cartSize = Integer.toString(cartAmount);
         mAmount.setText(cartSize);
 
         //Price
+        price = (new BigDecimal(newItem.getPrice()).multiply(new BigDecimal(newItem.getAmount())));
         cartPrice = cartPrice.add(price);
         String cartPriceStr = currencyFormat(cartPrice);
         mPrice.setText(cartPriceStr);
 
         if (buttonLayout.getVisibility() == View.GONE) {
             buttonLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void removeFromCart(RestItem newItem, int indexOldItem) {
-        RestItem oldItem = cartItems.get(indexOldItem);
-        BigDecimal price = new BigDecimal(0);
-
-        if(newItem.getAmount() == 0){
-            cartItems.remove(oldItem);
-
-            //Amount
-            cartAmount -= oldItem.getAmount();
-
-            //Price
-            price = (new BigDecimal( oldItem.getPrice()).multiply(new BigDecimal(oldItem.getAmount())));
-        }
-        else{
-
-            int dif = oldItem.getAmount() - newItem.getAmount();
-
-            //Amount
-            cartAmount -= dif;
-
-            //Price
-            price = (new BigDecimal( oldItem.getPrice()).multiply(new BigDecimal(dif)));
-            oldItem.setAmount(newItem.getAmount());
-        }
-
-        //Amount
-        String cartSize = Integer.toString(cartAmount);
-        mAmount.setText(cartSize);
-
-        //Price
-        cartPrice = cartPrice.subtract(price);
-        String cartPriceStr = currencyFormat(cartPrice);
-        mPrice.setText(cartPriceStr);
-
-        if (cartItems.size() == 0) {
-            buttonLayout.setVisibility(View.GONE);
         }
     }
 
@@ -184,27 +116,39 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
 
-        if (requestCode == REQUEST_CODE_UPDATE_CART) {
+        if (requestCode == REQUEST_CODE_ADD_TO_CART) {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 RestItem item = extra.getParcelable("item");
 
-                if(item!=null) {
-                    int index = cartItems.indexOf(item);
-
-                    if (index == -1) {
-                        if (item.getAmount() > 0) {
-                            addToCart(item,index);
-                        }
-                    } else if (cartItems.get(index).getAmount() > item.getAmount()) {
-                        removeFromCart(item,index);
-                    }else if(cartItems.get(index).getAmount() < item.getAmount()){
-                        addToCart(item, index);
-                    }
+                if (item != null) {
+                    addToCart(item);
                 }
 
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
+
+        if (requestCode == REQUEST_CODE_UPDATE_CART) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                cartItems = extra.getParcelableArrayList("cartItems");
+                cartPrice = (BigDecimal) extra.getSerializable("cartPrice");
+                cartAmount = extra.getInt("cartAmount");
+
+                if (cartItems.isEmpty())
+                    buttonLayout.setVisibility(View.GONE);
+                else
+                    buttonLayout.setVisibility(View.VISIBLE);
+
+                mAmount.setText(String.valueOf(cartAmount));
+
+                String cartPriceStr = currencyFormat(cartPrice);
+                mPrice.setText(cartPriceStr);
+
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+
     }
 }
