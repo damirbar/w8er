@@ -17,6 +17,15 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     private Context mContext;
     private List<Pictures> pics;
+    private ItemClickListener mClickListener;
+
+    public List<Pictures> getPics() {
+        return pics;
+    }
+
+    public void setPics(List<Pictures> pics) {
+        this.pics = pics;
+    }
 
     public ImageHorizontalAdapter(Context context, List<Pictures> titles) {
         this.pics = titles;
@@ -31,7 +40,10 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public void onBindViewHolder(ImageHorizontalAdapter.ViewHolder holder, int position) {
-        String url = pics.get(position).getUrl();
+
+        int pos = position % pics.size();
+
+        String url = pics.get(pos).getUrl();
 
         if (url != null && !(url.isEmpty()))
             Picasso.with(mContext)
@@ -42,17 +54,35 @@ public class ImageHorizontalAdapter extends RecyclerView.Adapter<ImageHorizontal
 
     @Override
     public int getItemCount() {
-        return pics.size();
+        return pics == null ? 0 : pics.size() * 2;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView pic;
 
         ViewHolder(final View itemView) {
             super(itemView);
             this.pic =  itemView.findViewById(R.id.rest_pic);
+            pic.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mClickListener != null) mClickListener.onItemClick(v, getAdapterPosition());
         }
     }
+
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
 
 }
 

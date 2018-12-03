@@ -4,7 +4,7 @@
         android:radius="6dp"
         />
     <solid
-        android:color="#0096eb"
+        android:color="#df5a55"
         />
     <size
         android:gravity="bottom"

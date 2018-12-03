@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.w8er.android"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "0.4"
@@ -105,5 +105,6 @@ dependencies {
     //Android Sliding Up Panel
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
-
+    //Media Gallery(min sdk 17)
+    implementation 'net.alhazmy13.mediagallery:library:1.0.1'
 }

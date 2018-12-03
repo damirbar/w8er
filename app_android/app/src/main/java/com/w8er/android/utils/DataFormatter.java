@@ -1,18 +1,22 @@
 package com.w8er.android.utils;
 
-import android.graphics.Color;
-
-import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.TimeSlot;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DataFormatter {
+
+    public static String currencyFormat(BigDecimal n) {
+        return "₪" + NumberFormat.getCurrencyInstance(Locale.US).format(n).replace("$","");
+    }
 
     public static float roundToHalf(double d) {
 

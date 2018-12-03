@@ -13,15 +13,12 @@ import com.ncapdevi.fragnav.FragNavSwitchController;
 import com.ncapdevi.fragnav.FragNavTransactionOptions;
 import com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController;
 import com.w8er.android.fragments.FavoritesResFragment;
-import com.w8er.android.fragments.HomeSearchFragment;
 import com.w8er.android.fragments.MainMapsFragment;
 import com.w8er.android.R;
 import com.w8er.android.entry.EntryActivity;
 import com.w8er.android.fragments.BaseFragment;
 import com.w8er.android.fragments.HomeFragment;
-import com.w8er.android.fragments.SearchResultsFragment;
 import com.w8er.android.fragments.SettingsFragment;
-import com.w8er.android.model.SearchRest;
 
 import java.util.ArrayList;
 

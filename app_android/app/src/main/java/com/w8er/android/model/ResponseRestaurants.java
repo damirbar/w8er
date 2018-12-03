@@ -2,7 +2,7 @@ package com.w8er.android.model;
 
 import java.util.List;
 
-public class Restaurants {
+public class ResponseRestaurants {
 
     private List<Restaurant> restaurants;
 

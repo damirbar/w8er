@@ -10,12 +10,14 @@ public class RestItem implements Parcelable {
     private String _id;
     private String name;
     private String description;
-    private String price;
+    private double price;
     private boolean available;
     private List<String> tags;
     private String type;
     private String image_url;
     private String image_id;
+    private int amount;
+
 
 
 
@@ -25,12 +27,32 @@ public class RestItem implements Parcelable {
         _id = in.readString();
         name = in.readString();
         description = in.readString();
-        price = in.readString();
+        price = in.readDouble();
         available = in.readByte() != 0;
         tags = in.createStringArrayList();
         type = in.readString();
         image_url = in.readString();
         image_id = in.readString();
+        amount = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeDouble(price);
+        dest.writeByte((byte) (available ? 1 : 0));
+        dest.writeStringList(tags);
+        dest.writeString(type);
+        dest.writeString(image_url);
+        dest.writeString(image_id);
+        dest.writeInt(amount);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<RestItem> CREATOR = new Creator<RestItem>() {
@@ -44,6 +66,14 @@ public class RestItem implements Parcelable {
             return new RestItem[size];
         }
     };
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
     public String getImage_url() {
         return image_url;
@@ -77,11 +107,11 @@ public class RestItem implements Parcelable {
         this.type = type;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -124,27 +154,10 @@ public class RestItem implements Parcelable {
         }
         RestItem u = (RestItem) other;
         return this.getName().equals(u.getName()) &&
+                this.get_id().equals(u.get_id()) &&
                 this.getDescription().equals(u.getDescription()) &&
-                this.getPrice().equals(u.getPrice()) &&
+                this.getPrice()==(u.getPrice()) &&
                 this.getType().equals(u.getType()) &&
                 this.getTags().equals(u.getTags());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_id);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(price);
-        dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeStringList(tags);
-        dest.writeString(type);
-        dest.writeString(image_url);
-        dest.writeString(image_id);
     }
 }

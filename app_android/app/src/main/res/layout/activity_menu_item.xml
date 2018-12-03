@@ -181,7 +181,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Notes"
+                    android:text="Special Instructions"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -194,7 +194,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/dark_edit_text"
-                    android:gravity="start"
+                    android:gravity="center|start"
                     android:inputType="text"
                     android:maxLength="20"
                     android:paddingLeft="10dp"
@@ -205,15 +205,30 @@
                     android:id="@+id/button_add_to_cart"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignTop="@+id/bookmark_checkbox"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/buttonshape"
                     android:gravity="center"
                     android:text="Add to cart"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/button_remove_from_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/button_shape_cart"
+                    android:gravity="center"
+                    android:text="Remove from cart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:visibility="invisible" />
             </LinearLayout>
         </ScrollView>
 

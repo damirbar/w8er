@@ -44,23 +44,26 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String name = mData.get(position).getName();
+        int pos = position % mData.size();
+
+
+        String name = mData.get(pos).getName();
         holder.mTextViewName.setText(name);
-        float r = roundToHalf(mData.get(position).getRating());
+        float r = roundToHalf(mData.get(pos).getRating());
         holder.ratingBar.setRating(r);
 
-        holder.mTextViewAddress.setText(mData.get(position).getAddress());
+        holder.mTextViewAddress.setText(mData.get(pos).getAddress());
 
-        String strStatus = getRestStatus(mData.get(position).getHours());
+        String strStatus = getRestStatus(mData.get(pos).getHours());
         holder.mTextViewsStatus.setText(strStatus);
         if (strStatus.equals("Open"))
             holder.mTextViewsStatus.setTextColor(Color.GREEN);
         else
             holder.mTextViewsStatus.setTextColor(Color.RED);
 
-        initReviews(holder, position);
+        initReviews(holder, pos);
 
-        String pic = mData.get(position).getProfile_img();
+        String pic = mData.get(pos).getProfile_img();
         if (pic != null && !(pic.isEmpty()))
             Picasso.with(mContext)
                     .load(pic)
@@ -70,6 +73,7 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
     }
 
     private void initReviews(ViewHolder holder, int position) {
+
         int reviewsSize = mData.get(position).getReviews().size();
 
         String reviewsSizeStr = Integer.toString(reviewsSize);
@@ -94,11 +98,11 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
         }
     }
 
-    // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData == null ? 0 : mData.size() * 2;
     }
+
 
     // convenience method for getting data at click position
     public String getItemID(int id) {
@@ -146,8 +150,6 @@ public class RestaurantsSnapAdapter extends RecyclerView.Adapter<RestaurantsSnap
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
-
-
 
     // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {

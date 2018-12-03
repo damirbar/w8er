@@ -22,6 +22,8 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -165,7 +167,12 @@ public class EditMenuItemActivity extends AppCompatActivity {
         setTypePicker();
         mName.setText(restItem.getName());
         mDesc.setText(restItem.getDescription());
-        moneyEditText.setText(restItem.getPrice());
+
+        NumberFormat nf = new DecimalFormat("#.####");
+        String s = nf.format(restItem.getPrice());
+
+        String price = String.valueOf(s);
+        moneyEditText.setText(price);
         initHashTags(restItem.getTags());
     }
 
@@ -275,7 +282,8 @@ public class EditMenuItemActivity extends AppCompatActivity {
         String name = mName.getText().toString().trim();
         String desc = mDesc.getText().toString().trim();
         String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
-        String price = moneyEditText.getValueString();
+        double price = Double.parseDouble(moneyEditText.getValueString());
+
 
         RestItem newItem = new RestItem();
         newItem.setName(name);

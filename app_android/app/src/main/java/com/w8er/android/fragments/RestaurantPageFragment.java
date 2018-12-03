@@ -42,6 +42,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
 import com.w8er.android.activities.EditRestaurantActivity;
+import com.w8er.android.activities.RestMediaGalleryActivity;
 import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
@@ -88,8 +89,7 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_EN
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
-
-public class RestaurantPageFragment extends BaseFragment {
+public class RestaurantPageFragment extends BaseFragment implements ImageHorizontalAdapter.ItemClickListener {
 
     public static final int REQUEST_CODE_REVIEW = 0x1;
     private static final int REQUEST_CODE_IMAGE_GALLERY = 0x2;
@@ -117,10 +117,10 @@ public class RestaurantPageFragment extends BaseFragment {
     private BaseRatingBar ratingReview;
     private Button openReviewsButton;
     private String restId;
-    private TextView mTVstatus;
-    private TextView mTVhours;
+    private TextView mTVStatus;
+    private TextView mTVHours;
     private Button editButton;
-    private TextView tVaddress;
+    private TextView tVAddress;
     private TextView restName;
     private SharedPreferences mSharedPreferences;
     private String mToken;
@@ -137,11 +137,7 @@ public class RestaurantPageFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View view = inflater.inflate(R.layout.fragment_restaurant_page, container, false);
-//        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//        StrictMode.setVmPolicy(builder.build());
-
         initViews(view);
         mMapView.onCreate(savedInstanceState);
         mSubscriptions = new CompositeSubscription();
@@ -156,22 +152,20 @@ public class RestaurantPageFragment extends BaseFragment {
         Toolbar toolbar = v.findViewById(R.id.tool_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
-
         mBookMark = v.findViewById(R.id.bookmark_checkbox);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
-
         ccp = v.findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(textEditPhone);
         openReviewsButton = v.findViewById(R.id.button_reviews);
         recyclerView = v.findViewById(R.id.rvRes);
-        mTVstatus = v.findViewById(R.id.status);
+        mTVStatus = v.findViewById(R.id.status);
         ratingBar = v.findViewById(R.id.simple_rating_bar);
         enableRatingBar(ratingBar, false);
         ratingReview = v.findViewById(R.id.simple_rating_open);
-        tVaddress = v.findViewById(R.id.address_info);
+        tVAddress = v.findViewById(R.id.address_info);
         mMapView = (MapView) v.findViewById(R.id.mapView);
-        mTVhours = v.findViewById(R.id.hours);
+        mTVHours = v.findViewById(R.id.hours);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         multiSnapRecyclerView = v.findViewById(R.id.res_pics);
         buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
@@ -180,10 +174,8 @@ public class RestaurantPageFragment extends BaseFragment {
         callButton.setOnClickListener(view -> callNum());
         navigationButton = v.findViewById(R.id.navigation_button);
         navigationButton.setOnClickListener(view -> goToNavigation());
-
         editButton = v.findViewById(R.id.button_edit);
         editButton.setOnClickListener(view -> openEditRest());
-
         ScrollView scrollView = v.findViewById(R.id.scroll_view);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         menuButton = v.findViewById(R.id.menu_button);
@@ -193,6 +185,20 @@ public class RestaurantPageFragment extends BaseFragment {
         openReviewsButton.setOnClickListener(view -> openReviews());
         restName = v.findViewById(R.id.resr_name);
 
+        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        multiSnapRecyclerView.setLayoutManager(firstManager);
+        multiSnapRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(multiSnapRecyclerView, dx, dy);
+
+                int firstItemVisible = firstManager.findFirstVisibleItemPosition();
+                if (firstItemVisible != 0 && firstItemVisible % adapterPics.getPics().size() == 0) {
+                    multiSnapRecyclerView.getLayoutManager().scrollToPosition(0);
+                }
+            }
+        });
+
         mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
             if (isChecked != mBookMarkCheck) {
@@ -201,7 +207,7 @@ public class RestaurantPageFragment extends BaseFragment {
             }
         });
 
-        tVaddress.setOnLongClickListener(new View.OnLongClickListener() {
+        tVAddress.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 copyToClipboard();
@@ -245,7 +251,6 @@ public class RestaurantPageFragment extends BaseFragment {
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
 
@@ -260,11 +265,9 @@ public class RestaurantPageFragment extends BaseFragment {
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
-
         if (requestCode == REQUEST_CODE_IMAGE_GALLERY) {
             if (resultCode == RESULT_OK) {
                 try {
-
                     Uri uri = result.getData();
                     String fileName = getFileDetailFromUri(getContext(), uri);
                     InputStream is = getActivity().getContentResolver().openInputStream(result.getData());
@@ -282,7 +285,6 @@ public class RestaurantPageFragment extends BaseFragment {
         r.setEnabled(post);
         r.setClickable(post);
     }
-
 
     private void copyToClipboard() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -302,7 +304,6 @@ public class RestaurantPageFragment extends BaseFragment {
         mUserId = mSharedPreferences.getString(USER_ID, "");
     }
 
-
     private void openReview() {
         Intent i;
         if (mToken.isEmpty()) {
@@ -317,7 +318,6 @@ public class RestaurantPageFragment extends BaseFragment {
             i.putExtras(extra);
             startActivityForResult(i, REQUEST_CODE_REVIEW);
         }
-
     }
 
     private void openReviews() {
@@ -340,15 +340,14 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void openInfo() {
-        Bundle i = new Bundle();
-        i.putParcelableArrayList("hours", restaurant.getHours());
         RestaurantInfoFragment fragment = new RestaurantInfoFragment();
-        fragment.setArguments(i);
-
+        if (restaurant != null) {
+            Bundle i = new Bundle();
+            i.putParcelableArrayList("hours", restaurant.getHours());
+            fragment.setArguments(i);
+        }
         mFragmentNavigation.pushFragment(fragment);
-
     }
-
 
     private void openEditRest() {
         Intent i = new Intent(getContext(), EditRestaurantActivity.class);
@@ -376,13 +375,10 @@ public class RestaurantPageFragment extends BaseFragment {
         }
     }
 
-
     private void initRestaurantPics() {
         adapterPics = new ImageHorizontalAdapter(getContext(), restaurant.getPictures());
-        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        multiSnapRecyclerView.setLayoutManager(firstManager);
+        adapterPics.setClickListener(this);
         multiSnapRecyclerView.setAdapter(adapterPics);
-
     }
 
     private void goToMap() {
@@ -396,7 +392,6 @@ public class RestaurantPageFragment extends BaseFragment {
 
             mFragmentNavigation.pushFragment(fragment);
         }
-
     }
 
     private void initMap() {
@@ -418,7 +413,7 @@ public class RestaurantPageFragment extends BaseFragment {
 
                 LatLng latLng = new LatLng(lat, lng);
 
-                GoogleMapUtils.goToLocation(latLng, 13, googleMap,true);
+                GoogleMapUtils.goToLocation(latLng, 13, googleMap, true);
                 GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
             }
@@ -436,9 +431,7 @@ public class RestaurantPageFragment extends BaseFragment {
                 goToMap();
                 return true;
             });
-
         });
-
     }
 
     private void getResProcess(String id) {
@@ -451,27 +444,24 @@ public class RestaurantPageFragment extends BaseFragment {
     private void handleResponse(Restaurant _restaurant) {
         restaurant = _restaurant;
 
-        if(mUserId.equals(restaurant.getOwner())) {
+        if (mUserId.equals(restaurant.getOwner())) {
             admin.findItem(R.id.action_pic).setVisible(true);
             admin.findItem(R.id.action_profile_pic).setVisible(true);
-        }
-        else {
+        } else {
             admin.findItem(R.id.action_pic).setVisible(false);
             admin.findItem(R.id.action_profile_pic).setVisible(false);
         }
 
-
-        if(mUserId.equals(restaurant.getOwner())) {
+        if (mUserId.equals(restaurant.getOwner())) {
             editButton.setVisibility(View.VISIBLE);
-        }
-        else
+        } else
             editButton.setVisibility(View.GONE);
 
         initRestaurantPics();
         initMap();
 
         restName.setText(restaurant.getName());
-        tVaddress.setText(restaurant.getAddress());
+        tVAddress.setText(restaurant.getAddress());
         resName.setText(restaurant.getName());
         float r = roundToHalf(restaurant.getRating());
         ratingBar.setRating(r);
@@ -488,8 +478,6 @@ public class RestaurantPageFragment extends BaseFragment {
             initReviews(restaurant.getReviews());
             openReviewsButton.setVisibility(View.GONE);
         }
-
-
     }
 
     private void initPhoneNum() {
@@ -546,8 +534,8 @@ public class RestaurantPageFragment extends BaseFragment {
 
             Date currentTime = time.parse(ho + ":" + min);
 
-            mTVstatus.setText("Closed");
-            mTVstatus.setTextColor(Color.RED);
+            mTVStatus.setText("Closed");
+            mTVStatus.setTextColor(Color.RED);
 
             for (TimeSlot t : restaurant.getHours()) {
                 if (t.getDays().equalsIgnoreCase(strDay)) {
@@ -556,23 +544,23 @@ public class RestaurantPageFragment extends BaseFragment {
                     Date closed = time.parse(t.getClose());
 
                     if (currentTime.after(open) && currentTime.before(closed)) {
-                        mTVstatus.setText("Open");
-                        mTVstatus.setTextColor(Color.GREEN);
-                        mTVhours.setText(t.toStringHours());
+                        mTVStatus.setText("Open");
+                        mTVStatus.setTextColor(Color.GREEN);
+                        mTVHours.setText(t.toStringHours());
                         break;
                     } else if (currentTime.before(open)) {
 
                         if (closestTime == null) {
                             closestTime = open;
-                            mTVstatus.setText("Open from");
-                            mTVstatus.setTextColor(Color.RED);
+                            mTVStatus.setText("Open from");
+                            mTVStatus.setTextColor(Color.RED);
 
-                            mTVhours.setText(t.toStringHours());
+                            mTVHours.setText(t.toStringHours());
                         } else if (closestTime.after(open)) {
                             closestTime = open;
-                            mTVstatus.setText("Open from");
-                            mTVstatus.setTextColor(Color.RED);
-                            mTVhours.setText(t.toStringHours());
+                            mTVStatus.setText("Open from");
+                            mTVStatus.setTextColor(Color.RED);
+                            mTVHours.setText(t.toStringHours());
                         }
                     }
 
@@ -581,7 +569,6 @@ public class RestaurantPageFragment extends BaseFragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -617,9 +604,9 @@ public class RestaurantPageFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.menu_restaurant_page, menu);
-            admin = menu;
-            super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_restaurant_page, menu);
+        admin = menu;
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -708,10 +695,8 @@ public class RestaurantPageFragment extends BaseFragment {
                 mBookMark.setChecked(true);
                 break;
             }
-
         }
     }
-
 
     private void favoritesProcess(boolean isChecked) {
         Restaurant restaurant = new Restaurant();
@@ -744,4 +729,12 @@ public class RestaurantPageFragment extends BaseFragment {
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent i = new Intent(getContext(), RestMediaGalleryActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("restId", restId);
+        i.putExtras(extra);
+        startActivity(i);
+    }
 }

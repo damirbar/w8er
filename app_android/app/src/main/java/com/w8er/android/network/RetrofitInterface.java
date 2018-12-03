@@ -1,10 +1,11 @@
 package com.w8er.android.network;
 
 import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.Pictures;
 import com.w8er.android.model.Response;
 import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.ResponseRestaurants;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.model.User;
@@ -26,13 +27,13 @@ public interface RetrofitInterface {
     //////////////////search//////////////////
 
     @GET("search/free-text-search")
-    Observable<Restaurants> getFreeTextSearch(@Query("keyword") String keyword);
+    Observable<ResponseRestaurants> getFreeTextSearch(@Query("keyword") String keyword);
 
     @POST("search/search-by-address-tags")
-    Observable<Restaurants> getSearchByLocationTags(@Body SearchRest searchRest);
+    Observable<ResponseRestaurants> getSearchByLocationTags(@Body SearchRest searchRest);
 
     @POST("search/search-by-coord-tags")
-    Observable<Restaurants> getSearchByCoordTags(@Body SearchRest searchRest);
+    Observable<ResponseRestaurants> getSearchByCoordTags(@Body SearchRest searchRest);
 
 
     //////////////////Auth//////////////////
@@ -59,10 +60,10 @@ public interface RetrofitInterface {
     Observable<Response> postReview(@Body Review review);
 
     @GET("user/get-favorites")
-    Observable<Restaurants> getFavoritesRest();
+    Observable<ResponseRestaurants> getFavoritesRest();
 
     @GET("user/get-my-restaurants")
-    Observable<Restaurants> getMyRest();
+    Observable<ResponseRestaurants> getMyRest();
 
 
     @POST("user/add-to-favorites")
@@ -98,6 +99,10 @@ public interface RetrofitInterface {
     @POST("restAuth/add-pic")
     Observable<Response> uploadImage(@Query("restId") String restId , @Part MultipartBody.Part file);
 
+    @POST("restAuth/remove-pic")
+    Observable<Response> removePic(@Query("restId") String restId, @Body Pictures picture);
+
+
     @POST("restAuth/add-item")
     Observable<Response> postMenuItem(@Query("restId") String restId , @Body RestItem restItem);
 
@@ -117,7 +122,7 @@ public interface RetrofitInterface {
     Observable<Coordinates> addressToCoord(@Query("address") String address);
 
     @GET("tool/find-near-location")
-    Observable<Restaurants> findNearLocation(@Query("dist") double dist, @Query("lat") double lat, @Query("lng") double lng);
+    Observable<ResponseRestaurants> findNearLocation(@Query("dist") double dist, @Query("lat") double lat, @Query("lng") double lng);
 
 
 }

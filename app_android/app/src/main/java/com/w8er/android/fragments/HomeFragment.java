@@ -14,8 +14,9 @@ import android.widget.FrameLayout;
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
 import com.w8er.android.adapters.RestaurantsAdapter;
+import com.w8er.android.dialogs.HomeSearchDialog;
 import com.w8er.android.model.Restaurant;
-import com.w8er.android.model.Restaurants;
+import com.w8er.android.model.ResponseRestaurants;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
@@ -29,7 +30,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Validation.validateFields;
 
-public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener ,HomeSearchFragment.OnCallbackSearch {
+public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener ,HomeSearchDialog.OnCallbackSearch {
 
     private RestaurantsAdapter adapter;
     private RecyclerView recyclerView;
@@ -106,7 +107,7 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
                 .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
     }
 
-    private void handleResponse(Restaurants restaurants) {
+    private void handleResponse(ResponseRestaurants restaurants) {
         if (!saveQuery.isEmpty()) {
             adapter.setmData(restaurants.getRestaurants());
             adapter.notifyDataSetChanged();
@@ -144,9 +145,9 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     }
 
     private void openSearch() {
-        HomeSearchFragment newFragment = new HomeSearchFragment();
+        HomeSearchDialog newFragment = new HomeSearchDialog();
         newFragment.setTargetFragment(this, 0);
-        newFragment.show(getActivity().getSupportFragmentManager(), HomeSearchFragment.TAG);
+        newFragment.show(getActivity().getSupportFragmentManager(), HomeSearchDialog.TAG);
     }
 
 

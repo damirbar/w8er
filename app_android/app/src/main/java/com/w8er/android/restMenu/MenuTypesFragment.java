@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,7 @@ public class MenuTypesFragment extends Fragment {
         });
 
         ImageButton mBCancel = v.findViewById(R.id.image_Button_back);
-        mBCancel.setOnClickListener(view -> getActivity().finish());
+        mBCancel.setOnClickListener(view -> exitMenu());
 
         addItemBtn = v.findViewById(R.id.image_Button_add);
         addItemBtn.setOnClickListener(view -> openAddItem());
@@ -112,6 +113,24 @@ public class MenuTypesFragment extends Fragment {
         mDrinksBtn.setOnClickListener(view -> openMenuType(3));
         mDealsBtn.setOnClickListener(view -> openMenuType(4));
         mSpecialsBtn.setOnClickListener(view -> openMenuType(5));
+    }
+
+    private void exitMenu() {
+        MenuActivity activity = (MenuActivity) getActivity();
+        int size = activity.getCartSize();
+
+        if(size>0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Discard Cart?");
+            builder.setMessage("If you go back now, you will lose your Cart items.");
+            builder.setPositiveButton("Discard Cart", (dialog, which) -> getActivity().finish());
+            builder.setNegativeButton("Keep Editing", (dialog, which) -> {
+            });
+            builder.show();
+        }
+        else
+            getActivity().finish();
+
     }
 
     private void openAddItem() {

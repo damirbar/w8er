@@ -135,8 +135,14 @@
             android:name=".restMenu.EditMenuItemActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
-
+        <activity
+            android:name=".activities.RestMediaGalleryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RestMediaGallerySlideActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
     </application>
 
