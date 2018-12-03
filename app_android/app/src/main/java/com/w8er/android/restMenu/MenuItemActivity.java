@@ -1,5 +1,6 @@
 package com.w8er.android.restMenu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -26,6 +28,8 @@ import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import okhttp3.MediaType;
@@ -59,6 +63,7 @@ public class MenuItemActivity extends AppCompatActivity {
     private KProgressHUD hud;
     private String mUserId;
     private Menu admin;
+    private Button buttonRemoveFromCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,10 @@ public class MenuItemActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+        Button buttonAddToCart = findViewById(R.id.button_add_to_cart);
+        buttonAddToCart.setOnClickListener(view -> addToCart());
+        buttonRemoveFromCart = findViewById(R.id.button_remove_from_cart);
+        buttonRemoveFromCart.setOnClickListener(view -> removeFromCart());
         ImageButton mBCancel = findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> finish());
         mItemNameBar = findViewById(R.id.item_name_tolbar);
@@ -102,7 +111,7 @@ public class MenuItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 amount++;
-                if(amount > 50) amount = 50;
+                if (amount > 50) amount = 50;
                 String num = String.valueOf(amount);
                 mAmount.setText(num);
             }
@@ -120,13 +129,44 @@ public class MenuItemActivity extends AppCompatActivity {
         });
     }
 
-    private boolean getData() {
+    private void removeFromCart() {
+        cartChange(0);
+    }
+
+    private void addToCart() {
+        cartChange(amount);
+    }
+
+    private void cartChange(int num) {
+        restItem.setAmount(num);
+        Intent i = new Intent();
+        Bundle extra = new Bundle();
+        extra.putParcelable("item", restItem);
+        i.putExtras(extra);
+        setResult(Activity.RESULT_OK, i);
+        finish();
+    }
+
+        private boolean getData() {
         if (getIntent().getExtras() != null) {
             itemId = getIntent().getExtras().getString("id");
             restId = getIntent().getExtras().getString("restId");
+            int amountSave = getIntent().getExtras().getInt("amount");
+            initAmount(amountSave);
             return true;
         } else
             return false;
+    }
+
+    private void initAmount(int amountSave) {
+        amount = amountSave;
+        String amountStr = String.valueOf(amountSave);
+        mAmount.setText(amountStr);
+
+        if(amountSave>0)
+            buttonRemoveFromCart.setVisibility(View.VISIBLE);
+        else
+            buttonRemoveFromCart.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -149,7 +189,6 @@ public class MenuItemActivity extends AppCompatActivity {
         }
     }
 
-
     private void getItemProcess(String id) {
         mSubscriptions.add(RetrofitRequests.getRetrofit().getMenuItem(id)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -160,12 +199,12 @@ public class MenuItemActivity extends AppCompatActivity {
     private void handleResponse(RestItem _restItem) {
         restItem = _restItem;
         intItem();
+
     }
 
     private void handleError(Throwable error) {
         mServerResponse.handleError(error);
     }
-
 
 
     private void intItem() {
@@ -183,7 +222,11 @@ public class MenuItemActivity extends AppCompatActivity {
         mItemNameBar.setText(restItem.getName());
         mItemName.setText(restItem.getName());
         mItemDisc.setText(restItem.getDescription());
-        String price = "₪" + restItem.getPrice();
+
+        NumberFormat nf = new DecimalFormat("#.####");
+        String s = nf.format(restItem.getPrice());
+        String price = "₪" + s;
+
         mItemPrice.setText(price);
     }
 
@@ -198,11 +241,11 @@ public class MenuItemActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_add_image){
+        if (id == R.id.action_add_image) {
             addImageGallery();
             return true;
         }
-        if (id == R.id.action_edit){
+        if (id == R.id.action_edit) {
             editItem();
             return true;
         }
@@ -244,10 +287,10 @@ public class MenuItemActivity extends AppCompatActivity {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
         MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
-            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editItemImage(restId, restItem.get_id(), body)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().editItemImage(restId, restItem.get_id(), body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
 
     }
 
@@ -308,12 +351,11 @@ public class MenuItemActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Restaurant restaurant) {
-        if(mUserId.equals(restaurant.getOwner())){
+        if (mUserId.equals(restaurant.getOwner())) {
             admin.findItem(R.id.action_add_image).setVisible(true);
             admin.findItem(R.id.action_edit).setVisible(true);
             admin.findItem(R.id.action_remove).setVisible(true);
-        }
-        else{
+        } else {
             admin.findItem(R.id.action_add_image).setVisible(false);
             admin.findItem(R.id.action_edit).setVisible(false);
             admin.findItem(R.id.action_remove).setVisible(false);

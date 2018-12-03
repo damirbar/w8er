@@ -194,7 +194,7 @@ public class AddToMenuActivity extends AppCompatActivity {
         String name = mName.getText().toString().trim();
         String desc = mDesc.getText().toString().trim();
         String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
-        String price = moneyEditText.getValueString();
+        double price = Double.parseDouble(moneyEditText.getValueString());
 
         if (!validateFields(name)) {
 

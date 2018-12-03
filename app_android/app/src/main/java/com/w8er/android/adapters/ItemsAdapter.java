@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.RestItem;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
@@ -42,7 +44,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(mData.get(position).getName());
         holder.info.setText(mData.get(position).getDescription());
-        String strPrice = "₪" + mData.get(position).getPrice();
+
+        NumberFormat nf = new DecimalFormat("#.####");
+        String s = nf.format(mData.get(position).getPrice());
+        String strPrice = "₪" + s;
+
         holder.price.setText(strPrice);
 
         String pic = mData.get(position).getImage_url();
