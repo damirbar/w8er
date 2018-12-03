@@ -73,29 +73,35 @@ public class MenuItemCartActivity extends AppCompatActivity {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount++;
-                if (amount > 50) amount = 50;
-                String num = String.valueOf(amount);
-                mAmount.setText(num);
+                if (restItem != null) {
 
-                setCurrentPriceOnBar();
+                    amount++;
+                    if (amount > 50) amount = 50;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+                    setCurrentPriceOnBar();
+                }
             }
         });
 
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount--;
-                if (amount < 1) amount = 1;
-                String num = String.valueOf(amount);
-                mAmount.setText(num);
+                if (restItem != null) {
 
-                setCurrentPriceOnBar();
+                    amount--;
+                    if (amount < 1) amount = 1;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+                    setCurrentPriceOnBar();
+                }
             }
         });
     }
 
-    private void setCurrentPriceOnBar(){
+    private void setCurrentPriceOnBar() {
         BigDecimal priceDecimal = new BigDecimal(restItem.getPrice());
         priceDecimal = priceDecimal.multiply(new BigDecimal(amount));
         String priceDecimalStr = currencyFormat(priceDecimal);
@@ -144,13 +150,15 @@ public class MenuItemCartActivity extends AppCompatActivity {
     }
 
     private void updateCart(int num) {
-        restItem.setAmount(num);
-        Intent i = new Intent();
-        Bundle extra = new Bundle();
-        extra.putParcelable("item", restItem);
-        i.putExtras(extra);
-        setResult(Activity.RESULT_OK, i);
-        finish();
+        if (restItem != null) {
+            restItem.setAmount(num);
+            Intent i = new Intent();
+            Bundle extra = new Bundle();
+            extra.putParcelable("item", restItem);
+            i.putExtras(extra);
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
     }
 
     private void removeFromCart() {

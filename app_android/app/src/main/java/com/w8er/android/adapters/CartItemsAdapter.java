@@ -12,9 +12,12 @@ import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.RestItem;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+
+import static com.w8er.android.utils.DataFormatter.currencyFormat;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.ViewHolder> {
 
@@ -46,11 +49,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         String amountStr = String.valueOf((mData.get(position).getAmount()));
         holder.amount.setText(amountStr);
 
-        NumberFormat nf = new DecimalFormat("#.####");
-        String s = nf.format(mData.get(position).getPrice());
-        String strPrice = "₪" + s;
-
-        holder.price.setText(strPrice);
+        BigDecimal priceDecimal = new BigDecimal(mData.get(position).getPrice());
+        priceDecimal = priceDecimal.multiply(new BigDecimal(mData.get(position).getAmount()));
+        String priceDecimalStr = currencyFormat(priceDecimal);
+        holder.price.setText(priceDecimalStr);
 
     }
 

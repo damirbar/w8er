@@ -124,7 +124,6 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:scrollbarSize="3dp"
-                    android:scrollbarThumbVertical="@color/colorPrimaryDark"
                     android:scrollbars="vertical" />
 
                 <TextView

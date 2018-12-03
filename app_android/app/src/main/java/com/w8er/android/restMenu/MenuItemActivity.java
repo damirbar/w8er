@@ -26,6 +26,7 @@ import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.CartID;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -110,12 +111,15 @@ public class MenuItemActivity extends AppCompatActivity {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount++;
-                if (amount > 50) amount = 50;
-                String num = String.valueOf(amount);
-                mAmount.setText(num);
+                if(restItem!=null) {
 
-                setCurrentPriceOnBar();
+                    amount++;
+                    if (amount > 50) amount = 50;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+                    setCurrentPriceOnBar();
+                }
 
             }
         });
@@ -123,13 +127,14 @@ public class MenuItemActivity extends AppCompatActivity {
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount--;
-                if (amount < 1) amount = 1;
-                String num = String.valueOf(amount);
-                mAmount.setText(num);
+                if(restItem!=null) {
+                    amount--;
+                    if (amount < 1) amount = 1;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
 
-                setCurrentPriceOnBar();
-
+                    setCurrentPriceOnBar();
+                }
             }
         });
     }
@@ -144,14 +149,16 @@ public class MenuItemActivity extends AppCompatActivity {
 
 
     private void addToCart() {
-        restItem.setAmount(amount);
-        Intent i = new Intent();
-        Bundle extra = new Bundle();
-        extra.putParcelable("item", restItem);
-        i.putExtras(extra);
-        setResult(Activity.RESULT_OK, i);
-        finish();
-
+        if(restItem!=null) {
+            restItem.setCartId(CartID.getID());
+            restItem.setAmount(amount);
+            Intent i = new Intent();
+            Bundle extra = new Bundle();
+            extra.putParcelable("item", restItem);
+            i.putExtras(extra);
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
     }
 
         private boolean getData() {

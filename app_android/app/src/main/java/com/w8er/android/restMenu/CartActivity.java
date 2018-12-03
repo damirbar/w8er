@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.w8er.android.R;
@@ -18,6 +19,8 @@ import com.w8er.android.model.RestItem;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.w8er.android.utils.DataFormatter.currencyFormat;
 
@@ -46,6 +49,8 @@ public class CartActivity extends AppCompatActivity implements CartItemsAdapter.
     }
 
     private void initViews() {
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         ImageButton mBCancel = findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> goBack());
         recyclerView = findViewById(R.id.rvRes);
@@ -53,7 +58,6 @@ public class CartActivity extends AppCompatActivity implements CartItemsAdapter.
         mAmount = findViewById(R.id.textViewCartAmount);
         mPrice = findViewById(R.id.textViewPrice);
         buttonLayout.setOnClickListener(view -> openCheckOut());
-
     }
 
     private void openCheckOut() {
