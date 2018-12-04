@@ -85,7 +85,8 @@ router.all('*', function (req, res, next) {
 });
 
 router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  // res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  res.sendFile('/home/eran/WebstormProjects/w8er/web/dist/w8erWebapp/index.html');
 });
 
 module.exports = router;

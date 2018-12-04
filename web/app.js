@@ -56,5 +56,6 @@ http.listen(3000, function () {
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  // res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  res.sendFile('/home/eran/WebstormProjects/w8er/web/dist/w8erWebapp/index.html');
 });
