@@ -58,8 +58,25 @@ public class HomeFragment extends BaseFragment implements HomeSearchDialog.OnCal
     }
 
     private void initViews(View v) {
-//        ScrollView scrollView = v.findViewById(R.id.scroll_view);
-//        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+        FrameLayout buttonMenu1 = v.findViewById(R.id.button_menu1);
+        FrameLayout buttonMenu2 = v.findViewById(R.id.button_menu2);
+        FrameLayout buttonMenu3 = v.findViewById(R.id.button_menu3);
+        FrameLayout buttonMenu4 = v.findViewById(R.id.button_menu4);
+        FrameLayout buttonMenu5 = v.findViewById(R.id.button_menu5);
+        FrameLayout buttonMenu6 = v.findViewById(R.id.button_menu6);
+        FrameLayout buttonMenu7 = v.findViewById(R.id.button_menu7);
+        FrameLayout buttonMenu8 = v.findViewById(R.id.button_menu8);
+        buttonMenu1.setOnClickListener(view -> startSearch("Bar"));
+        buttonMenu2.setOnClickListener(view -> startSearch("Coffee "));
+        buttonMenu3.setOnClickListener(view -> startSearch("Pizza"));
+        buttonMenu4.setOnClickListener(view -> startSearch("Burger"));
+        buttonMenu5.setOnClickListener(view -> startSearch("Fish"));
+        buttonMenu6.setOnClickListener(view -> startSearch("Meat"));
+        buttonMenu7.setOnClickListener(view -> startSearch("Takeout"));
+//        buttonMenu8.setOnClickListener(view -> startSearch("bar"));
+
+        ScrollView scrollView = v.findViewById(R.id.scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         FrameLayout frameLayout = v.findViewById(R.id.frame);
         frameLayout.setOnClickListener(view -> openSearch());
 
@@ -91,6 +108,13 @@ public class HomeFragment extends BaseFragment implements HomeSearchDialog.OnCal
 //                sendQuery(query);
 //            }
 //        });
+    }
+
+    private void startSearch(String query) {
+        SearchRest searchRest = new SearchRest();
+        searchRest.setCurrentLocation();
+        searchRest.setTag(query);
+        UpdateSearch(searchRest);
     }
 
 

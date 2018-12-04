@@ -20,6 +20,8 @@ import com.w8er.android.R;
 import com.w8er.android.model.SearchRest;
 import com.w8er.android.utils.SoftKeyboard;
 
+import java.util.Arrays;
+
 public class HomeSearchDialog extends DialogFragment {
 
     public interface OnCallbackSearch {
@@ -39,9 +41,7 @@ public class HomeSearchDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle);
         mCallback = (OnCallbackSearch) getTargetFragment();
-
     }
-
 
     @Nullable
     @Override
@@ -49,9 +49,24 @@ public class HomeSearchDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.dialog_home_search, container, false);
         initViews(view);
-
+        getData();
 
         return view;
+    }
+
+    private void getData() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            String query =  bundle.getString("query");
+            String location =  bundle.getString("location");
+            if(query!=null && !query.isEmpty()){
+                mSearchViewWords.setQuery(query, false);
+            }
+            if(location!=null && !location.isEmpty() && !location.equals(currentLocation)){
+                mSearchViewLocation.setQuery(location, false);
+                searchEditText.setTextColor(getResources().getColor(R.color.black));
+            }
+        }
     }
 
     @Override
