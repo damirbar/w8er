@@ -84,9 +84,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
                     android:layout_marginTop="0dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     sothree:srcCompat="@drawable/ic_minus" />
+
+                <ImageView
+                    android:id="@+id/divider_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/author_details"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="?attr/colorButtonNormal" />
             </LinearLayout>
 
             <!--<ListView-->

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.w8er.android.R;
@@ -24,21 +25,23 @@ import com.w8er.android.utils.SoftKeyboard;
 
 import java.util.ArrayList;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Validation.validateFields;
 
-public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener ,HomeSearchDialog.OnCallbackSearch {
+public class HomeFragment extends BaseFragment implements HomeSearchDialog.OnCallbackSearch {
+//    public class HomeFragment extends BaseFragment implements RestaurantsAdapter.ItemClickListener ,HomeSearchDialog.OnCallbackSearch {
 
-    private RestaurantsAdapter adapter;
-    private RecyclerView recyclerView;
+//    private RestaurantsAdapter adapter;
+//    private RecyclerView recyclerView;
     private PullRefreshLayout mSwipeRefreshLayout;
-    private ArrayList<Restaurant> restaurants;
-    private ServerResponse mServerResponse;
-    private CompositeSubscription mSubscriptions;
-    private String saveQuery = "";
+//    private ArrayList<Restaurant> restaurants;
+//    private ServerResponse mServerResponse;
+//    private CompositeSubscription mSubscriptions;
+//    private String saveQuery = "";
 
 
     @Nullable
@@ -46,27 +49,29 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mSubscriptions = new CompositeSubscription();
-        mServerResponse = new ServerResponse(view.findViewById(R.id.parent));
+//        mSubscriptions = new CompositeSubscription();
+//        mServerResponse = new ServerResponse(view.findViewById(R.id.parent));
         initViews(view);
-        initRecyclerView();
+//        initRecyclerView();
 
         return view;
     }
 
     private void initViews(View v) {
+//        ScrollView scrollView = v.findViewById(R.id.scroll_view);
+//        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         FrameLayout frameLayout = v.findViewById(R.id.frame);
         frameLayout.setOnClickListener(view -> openSearch());
 
-        recyclerView = v.findViewById(R.id.rvRes);
-        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
-            if (validateFields(saveQuery)) {
-                sendQuery(saveQuery);
-
-            }
-            mSwipeRefreshLayout.setRefreshing(false);
-        }, 1000));
+//        recyclerView = v.findViewById(R.id.rvRes);
+//        mSwipeRefreshLayout = v.findViewById(R.id.activity_main_swipe_refresh_layout);
+//        mSwipeRefreshLayout.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+//            if (validateFields(saveQuery)) {
+//                sendQuery(saveQuery);
+//
+//            }
+//            mSwipeRefreshLayout.setRefreshing(false);
+//        }, 1000));
 
 //        editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 //            @Override
@@ -89,60 +94,60 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
     }
 
 
-    private void initRecyclerView() {
-        restaurants = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//    private void initRecyclerView() {
+//        restaurants = new ArrayList<>();
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//
+//        adapter = new RestaurantsAdapter(getContext(), restaurants);
+//        adapter.setClickListener(this);
+//        recyclerView.setAdapter(adapter);
+//
+//    }
+
+//    private void sendQuery(String query) {
+//        mSubscriptions.add(RetrofitRequests.getRetrofit().getFreeTextSearch(query)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+//    }
+//
+//    private void handleResponse(ResponseRestaurants restaurants) {
+//        if (!saveQuery.isEmpty()) {
+//            adapter.setmData(restaurants.getRestaurants());
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (validateFields(saveQuery)) {
+//            sendQuery(saveQuery);
+//        }
+//    }
 
 
-        adapter = new RestaurantsAdapter(getContext(), restaurants);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-
-    }
-
-    private void sendQuery(String query) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().getFreeTextSearch(query)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
-    }
-
-    private void handleResponse(ResponseRestaurants restaurants) {
-        if (!saveQuery.isEmpty()) {
-            adapter.setmData(restaurants.getRestaurants());
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (validateFields(saveQuery)) {
-            sendQuery(saveQuery);
-        }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mSubscriptions.unsubscribe();
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        new SoftKeyboard(getActivity()).hideSoftKeyboard();
-
-        Bundle i = new Bundle();
-        String restId = adapter.getItemID(position);
-        i.putString("restId", restId);
-        RestaurantPageFragment frag = new RestaurantPageFragment();
-        frag.setArguments(i);
-
-        if (mFragmentNavigation != null) {
-            mFragmentNavigation.pushFragment(frag);
-        }
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mSubscriptions.unsubscribe();
+//    }
+//
+//    @Override
+//    public void onItemClick(View view, int position) {
+//        new SoftKeyboard(getActivity()).hideSoftKeyboard();
+//
+//        Bundle i = new Bundle();
+//        String restId = adapter.getItemID(position);
+//        i.putString("restId", restId);
+//        RestaurantPageFragment frag = new RestaurantPageFragment();
+//        frag.setArguments(i);
+//
+//        if (mFragmentNavigation != null) {
+//            mFragmentNavigation.pushFragment(frag);
+//        }
+//    }
 
     private void openSearch() {
         HomeSearchDialog newFragment = new HomeSearchDialog();
@@ -163,6 +168,5 @@ public class HomeFragment extends BaseFragment implements RestaurantsAdapter.Ite
             mFragmentNavigation.pushFragment(frag);
         }
     }
-
 
 }
