@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,10 +122,9 @@ public class MenuTypesFragment extends Fragment {
 
         if(size>0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Discard Cart?");
-            builder.setMessage("If you go back now, you will lose your Cart items.");
-            builder.setPositiveButton("Discard Cart", (dialog, which) -> getActivity().finish());
-            builder.setNegativeButton("Keep Editing", (dialog, which) -> {
+            builder.setMessage("You haven't submitted your order yet. Are you sure you want to leave?");
+            builder.setPositiveButton("Leave", (dialog, which) -> getActivity().finish());
+            builder.setNegativeButton("Stay", (dialog, which) -> {
             });
             builder.show();
         }
@@ -221,18 +221,31 @@ public class MenuTypesFragment extends Fragment {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getResProcess(restId);
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mSubscriptions.unsubscribe();
     }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        getResProcess(restId);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener((v, keyCode, event) -> {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    exitMenu();
+                    return true;
+                }
+            return false;
+        });
+    }
+
 
 
 }

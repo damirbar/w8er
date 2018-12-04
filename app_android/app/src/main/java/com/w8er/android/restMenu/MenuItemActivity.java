@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -26,8 +26,10 @@ import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.utils.CartID;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -41,6 +43,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.network.RetrofitRequests.getBytes;
 import static com.w8er.android.utils.Constants.USER_ID;
+import static com.w8er.android.utils.DataFormatter.currencyFormat;
 import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
 
 public class MenuItemActivity extends AppCompatActivity {
@@ -49,6 +52,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private RestItem restItem;
     private TextView mItemNameBar;
+    private TextView mBarPrice;
     private ImageView mItemImage;
     private TextView mItemName;
     private TextView mItemDisc;
@@ -59,11 +63,10 @@ public class MenuItemActivity extends AppCompatActivity {
     private String restId;
     private String itemId;
     private TextView mAmount;
-    private int amount = 0;
+    private int amount = 1;
     private KProgressHUD hud;
     private String mUserId;
     private Menu admin;
-    private Button buttonRemoveFromCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +93,9 @@ public class MenuItemActivity extends AppCompatActivity {
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
-        Button buttonAddToCart = findViewById(R.id.button_add_to_cart);
+        mBarPrice = findViewById(R.id.textViewPrice);
+        FrameLayout buttonAddToCart = findViewById(R.id.button_add_to_cart);
         buttonAddToCart.setOnClickListener(view -> addToCart());
-        buttonRemoveFromCart = findViewById(R.id.button_remove_from_cart);
-        buttonRemoveFromCart.setOnClickListener(view -> removeFromCart());
         ImageButton mBCancel = findViewById(R.id.image_Button_back);
         mBCancel.setOnClickListener(view -> finish());
         mItemNameBar = findViewById(R.id.item_name_tolbar);
@@ -110,63 +111,63 @@ public class MenuItemActivity extends AppCompatActivity {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount++;
-                if (amount > 50) amount = 50;
-                String num = String.valueOf(amount);
-                mAmount.setText(num);
+                if(restItem!=null) {
+
+                    amount++;
+                    if (amount > 50) amount = 50;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+                    setCurrentPriceOnBar();
+                }
+
             }
         });
 
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                amount--;
-                if (amount < 0) amount = 0;
-                String num = String.valueOf(amount);
+                if(restItem!=null) {
+                    amount--;
+                    if (amount < 1) amount = 1;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
 
-                mAmount.setText(num);
+                    setCurrentPriceOnBar();
+                }
             }
         });
     }
 
-    private void removeFromCart() {
-        cartChange(0);
+    private void setCurrentPriceOnBar(){
+        BigDecimal priceDecimal = new BigDecimal(restItem.getPrice());
+        priceDecimal = priceDecimal.multiply(new BigDecimal(amount));
+        String priceDecimalStr = currencyFormat(priceDecimal);
+        mBarPrice.setText(priceDecimalStr);
     }
+
+
 
     private void addToCart() {
-        cartChange(amount);
-    }
-
-    private void cartChange(int num) {
-        restItem.setAmount(num);
-        Intent i = new Intent();
-        Bundle extra = new Bundle();
-        extra.putParcelable("item", restItem);
-        i.putExtras(extra);
-        setResult(Activity.RESULT_OK, i);
-        finish();
+        if(restItem!=null) {
+            restItem.setCartId(CartID.getID());
+            restItem.setAmount(amount);
+            Intent i = new Intent();
+            Bundle extra = new Bundle();
+            extra.putParcelable("item", restItem);
+            i.putExtras(extra);
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
     }
 
         private boolean getData() {
         if (getIntent().getExtras() != null) {
             itemId = getIntent().getExtras().getString("id");
             restId = getIntent().getExtras().getString("restId");
-            int amountSave = getIntent().getExtras().getInt("amount");
-            initAmount(amountSave);
             return true;
         } else
             return false;
-    }
-
-    private void initAmount(int amountSave) {
-        amount = amountSave;
-        String amountStr = String.valueOf(amountSave);
-        mAmount.setText(amountStr);
-
-        if(amountSave>0)
-            buttonRemoveFromCart.setVisibility(View.VISIBLE);
-        else
-            buttonRemoveFromCart.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -226,8 +227,8 @@ public class MenuItemActivity extends AppCompatActivity {
         NumberFormat nf = new DecimalFormat("#.####");
         String s = nf.format(restItem.getPrice());
         String price = "₪" + s;
-
         mItemPrice.setText(price);
+        mBarPrice.setText(price);
     }
 
     @Override

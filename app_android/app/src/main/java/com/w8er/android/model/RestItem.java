@@ -17,11 +17,10 @@ public class RestItem implements Parcelable {
     private String image_url;
     private String image_id;
     private int amount;
-
-
-
+    private int cartId;
 
     public RestItem(){}
+
 
     protected RestItem(Parcel in) {
         _id = in.readString();
@@ -34,6 +33,7 @@ public class RestItem implements Parcelable {
         image_url = in.readString();
         image_id = in.readString();
         amount = in.readInt();
+        cartId = in.readInt();
     }
 
     @Override
@@ -48,6 +48,7 @@ public class RestItem implements Parcelable {
         dest.writeString(image_url);
         dest.writeString(image_id);
         dest.writeInt(amount);
+        dest.writeInt(cartId);
     }
 
     @Override
@@ -66,6 +67,14 @@ public class RestItem implements Parcelable {
             return new RestItem[size];
         }
     };
+
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
 
     public int getAmount() {
         return amount;
@@ -158,6 +167,7 @@ public class RestItem implements Parcelable {
                 this.getDescription().equals(u.getDescription()) &&
                 this.getPrice()==(u.getPrice()) &&
                 this.getType().equals(u.getType()) &&
+                this.getCartId()==(u.getCartId()) &&
                 this.getTags().equals(u.getTags());
     }
 }

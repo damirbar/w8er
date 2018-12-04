@@ -201,7 +201,6 @@
                     android:paddingRight="10dp"
                     android:textSize="14sp" />
 
-
                 <FrameLayout
                     android:id="@+id/button_add_to_cart"
                     android:layout_width="match_parent"
@@ -243,13 +242,27 @@
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
                             android:gravity="center"
-                            android:text="Add to Cart"
+                            android:text="Update Item"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
                     </RelativeLayout>
 
                 </FrameLayout>
 
+
+                <Button
+                    android:id="@+id/button_remove_from_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/button_shape_cart"
+                    android:gravity="center"
+                    android:text="Remove from cart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
             </LinearLayout>
         </ScrollView>
 
