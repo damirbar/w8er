@@ -47,6 +47,15 @@ var RestaurantSchema = new mongoose.Schema({
     specials: [String]
   },
   sessions: [String]
+  // restLayout: {
+  //   row: {type: Number},
+  //   col: {type: Number},
+  //   tables: [{
+  //     tableId: {type: String, default: ""},
+  //     booked: {type: Boolean, default: false},
+  //     date: {type: Date, default: Date.now()}
+  //   }]
+  // },
 
 }, {usePushEach: true});
 
