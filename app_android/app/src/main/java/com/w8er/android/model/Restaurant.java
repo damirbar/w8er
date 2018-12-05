@@ -174,7 +174,7 @@ public class Restaurant {
             return false;
         }
         if (this.getRestLayout() != null && u.getRestLayout() != null) {
-            if(this.getRestLayout().equals(u.getRestLayout())){
+            if(!this.getRestLayout().equals(u.getRestLayout())){
                 layout = false;
             }
         }

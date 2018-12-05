@@ -24,7 +24,6 @@ public class NumberDialog extends BottomSheetDialogFragment {
 
     private NumberPicker mNumberPicker;
     OnCallbackHour mCallback;
-//    private String[] data;
 
     @Nullable
     @Override
@@ -38,7 +37,7 @@ public class NumberDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
-        mNumberPicker.setMinValue(1);
+        mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(10);
     }
 

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
@@ -61,6 +62,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
     private ArrayList<TimeSlot> timeSlots;
     private ProgressBar mProgressBar;
     private RestLayout restLayout;
+    private ImageView mReload;
+    private String restId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
     private void initViews() {
         ScrollView scrollView = findViewById(R.id.scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+        mReload = findViewById(R.id.image_reload);
+        mReload.setOnClickListener(view -> getResProcess(restId));
         Button mBCancel = findViewById(R.id.cancel_button);
         mProgressBar = findViewById(R.id.progress);
         mBCancel.setOnClickListener(view -> exitAlert());
@@ -255,10 +260,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String restId = getIntent().getExtras().getString("restId");
+            restId = getIntent().getExtras().getString("restId");
             if (restId != null) {
-                mBSave.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.VISIBLE);
                 getResProcess(restId);
                 return true;
             } else
@@ -280,18 +283,33 @@ public class EditRestaurantActivity extends AppCompatActivity {
         finish();
     }
 
-    private void getResProcess(String id) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getRest(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseGet, this::handleErrorUpdate));
-    }
-
     public void handleErrorUpdate(Throwable error) {
         mProgressBar.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
 
         mServerResponse.handleError(error);
+    }
+
+
+    private void getResProcess(String id) {
+        mBSave.setVisibility(View.GONE);
+        mReload.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getRest(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseGet, this::handleErrorGet));
+    }
+
+    private void handleErrorGet(Throwable throwable) {
+        mProgressBar.setVisibility(View.GONE);
+        mBSave.setVisibility(View.GONE);
+        mReload.setVisibility(View.VISIBLE);
+
+
+        mServerResponse.handleError(throwable);
+
     }
 
     private void handleResponseGet(Restaurant _restaurant) {
@@ -311,6 +329,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         initPhone(restaurant.getCountry(), restaurant.getPhone_number());
 
         mProgressBar.setVisibility(View.GONE);
+        mReload.setVisibility(View.GONE);
         mBSave.setVisibility(View.VISIBLE);
 
     }
