@@ -2,24 +2,24 @@
   <div class="row">
     <div class="col-md-3 ">
       <div class="list-group ">
-        <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action">User Management</a>
-        <a href="#" class="list-group-item list-group-item-action">Used</a>
-        <a href="#" class="list-group-item list-group-item-action">Enquiry</a>
-        <a href="#" class="list-group-item list-group-item-action">Dealer</a>
-        <a href="#" class="list-group-item list-group-item-action">Media</a>
-        <a href="#" class="list-group-item list-group-item-action">Post</a>
-        <a href="#" class="list-group-item list-group-item-action">Category</a>
-        <a href="#" class="list-group-item list-group-item-action">New</a>
-        <a href="#" class="list-group-item list-group-item-action">Comments</a>
-        <a href="#" class="list-group-item list-group-item-action">Appearance</a>
-        <a href="#" class="list-group-item list-group-item-action">Reports</a>
-        <a href="#" class="list-group-item list-group-item-action">Settings</a>
+        <button (click)="changeActiveBtn(0)" [ngClass]="{'active':isClicked[0]}" class="list-group-item list-group-item-action">Dashboard</button>
+        <button (click)="changeActiveBtn(1)" [ngClass]="{'active':isClicked[1]}" class="list-group-item list-group-item-action ">User Management</button>
+        <button (click)="changeActiveBtn(2)" [ngClass]="{'active':isClicked[2]}" class="list-group-item list-group-item-action">Used</button>
+        <button (click)="changeActiveBtn(3)" [ngClass]="{'active':isClicked[3]}" class="list-group-item list-group-item-action">Enquiry</button>
+        <button (click)="changeActiveBtn(4)" [ngClass]="{'active':isClicked[4]}" class="list-group-item list-group-item-action">Dealer</button>
+        <button (click)="changeActiveBtn(5)" [ngClass]="{'active':isClicked[5]}" class="list-group-item list-group-item-action">Media</button>
+        <button (click)="changeActiveBtn(6)" [ngClass]="{'active':isClicked[6]}" class="list-group-item list-group-item-action">Post</button>
+        <button (click)="changeActiveBtn(7)" [ngClass]="{'active':isClicked[7]}" class="list-group-item list-group-item-action">Category</button>
+        <button (click)="changeActiveBtn(8)" [ngClass]="{'active':isClicked[8]}" class="list-group-item list-group-item-action">New</button>
+        <button (click)="changeActiveBtn(9)" [ngClass]="{'active':isClicked[9]}" class="list-group-item list-group-item-action">Comments</button>
+        <button (click)="changeActiveBtn(10)" [ngClass]="{'active':isClicked[10]}" class="list-group-item list-group-item-action">Appearance</button>
+        <button (click)="changeActiveBtn(11)" [ngClass]="{'active':isClicked[11]}" class="list-group-item list-group-item-action">Reports</button>
+        <button (click)="changeActiveBtn(12)" [ngClass]="{'active':isClicked[12]}" class="list-group-item list-group-item-action">Settings</button>
 
 
       </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9" *ngIf="isClicked[0]">
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -73,5 +73,31 @@
         </div>
       </div>
     </div>
+
+
+
+    <div class="col-md-9" *ngIf="isClicked[1]">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <h4>More options</h4>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+
+              Some text
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
 </div>

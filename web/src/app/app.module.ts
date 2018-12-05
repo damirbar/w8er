@@ -57,7 +57,7 @@ import { AgmCoreModule } from '@agm/core'
     FlexLayoutModule,
     MatSidenavModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDgeD52T0OSxhoQ4K0_75-FDIKdACGg3pk'
+      apiKey: 'AIzaSyAyKg00vFRU05qHOX6GTCR7ANb9RRYSj_o'
     })
   ],
   providers: [
