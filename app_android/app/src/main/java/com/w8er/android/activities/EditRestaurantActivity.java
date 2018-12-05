@@ -18,6 +18,7 @@ import com.hbb20.CountryCodePicker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.model.Response;
+import com.w8er.android.model.RestLayout;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
@@ -37,8 +38,9 @@ import static com.w8er.android.utils.Validation.validateFields;
 
 
 public class EditRestaurantActivity extends AppCompatActivity {
-    public static final int REQUEST_CODE_UPDATE_TAGS = 0x4;
-    public static final int REQUEST_CODE_UPDATE_TIME_SLOTS = 0x5;
+    public static final int REQUEST_CODE_UPDATE_TAGS = 0x1;
+    public static final int REQUEST_CODE_UPDATE_TIME_SLOTS = 0x2;
+    public static final int REQUEST_CODE_UPDATE_LAYOUT = 0x3;
 
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
@@ -58,6 +60,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
     private Restaurant restaurant;
     private ArrayList<TimeSlot> timeSlots;
     private ProgressBar mProgressBar;
+    private RestLayout restLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +99,16 @@ public class EditRestaurantActivity extends AppCompatActivity {
         ccp.registerCarrierNumberEditText(eTPhone);
         eTtags.setOnClickListener(view -> setTags());
         eTHours.setOnClickListener(view -> setHours());
+        Button mEditLayoutButton = findViewById(R.id.layout_button);
+        mEditLayoutButton.setOnClickListener(view -> editLayout());
+    }
 
+    private void editLayout() {
+        Intent i = new Intent(this, EditRestLayoutActivity.class);
+        Bundle extra = new Bundle();
+        extra.putParcelable("layout", restLayout);
+        i.putExtras(extra);
+        startActivityForResult(i, REQUEST_CODE_UPDATE_LAYOUT);
     }
 
     private void initMap(LatLng latLng) {
@@ -197,6 +209,18 @@ public class EditRestaurantActivity extends AppCompatActivity {
             }
         }
 
+        if (requestCode == REQUEST_CODE_UPDATE_LAYOUT) {
+            if (resultCode == RESULT_OK) {
+                Bundle extra = result.getExtras();
+                RestLayout _restLayout = extra.getParcelable("layout");
+                if(_restLayout!=null){
+                    restLayout = _restLayout;
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+
+
 
     }
 
@@ -210,6 +234,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         newRestaurant.setTags(allHashTags);
         newRestaurant.setHours(timeSlots);
         newRestaurant.setRestId(restaurant.get_id());
+        newRestaurant.setRestLayout(restLayout);
 
         return newRestaurant;
 
@@ -273,6 +298,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private void handleResponseGet(Restaurant _restaurant) {
 
+        restLayout = _restaurant.getRestLayout();
         restaurant = _restaurant;
 
         LatLng latLngMarker = new LatLng(restaurant.getLocation().getLat(),

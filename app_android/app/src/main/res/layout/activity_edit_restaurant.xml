@@ -143,6 +143,23 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                    <Button
+                        android:id="@+id/layout_button"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/info"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="Edit layout"
+                        android:textAllCaps="false"
+                        android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/info"
                         android:layout_width="wrap_content"
@@ -195,7 +212,7 @@
                         android:id="@+id/tR9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/info"
+                        android:layout_below="@+id/layout_button"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="20dp">

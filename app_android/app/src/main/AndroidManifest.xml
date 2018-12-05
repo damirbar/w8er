@@ -151,7 +151,10 @@
             android:name=".restMenu.CartActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".activities.EditRestLayoutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
     </application>
 

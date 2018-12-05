@@ -40,10 +40,7 @@ public class AddTagsActivity extends AppCompatActivity {
         mAddTag = findViewById(R.id.layoutTag);
         mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.HashTag), null);
         mTextHashTagHelper.handle(mTagsText);
-
         mAddTag.setOnClickListener(view -> addTag());
-
-
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());

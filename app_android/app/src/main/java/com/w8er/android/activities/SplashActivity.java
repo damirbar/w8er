@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.w8er.android.SetUpIpActivity;
-import com.w8er.android.activities.NavBarActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -19,7 +18,6 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SetUpIpActivity.class);
 
 //        Intent intent = new Intent(this, NavBarActivity.class);
-
         startActivity(intent);
         finish();
     }
