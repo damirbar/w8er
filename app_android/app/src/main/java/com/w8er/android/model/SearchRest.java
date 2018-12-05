@@ -66,16 +66,28 @@ public class SearchRest implements Parcelable {
         this.tags = tags;
     }
 
+    public void setTag(String tag) {
+        this.tags = new String[]{tag};
+    }
 
-    @Override
-    public String toString() {
+    public String tagsToString() {
         StringBuilder allTags = new StringBuilder();
         for(String s:tags){
             allTags.append(s);
             allTags.append(" ");
         }
 
-        return  address + ' ' + allTags.toString().trim();
+        return allTags.toString().trim();
+    }
+
+
+    @Override
+    public String toString() {
+        return  address + ' ' + tagsToString();
+    }
+
+    public void setCurrentLocation() {
+        this.address = "Current Location";
     }
 
 }

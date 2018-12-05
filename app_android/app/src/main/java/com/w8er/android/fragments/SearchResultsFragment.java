@@ -56,7 +56,7 @@ import rx.subscriptions.CompositeSubscription;
 import static com.w8er.android.imageCrop.PicModeSelectDialogFragment.TAG;
 
 public class SearchResultsFragment extends BaseFragment implements HomeSearchDialog.OnCallbackSearch, RestaurantsAdapter.ItemClickListener,
-        GoogleMap.OnMarkerClickListener ,RestaurantsSnapAdapter.ItemClickListener{
+        GoogleMap.OnMarkerClickListener, RestaurantsSnapAdapter.ItemClickListener {
 
     private final int REQ_PERMISSION = 888;
 
@@ -88,10 +88,8 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         initRecyclerView();
         markers = new ArrayList<>();
-
         initMap();
         getData();
-
 
         return rootView;
     }
@@ -155,8 +153,8 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(multiSnapRecyclerView, dx, dy);
                 int firstItemVisible;
-                if(adapterSnap.getmData().size() == 1)
-                    firstItemVisible = firstManager.findFirstCompletelyVisibleItemPosition()+1;
+                if (adapterSnap.getmData().size() == 1)
+                    firstItemVisible = firstManager.findFirstCompletelyVisibleItemPosition() + 1;
                 else
                     firstItemVisible = firstManager.findFirstVisibleItemPosition();
 
@@ -173,7 +171,7 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
 
                 Restaurant r = adapterSnap.getmData().get(pos);
                 LatLng latLng = new LatLng(r.getLocation().getLat(), r.getLocation().getLng());
-                GoogleMapUtils.goToLocation(latLng,15,googleMap,false);
+                GoogleMapUtils.goToLocation(latLng, 15, googleMap, false);
             }
         });
 
@@ -194,6 +192,10 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
 
     private void openSearch() {
         HomeSearchDialog newFragment = new HomeSearchDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("query", saveQuery.tagsToString());
+        bundle.putString("location", saveQuery.getAddress());
+        newFragment.setArguments(bundle);
         newFragment.setTargetFragment(this, 0);
         newFragment.show(getActivity().getSupportFragmentManager(), HomeSearchDialog.TAG);
 
@@ -211,7 +213,6 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
             }
         }
     }
-
 
     private void sendQuery(SearchRest query) {
 
@@ -240,16 +241,16 @@ public class SearchResultsFragment extends BaseFragment implements HomeSearchDia
 
     private void handleResponseQuery(ResponseRestaurants restaurants) {
 
-            initRestaurantSnapView(restaurants.getRestaurants());
+        initRestaurantSnapView(restaurants.getRestaurants());
 
-            adapter.setmData(restaurants.getRestaurants());
-            adapter.notifyDataSetChanged();
+        adapter.setmData(restaurants.getRestaurants());
+        adapter.notifyDataSetChanged();
 
-            adapterSnap.setmData(restaurants.getRestaurants());
-            adapterSnap.notifyDataSetChanged();
+        adapterSnap.setmData(restaurants.getRestaurants());
+        adapterSnap.notifyDataSetChanged();
 
-            googleMap.clear();
-            markers.clear();
+        googleMap.clear();
+        markers.clear();
 
         if (!restaurants.getRestaurants().isEmpty()) {
 
