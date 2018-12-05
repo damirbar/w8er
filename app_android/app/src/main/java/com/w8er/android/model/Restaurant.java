@@ -21,6 +21,15 @@ public class Restaurant {
     private float rating;
     private String profile_img;
     private MenuItemsId menu;
+    private RestLayout restLayout;
+
+    public RestLayout getRestLayout() {
+        return restLayout;
+    }
+
+    public void setRestLayout(RestLayout restLayout) {
+        this.restLayout = restLayout;
+    }
 
     public MenuItemsId getMenu() {
         return menu;
