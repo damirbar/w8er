@@ -55,6 +55,18 @@ public class RestLayout implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof RestLayout)) {
+            return false;
+        }
+        RestLayout u = (RestLayout) other;
+        return this.getTables().equals(u.getTables()) &&
+                this.getRow() == (u.getRow()) &&
+                this.getCol() == (u.getCol());
+    }
+
+
+    @Override
     public int describeContents() {
         return 0;
     }

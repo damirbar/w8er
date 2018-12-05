@@ -33,7 +33,6 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
         setContentView(R.layout.activity_edit_layout);
         initViews();
         getData();
-
     }
 
     private boolean getData() {
@@ -41,6 +40,10 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
             RestLayout layout = getIntent().getExtras().getParcelable("layout");
             if (layout != null) {
                 createLayout(layout.getTables(),layout.getRow(),layout.getCol());
+                saveNumFrom = layout.getRow();
+                saveNumTo = layout.getCol();
+                mFromButton.setText(String.valueOf(saveNumFrom));
+                mToButton.setText(String.valueOf(saveNumTo));
                 return true;
             } else
                 return false;
@@ -77,7 +80,6 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
 
         ArrayList<RestTable> tables = new ArrayList<>();
         createLayout(tables,saveNumFrom,saveNumTo);
-
     }
 
     public void saveButton() {
@@ -97,14 +99,17 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
 
 
     private void setLayout() {
+        ArrayList<RestTable> tables = new ArrayList<>();
+        if(res!=null){
+            tables = res.getTables();
+        }
+
         tableLayout.removeAllViews();
         String numTo = mToButton.getText().toString().trim();
         String numFrom = mFromButton.getText().toString().trim();
 
         saveNumFrom = Integer.valueOf(numFrom);
         saveNumTo = Integer.valueOf(numTo);
-
-        ArrayList<RestTable> tables = new ArrayList<>();
         createLayout(tables,saveNumFrom,saveNumTo);
     }
 

@@ -220,8 +220,6 @@ public class EditRestaurantActivity extends AppCompatActivity {
             }
         }
 
-
-
     }
 
     private Restaurant getNewRestaurant(){
