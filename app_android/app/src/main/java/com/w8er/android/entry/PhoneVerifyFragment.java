@@ -32,6 +32,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
+import static com.w8er.android.utils.Constants.USER_ID;
 
 public class PhoneVerifyFragment extends Fragment {
 
@@ -119,7 +120,7 @@ public class PhoneVerifyFragment extends Fragment {
     }
 
     private void verifyProcess(User user) {
-        mSubscriptions.add(RetrofitRequests.getRetrofit().varify(user)
+        mSubscriptions.add(RetrofitRequests.getRetrofit().verify(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse, this::handleError));
@@ -130,6 +131,8 @@ public class PhoneVerifyFragment extends Fragment {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(TOKEN,user.getAccessToken());
         editor.putString(PHONE,user.getPhone_number());
+        editor.putString(USER_ID,user.get_id());
+
 
         editor.apply();
 

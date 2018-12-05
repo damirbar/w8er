@@ -8,19 +8,23 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -34,22 +38,27 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.hbb20.CountryCodePicker;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
 import com.w8er.android.R;
-import com.w8er.android.activities.AddToMenuActivity;
 import com.w8er.android.activities.EditRestaurantActivity;
+import com.w8er.android.activities.RestMediaGalleryActivity;
 import com.w8er.android.activities.ReviewActivity;
 import com.w8er.android.adapters.ImageHorizontalAdapter;
 import com.w8er.android.adapters.ReviewsAdapter;
 import com.w8er.android.entry.EntryActivity;
+import com.w8er.android.model.Response;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.Review;
 import com.w8er.android.model.TimeSlot;
+import com.w8er.android.model.User;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
+import com.w8er.android.restMenu.MenuActivity;
 import com.w8er.android.utils.GoogleMapUtils;
 import com.willy.ratingbar.BaseRatingBar;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,30 +68,38 @@ import java.util.List;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.w8er.android.network.RetrofitRequests.getBytes;
+import static com.w8er.android.utils.Constants.PHONE;
 import static com.w8er.android.utils.Constants.TOKEN;
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
-import static com.w8er.android.utils.RatingUtils.roundToHalf;
+import static com.w8er.android.utils.Constants.USER_ID;
+import static com.w8er.android.utils.DataFormatter.getCountryCode;
+import static com.w8er.android.utils.DataFormatter.roundToHalf;
+import static com.w8er.android.utils.FileUtils.getFileDetailFromUri;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 import static me.everything.android.ui.overscroll.IOverScrollState.STATE_IDLE;
 
-
-public class RestaurantPageFragment extends BaseFragment {
+public class RestaurantPageFragment extends BaseFragment implements ImageHorizontalAdapter.ItemClickListener {
 
     public static final int REQUEST_CODE_REVIEW = 0x1;
+    private static final int REQUEST_CODE_IMAGE_GALLERY = 0x2;
 
     private float saveRating;
     private FrameLayout callButton;
     private FrameLayout menuButton;
     private FrameLayout infoButton;
     private FrameLayout navigationButton;
+    private KProgressHUD hud;
 
     private TextView textViewPhone;
     private EditText textEditPhone;
@@ -94,55 +111,65 @@ public class RestaurantPageFragment extends BaseFragment {
     private Restaurant restaurant;
     private ServerResponse mServerResponse;
     private CompositeSubscription mSubscriptions;
+    private RetrofitRequests mRetrofitRequests;
     private TextView resName;
     private BaseRatingBar ratingBar;
     private BaseRatingBar ratingReview;
     private Button openReviewsButton;
-    private String resID;
-    private TextView mTVstatus;
-    private TextView mTVhours;
+    private String restId;
+    private TextView mTVStatus;
+    private TextView mTVHours;
     private Button editButton;
-    private TextView tVaddress;
+    private TextView tVAddress;
     private TextView restName;
     private SharedPreferences mSharedPreferences;
     private String mToken;
     private ReviewsAdapter adapterReview;
     private RecyclerView recyclerView;
-    private boolean first = true;
-    private View view;
+    private boolean profile;
+    private CheckBox mBookMark;
+    private boolean mBookMarkCheck = false;
+    private String mPhone;
+    private String mUserId;
+    private Menu admin;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_restaurant_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_restaurant_page, container, false);
         initViews(view);
         mMapView.onCreate(savedInstanceState);
         mSubscriptions = new CompositeSubscription();
         mServerResponse = new ServerResponse(view.findViewById(R.id.layout));
+        mRetrofitRequests = new RetrofitRequests(getActivity());
         initSharedPreferences();
         getData();
         return view;
     }
 
     private void initViews(View v) {
+        Toolbar toolbar = v.findViewById(R.id.tool_bar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+        mBookMark = v.findViewById(R.id.bookmark_checkbox);
         textViewPhone = v.findViewById(R.id.number_text);
         textEditPhone = v.findViewById(R.id.textEdit_phone);
         ccp = v.findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(textEditPhone);
         openReviewsButton = v.findViewById(R.id.button_reviews);
         recyclerView = v.findViewById(R.id.rvRes);
-        mTVstatus = v.findViewById(R.id.status);
+        mTVStatus = v.findViewById(R.id.status);
         ratingBar = v.findViewById(R.id.simple_rating_bar);
-        enableRatingBar(ratingBar,false);
+        enableRatingBar(ratingBar, false);
         ratingReview = v.findViewById(R.id.simple_rating_open);
-        tVaddress = v.findViewById(R.id.address_info);
+        tVAddress = v.findViewById(R.id.address_info);
         mMapView = (MapView) v.findViewById(R.id.mapView);
-        mTVhours = v.findViewById(R.id.hours);
+        mTVHours = v.findViewById(R.id.hours);
         ImageButton buttonBack = v.findViewById(R.id.image_Button_back);
         multiSnapRecyclerView = v.findViewById(R.id.res_pics);
         buttonBack.setOnClickListener(view -> getActivity().onBackPressed());
-        resName = v.findViewById(R.id.name);
+        resName = v.findViewById(R.id.name_appetizer);
         callButton = v.findViewById(R.id.phone_button);
         callButton.setOnClickListener(view -> callNum());
         navigationButton = v.findViewById(R.id.navigation_button);
@@ -157,7 +184,30 @@ public class RestaurantPageFragment extends BaseFragment {
         infoButton.setOnClickListener(view -> openInfo());
         openReviewsButton.setOnClickListener(view -> openReviews());
         restName = v.findViewById(R.id.resr_name);
-        tVaddress.setOnLongClickListener(new View.OnLongClickListener() {
+
+        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        multiSnapRecyclerView.setLayoutManager(firstManager);
+        multiSnapRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(multiSnapRecyclerView, dx, dy);
+
+                int firstItemVisible = firstManager.findFirstVisibleItemPosition();
+                if (firstItemVisible != 0 && firstItemVisible % adapterPics.getPics().size() == 0) {
+                    multiSnapRecyclerView.getLayoutManager().scrollToPosition(0);
+                }
+            }
+        });
+
+        mBookMark.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked != mBookMarkCheck) {
+                mBookMarkCheck = isChecked;
+                favoritesProcess(isChecked);
+            }
+        });
+
+        tVAddress.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 copyToClipboard();
@@ -168,7 +218,7 @@ public class RestaurantPageFragment extends BaseFragment {
         ratingReview.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar baseRatingBar, float v) {
-                if(saveRating != v){
+                if (saveRating != v) {
                     saveRating = v;
                     openReview();
                 }
@@ -188,7 +238,10 @@ public class RestaurantPageFragment extends BaseFragment {
                 case STATE_BOUNCE_BACK:
 
                     if (oldState == STATE_DRAG_START_SIDE) {
-                        getResProcess(resID);
+                        getResProcess(restId);
+                        if (!mPhone.isEmpty()) {
+                            loadProfile();
+                        }
                         // Dragging stopped -- view is starting to bounce back from the *left-end* onto natural position.
                     } else { // i.e. (oldState == STATE_DRAG_END_SIDE)
                         // View is starting to bounce back from the *right-end*.
@@ -206,10 +259,24 @@ public class RestaurantPageFragment extends BaseFragment {
                 Bundle extra = result.getExtras();
                 float rating = extra.getFloat("rating");
                 boolean post = extra.getBoolean("post");
-                enableRatingBar(ratingReview,post);
+                enableRatingBar(ratingReview, post);
                 saveRating = rating;
                 ratingReview.setRating(saveRating);
             } else if (resultCode == RESULT_CANCELED) {
+            }
+        }
+        if (requestCode == REQUEST_CODE_IMAGE_GALLERY) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    Uri uri = result.getData();
+                    String fileName = getFileDetailFromUri(getContext(), uri);
+                    InputStream is = getActivity().getContentResolver().openInputStream(result.getData());
+                    tryUploadImage(getBytes(is), fileName);
+                    is.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -218,7 +285,6 @@ public class RestaurantPageFragment extends BaseFragment {
         r.setEnabled(post);
         r.setClickable(post);
     }
-
 
     private void copyToClipboard() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -234,8 +300,9 @@ public class RestaurantPageFragment extends BaseFragment {
     private void initSharedPreferences() {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mToken = mSharedPreferences.getString(TOKEN, "");
+        mPhone = mSharedPreferences.getString(PHONE, "");
+        mUserId = mSharedPreferences.getString(USER_ID, "");
     }
-
 
     private void openReview() {
         Intent i;
@@ -246,12 +313,11 @@ public class RestaurantPageFragment extends BaseFragment {
 
             i = new Intent(getContext(), ReviewActivity.class);
             Bundle extra = new Bundle();
-            extra.putString("resID", resID);
+            extra.putString("restId", restId);
             extra.putFloat("rating", ratingReview.getRating());
             i.putExtras(extra);
             startActivityForResult(i, REQUEST_CODE_REVIEW);
         }
-
     }
 
     private void openReviews() {
@@ -266,34 +332,33 @@ public class RestaurantPageFragment extends BaseFragment {
     }
 
     private void openMenu() {
-        Intent i = new Intent(getContext(), AddToMenuActivity.class);
+        Intent i = new Intent(getContext(), MenuActivity.class);
         Bundle extra = new Bundle();
-        extra.putString("resID", resID);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }
 
     private void openInfo() {
-        Bundle i = new Bundle();
-        i.putParcelableArrayList("hours", restaurant.getHours());
         RestaurantInfoFragment fragment = new RestaurantInfoFragment();
-        fragment.setArguments(i);
-
+        if (restaurant != null) {
+            Bundle i = new Bundle();
+            i.putParcelableArrayList("hours", restaurant.getHours());
+            fragment.setArguments(i);
+        }
         mFragmentNavigation.pushFragment(fragment);
-
     }
-
 
     private void openEditRest() {
         Intent i = new Intent(getContext(), EditRestaurantActivity.class);
         Bundle extra = new Bundle();
-        extra.putString("resID", resID);
+        extra.putString("restId", restId);
         i.putExtras(extra);
         startActivity(i);
     }
 
     private void goToNavigation() {
-        String uri = "geo: " + restaurant.getCoordinates().getLat() + "," + restaurant.getCoordinates().getLng();
+        String uri = "geo: " + restaurant.getLocation().getLat() + "," + restaurant.getLocation().getLng();
         startActivity(new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse(uri)));
     }
@@ -306,55 +371,20 @@ public class RestaurantPageFragment extends BaseFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            resID = bundle.getString("resID");
-            getResProcess(resID);
+            restId = bundle.getString("restId");
         }
     }
-
 
     private void initRestaurantPics() {
         adapterPics = new ImageHorizontalAdapter(getContext(), restaurant.getPictures());
-        LinearLayoutManager firstManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        multiSnapRecyclerView.setLayoutManager(firstManager);
+        adapterPics.setClickListener(this);
         multiSnapRecyclerView.setAdapter(adapterPics);
-
-        if (first) {
-            first = false;
-            autoScroll();
-        }
-
-    }
-
-    private void autoScroll() {
-        final int speedScroll = 7000;
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            int count = 0;
-            boolean flag = true;
-
-            @Override
-            public void run() {
-                if (count < adapterPics.getItemCount()) {
-                    if (count == adapterPics.getItemCount() - 1) {
-                        flag = false;
-                    } else if (count == 0) {
-                        flag = true;
-                    }
-                    if (flag) count++;
-                    else count--;
-
-                    multiSnapRecyclerView.smoothScrollToPosition(count);
-                    handler.postDelayed(this, speedScroll);
-                }
-            }
-        };
-        handler.postDelayed(runnable, speedScroll);
     }
 
     private void goToMap() {
         if (mFragmentNavigation != null) {
             Bundle i = new Bundle();
-            i.putParcelable("coordinates", restaurant.getCoordinates());
+            i.putParcelable("locationPoint", restaurant.getLocation());
             i.putString("restName", restaurant.getName());
 
             RestaurantMarkerFragment fragment = new RestaurantMarkerFragment();
@@ -362,7 +392,6 @@ public class RestaurantPageFragment extends BaseFragment {
 
             mFragmentNavigation.pushFragment(fragment);
         }
-
     }
 
     private void initMap() {
@@ -377,15 +406,17 @@ public class RestaurantPageFragment extends BaseFragment {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            double lat = Double.parseDouble(restaurant.getCoordinates().getLat());
-            double lng = Double.parseDouble(restaurant.getCoordinates().getLng());
+            if (restaurant.getLocation().getCoordinates() != null) {
+                double lat = restaurant.getLocation().getLat();
+                double lng = restaurant.getLocation().getLng();
 
 
-            LatLng latLng = new LatLng(lat, lng);
+                LatLng latLng = new LatLng(lat, lng);
 
-            GoogleMapUtils.goToLocation(latLng, 13, googleMap);
-            GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
+                GoogleMapUtils.goToLocation(latLng, 13, googleMap, true);
+                GoogleMapUtils.addMapMarker(latLng, restaurant.getName(), "", googleMap);
 
+            }
             mMap.getUiSettings().setAllGesturesEnabled(false);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -400,9 +431,7 @@ public class RestaurantPageFragment extends BaseFragment {
                 goToMap();
                 return true;
             });
-
         });
-
     }
 
     private void getResProcess(String id) {
@@ -414,11 +443,25 @@ public class RestaurantPageFragment extends BaseFragment {
 
     private void handleResponse(Restaurant _restaurant) {
         restaurant = _restaurant;
+
+        if (mUserId.equals(restaurant.getOwner())) {
+            admin.findItem(R.id.action_pic).setVisible(true);
+            admin.findItem(R.id.action_profile_pic).setVisible(true);
+        } else {
+            admin.findItem(R.id.action_pic).setVisible(false);
+            admin.findItem(R.id.action_profile_pic).setVisible(false);
+        }
+
+        if (mUserId.equals(restaurant.getOwner())) {
+            editButton.setVisibility(View.VISIBLE);
+        } else
+            editButton.setVisibility(View.GONE);
+
         initRestaurantPics();
         initMap();
 
         restName.setText(restaurant.getName());
-        tVaddress.setText(restaurant.getAddress());
+        tVAddress.setText(restaurant.getAddress());
         resName.setText(restaurant.getName());
         float r = roundToHalf(restaurant.getRating());
         ratingBar.setRating(r);
@@ -435,8 +478,6 @@ public class RestaurantPageFragment extends BaseFragment {
             initReviews(restaurant.getReviews());
             openReviewsButton.setVisibility(View.GONE);
         }
-
-
     }
 
     private void initPhoneNum() {
@@ -493,8 +534,8 @@ public class RestaurantPageFragment extends BaseFragment {
 
             Date currentTime = time.parse(ho + ":" + min);
 
-            mTVstatus.setText("Closed");
-            mTVstatus.setTextColor(Color.RED);
+            mTVStatus.setText("Closed");
+            mTVStatus.setTextColor(Color.RED);
 
             for (TimeSlot t : restaurant.getHours()) {
                 if (t.getDays().equalsIgnoreCase(strDay)) {
@@ -503,23 +544,23 @@ public class RestaurantPageFragment extends BaseFragment {
                     Date closed = time.parse(t.getClose());
 
                     if (currentTime.after(open) && currentTime.before(closed)) {
-                        mTVstatus.setText("Open");
-                        mTVstatus.setTextColor(Color.GREEN);
-                        mTVhours.setText(t.toStringHours());
+                        mTVStatus.setText("Open");
+                        mTVStatus.setTextColor(Color.GREEN);
+                        mTVHours.setText(t.toStringHours());
                         break;
                     } else if (currentTime.before(open)) {
 
                         if (closestTime == null) {
                             closestTime = open;
-                            mTVstatus.setText("Open from");
-                            mTVstatus.setTextColor(Color.RED);
+                            mTVStatus.setText("Open from");
+                            mTVStatus.setTextColor(Color.RED);
 
-                            mTVhours.setText(t.toStringHours());
+                            mTVHours.setText(t.toStringHours());
                         } else if (closestTime.after(open)) {
                             closestTime = open;
-                            mTVstatus.setText("Open from");
-                            mTVstatus.setTextColor(Color.RED);
-                            mTVhours.setText(t.toStringHours());
+                            mTVStatus.setText("Open from");
+                            mTVStatus.setTextColor(Color.RED);
+                            mTVHours.setText(t.toStringHours());
                         }
                     }
 
@@ -528,14 +569,16 @@ public class RestaurantPageFragment extends BaseFragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        getResProcess(resID);
+        getResProcess(restId);
+        if (!mPhone.isEmpty()) {
+            loadProfile();
+        }
     }
 
 
@@ -559,5 +602,139 @@ public class RestaurantPageFragment extends BaseFragment {
         mMapView.onLowMemory();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_restaurant_page, menu);
+        admin = menu;
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_pic:
+                profile = false;
+                addImageGallery();
+                return true;
+            case R.id.action_profile_pic:
+                profile = true;
+                addImageGallery();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addImageGallery() {
+        try {
+            String mimeType = "image/*";
+
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            intent.setType(mimeType);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivityForResult(intent, REQUEST_CODE_IMAGE_GALLERY);
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "No image source available", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void tryUploadImage(byte[] bytes, String fileName) {
+
+        hud = KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setDimAmount(0.5f)
+                .show();
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("recfile", fileName, requestFile);
+        if (profile) {
+            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadProfileImageRes(restaurant.get_id(), body)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
+        } else {
+            mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().uploadImage(restaurant.get_id(), body)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleResponseUploadImage, this::handleErrorUploadImage));
+        }
+
+    }
+
+    private void handleResponseUploadImage(Response response) {
+        hud.dismiss();
+        getResProcess(restId);
+    }
+
+    private void handleErrorUploadImage(Throwable error) {
+        hud.dismiss();
+        mServerResponse.handleError(error);
+    }
+
+
+    private void loadProfile() {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().getProfile(mPhone)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseProfile, i -> mServerResponse.handleError(i)));
+    }
+
+    public void handleResponseProfile(User user) {
+        for (String s : user.getFavorite_restaurants()) {
+
+            if (s.equalsIgnoreCase(restId)) {
+                mBookMarkCheck = true;
+                mBookMark.setChecked(true);
+                break;
+            }
+        }
+    }
+
+    private void favoritesProcess(boolean isChecked) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.set_id(restId);
+
+        if (isChecked) {
+            addToFavoritesProcess(restaurant);
+        } else
+            removeFavoritesProcess(restaurant);
+    }
+
+    ///////////////////////Add-to-favorites////////////////////////////
+
+    private void addToFavoritesProcess(Restaurant restaurant) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().addToFavorites(restaurant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    private void handleResponse(Response response) {
+    }
+
+    ///////////////////////Remove-from-favorites///////////////////////
+
+    private void removeFavoritesProcess(Restaurant restaurant) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().removeFromFavorites(restaurant)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, i -> mServerResponse.handleError(i)));
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent i = new Intent(getContext(), RestMediaGalleryActivity.class);
+        Bundle extra = new Bundle();
+        extra.putString("restId", restId);
+        i.putExtras(extra);
+        startActivity(i);
+    }
 }

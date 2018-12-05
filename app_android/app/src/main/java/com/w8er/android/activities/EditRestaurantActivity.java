@@ -14,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.hbb20.CountryCodePicker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
@@ -33,7 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.w8er.android.utils.PhoneUtils.getCountryCode;
+import static com.w8er.android.utils.DataFormatter.getCountryCode;
 import static com.w8er.android.utils.Validation.validateFields;
 
 
@@ -114,7 +113,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            GoogleMapUtils.goToLocation(latLng, 17, googleMap);
+            GoogleMapUtils.goToLocation(latLng, 17, googleMap,true);
             GoogleMapUtils.addMapMarker(latLng, "", "", googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);
@@ -145,12 +144,6 @@ public class EditRestaurantActivity extends AppCompatActivity {
         if (!validateFields(newRestaurant.getName())) {
 
             mServerResponse.showSnackBarMessage("Name should not be empty.");
-            return;
-        }
-
-        if (newRestaurant.getTags().isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
             return;
         }
 
@@ -216,6 +209,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         newRestaurant.setName(name);
         newRestaurant.setTags(allHashTags);
         newRestaurant.setHours(timeSlots);
+        newRestaurant.setRestId(restaurant.get_id());
 
         return newRestaurant;
 
@@ -238,11 +232,11 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            String resID = getIntent().getExtras().getString("resID");
-            if (resID != null) {
+            String restId = getIntent().getExtras().getString("restId");
+            if (restId != null) {
                 mBSave.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.VISIBLE);
-                getResProcess(resID);
+                getResProcess(restId);
                 return true;
             } else
                 return false;
@@ -281,8 +275,8 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
         restaurant = _restaurant;
 
-        LatLng latLngMarker = new LatLng(Double.parseDouble(restaurant.getCoordinates().getLat()),
-                Double.parseDouble(restaurant.getCoordinates().getLng()));
+        LatLng latLngMarker = new LatLng(restaurant.getLocation().getLat(),
+                restaurant.getLocation().getLng());
         initMap(latLngMarker);
 
         eTname.setText(restaurant.getName());

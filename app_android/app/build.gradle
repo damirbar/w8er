@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.w8er.android"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "0.4"
@@ -84,8 +84,6 @@ dependencies {
     //for managing multiple stacks of fragments
     implementation 'com.ncapdevi:frag-nav:2.4.0'
 
-    implementation 'com.github.danylovolokh:hashtag-helper:1.1.0'
-
     //HashTag Helper
     implementation 'com.github.danylovolokh:hashtag-helper:1.1.0'
 
@@ -97,4 +95,16 @@ dependencies {
 
     //Android side Swipe Layout
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    //ProgressHUD
+    implementation 'com.kaopiz:kprogresshud:1.0.2'
+
+    //Draw on screen
+    implementation 'com.github.gcacace:signature-pad:1.2.1'
+
+    //Android Sliding Up Panel
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    //Media Gallery(min sdk 17)
+    implementation 'net.alhazmy13.mediagallery:library:1.0.1'
 }

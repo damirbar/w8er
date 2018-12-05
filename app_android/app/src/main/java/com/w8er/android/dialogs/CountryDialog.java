@@ -13,6 +13,8 @@ import android.widget.NumberPicker;
 
 import com.w8er.android.R;
 
+import java.util.Arrays;
+
 
 public class CountryDialog extends BottomSheetDialogFragment {
 
@@ -56,13 +58,10 @@ public class CountryDialog extends BottomSheetDialogFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String country = bundle.getString("country");
-            if(country!=null) {
-                int i = 0;
-                if (country.equalsIgnoreCase("United States"))
-                    i = 1;
-                mNumberPicker.setValue(i);
-            }
+            String day = bundle.getString("country");
+
+            int index = Arrays.asList(data).indexOf(day);
+            mNumberPicker.setValue(index);
         }
     }
 

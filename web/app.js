@@ -17,6 +17,8 @@ let userRequests = require('./routes/user_requests');
 let restaurantRequests = require('./routes/restaurant_requests');
 let searchRequests = require('./routes/search_requests');
 let toolRequests = require('./routes/tool_routs');
+let restAuth = require('./routes/rest_Auth_routs');
+let sessionRequests = require('./routes/session_requests');
 
 app.use('/', mainRequests);
 app.use('/auth', authRouts);
@@ -24,6 +26,8 @@ app.use('/user', userRequests);
 app.use('/rest', restaurantRequests);
 app.use('/search', searchRequests);
 app.use('/tool', toolRequests);
+app.use('/restAuth', restAuth);
+app.use('/session', sessionRequests);
 
 
 app.use(express.static(path.join(__dirname, 'dist/w8erWebapp')));
@@ -36,13 +40,10 @@ mongoose.connect(config.mongo.mongoDB, {
   if (err) {
     console.log('error in mongo connection:\n' + err);
   }
+  else {
+    mongoose.set('useFindAndModify', false);
+  }
 });
-
-// let geocoder = require('./config/config').geocoder;
-//
-// geocoder.reverse({lat:45.767, lon:4.833}, function(err, res) {
-//     console.log(res);
-// });
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error!\n'));
@@ -53,8 +54,8 @@ http.listen(3000, function () {
 });
 
 
-
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  // res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  res.sendFile('/home/eran/WebstormProjects/w8er/web/dist/w8erWebapp/index.html');
 });

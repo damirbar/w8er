@@ -1,32 +1,26 @@
 package com.w8er.android.model;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Coordinates implements Parcelable {
 
-    private String lat;
-    private String lng;
+    private double lat;
+    private double lng;
 
-    public Coordinates(String lat, String lng) {
-        this.lat = lat;
-        this.lng = lng;
+    public Coordinates(){}
+
+    public Coordinates(Location location){
+        this.lat = location.getLatitude();
+        this.lng = location.getLongitude();
     }
 
-    public Coordinates(Parcel in) {
-        lat = in.readString();
-        lng = in.readString();
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(lat);
-        dest.writeString(lng);
-    }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    protected Coordinates(Parcel in) {
+        lat = in.readDouble();
+        lng = in.readDouble();
     }
 
     public static final Creator<Coordinates> CREATOR = new Creator<Coordinates>() {
@@ -41,19 +35,30 @@ public class Coordinates implements Parcelable {
         }
     };
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
     }
 }

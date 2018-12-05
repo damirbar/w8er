@@ -13,6 +13,9 @@ import android.widget.ScrollView;
 
 import com.w8er.android.R;
 import com.w8er.android.adapters.TimeSlotsAdapter;
+import com.w8er.android.dialogs.CountryDialog;
+import com.w8er.android.dialogs.DayDialog;
+import com.w8er.android.dialogs.HourDialog;
 import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.ServerResponse;
 
@@ -20,25 +23,14 @@ import java.util.ArrayList;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
-public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAdapter.ItemClickListener{
+public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAdapter.ItemClickListener ,DayDialog.OnCallbackDay, HourDialog.OnCallbackHour {
 
     private final int MAX_TIME_SLOTS = 20;
-    private final int DEFAULT_OPEN_TIME = 18;
-    private final int DEFAULT_CLOSED_TIME = 26;
 
-
-    private Button mBSave;
-    private NumberPicker mTimePickerFrom;
-    private NumberPicker mTimePickerTo;
-    private NumberPicker mDayPicker;
-    private String dayNames[];
-    private String hourNames[];
     private ServerResponse mServerResponse;
-
     private Button mDayButton;
     private Button mFromButton;
     private Button mToButton;
-    private Button mAddHoursButton;
     private TimeSlotsAdapter adapter;
     private RecyclerView recyclerView;
     private ArrayList<TimeSlot> timeSlots;
@@ -49,18 +41,7 @@ public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAda
         setContentView(R.layout.activity_open_hours);
         mServerResponse = new ServerResponse(findViewById(R.id.layout));
         initViews();
-
-        hourNames = new String[]{"00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30","04:00","04:30"
-                ,"05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30","09:00","09:30"
-                ,"10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30","14:00","14:30"
-                ,"15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00","19:30","20:00"
-                ,"20:30", "21:00", "21:30","22:00", "22:30", "23:00", "23:30"};
-
-        initDayPicker();
-        initTimePickerFrom();
-        initTimePickerTo();
         getData();
-
     }
 
     private void initTimeSlots() {
@@ -75,20 +56,18 @@ public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAda
         mDayButton = findViewById(R.id.day_button);
         mFromButton = findViewById(R.id.from_button);
         mToButton = findViewById(R.id.to_button);
-        mAddHoursButton = findViewById(R.id.add_hours_button);
+        Button mAddHoursButton = findViewById(R.id.add_hours_button);
         mAddHoursButton.setOnClickListener(view -> addTimeSlot());
         ScrollView scrollView = findViewById(R.id.scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-        mBSave = findViewById(R.id.save_button);
+        Button mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveButton());
         mBCancel.setOnClickListener(view -> finish());
-        mTimePickerFrom = findViewById(R.id.timePicker_from);
-        mTimePickerTo = findViewById(R.id.timePicker_to);
-        mDayPicker = findViewById(R.id.day_picker);
-        mDayPicker.setOnValueChangedListener((picker, oldVal, newVal) -> changeDay());
-        mTimePickerFrom.setOnValueChangedListener((picker, oldVal, newVal) -> changeHourFrom());
-        mTimePickerTo.setOnValueChangedListener((picker, oldVal, newVal) -> changeHourTo());
+        mDayButton.setOnClickListener(view -> dayViewClick());
+        mFromButton.setOnClickListener(view -> HourViewClick(0));
+        mToButton.setOnClickListener(view -> HourViewClick(1));
+
     }
 
     private void addTimeSlot() {
@@ -96,54 +75,16 @@ public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAda
             mServerResponse.showSnackBarMessage("Maximum time slots reached");
             return;
         }
-        String hourTo = hourNames[mTimePickerTo.getValue()];
-        String hourFrom = hourNames[mTimePickerFrom.getValue()];
-        String day = dayNames[mDayPicker.getValue()];
+        String hourTo = mToButton.getText().toString().trim();
+        String hourFrom = mFromButton.getText().toString().trim();
+        String day = mDayButton.getText().toString().trim();
 
         TimeSlot timeSlot = new TimeSlot(day, hourFrom, hourTo);
-        timeSlots.add(timeSlot);
+        adapter.getmData().add(0,timeSlot);
         adapter.notifyDataSetChanged();
 
         recyclerView.scrollToPosition(timeSlots.size()-1);
 
-        mDayPicker.setValue(mDayPicker.getValue()+1);
-        changeDay();
-    }
-
-    private void changeHourTo() {
-        String hour = hourNames[mTimePickerTo.getValue()];
-        mToButton.setText(hour);
-    }
-
-    private void changeHourFrom() {
-        String hour = hourNames[mTimePickerFrom.getValue()];
-        mFromButton.setText(hour);
-    }
-
-    private void initTimePickerTo() {
-        mTimePickerTo.setMinValue(0);
-        mTimePickerTo.setMaxValue(hourNames.length - 1);
-        mTimePickerTo.setDisplayedValues(hourNames);
-        mTimePickerTo.setValue(DEFAULT_CLOSED_TIME);
-    }
-
-    private void initTimePickerFrom() {
-        mTimePickerFrom.setMinValue(0);
-        mTimePickerFrom.setMaxValue(hourNames.length - 1);
-        mTimePickerFrom.setDisplayedValues(hourNames);
-        mTimePickerFrom.setValue(DEFAULT_OPEN_TIME);
-    }
-
-    private void changeDay() {
-        String day = dayNames[mDayPicker.getValue()];
-        mDayButton.setText(day);
-    }
-
-    private void initDayPicker() {
-        dayNames = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        mDayPicker.setMinValue(0);
-        mDayPicker.setMaxValue(dayNames.length - 1);
-        mDayPicker.setDisplayedValues(dayNames);
     }
 
 
@@ -173,11 +114,61 @@ public class OpenHoursActivity extends AppCompatActivity implements TimeSlotsAda
 
     @Override
     public void onItemClick(View view, int position) {
-        if (view.getId() == R.id.textViewRemove) {
-            timeSlots.remove(position);
-            adapter.notifyDataSetChanged();
+        try {
+            if (view.getId() == R.id.textViewRemove && position < adapter.getmData().size()) {
+                adapter.getmData().remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
         }
 
     }
+
+    public void dayViewClick() {
+        DayDialog newFragment = new DayDialog();
+        String d = mDayButton.getText().toString().trim();
+        if (!(d.isEmpty())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("day", d);
+            newFragment.setArguments(bundle);
+        }
+        newFragment.show(getSupportFragmentManager(), DayDialog.TAG);
+    }
+
+    public void HourViewClick(int id) {
+        HourDialog newFragment = new HourDialog();
+        String h;
+        if(id == 0)
+            h = mFromButton.getText().toString().trim();
+        else
+            h = mToButton.getText().toString().trim();
+
+        if (!(h.isEmpty())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("hour", h);
+            bundle.putInt("id", id);
+            newFragment.setArguments(bundle);
+        }
+        newFragment.show(getSupportFragmentManager(), HourDialog.TAG);
+    }
+
+
+    @Override
+    public void UpdateDay(String day) {
+        mDayButton.setText(day);
+
+    }
+
+    @Override
+    public void UpdateHour(String hour, int id) {
+        if(id == 0)
+            mFromButton.setText(hour);
+        else
+            mToButton.setText(hour);
+
+    }
+
 }
 

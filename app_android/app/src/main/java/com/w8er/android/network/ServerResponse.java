@@ -31,18 +31,20 @@ public class ServerResponse {
 
     public void showSnackBarMessage(String message) {
 
-        String capitalize = message.substring(0, 1).toUpperCase() + message.substring(1);
+        if(message !=null && !message.isEmpty()) {
 
-        try {
-            final Snackbar snackbar = Snackbar.make(layout, capitalize, Snackbar.LENGTH_SHORT);
-            snackbar.getView().setBackgroundColor(Color.parseColor("#df5a55"));
-            ((TextView) snackbar.getView().findViewById(R.id.snackbar_text))
-                    .setTextColor(Color.parseColor("#ffffff"));
-            snackbar.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+            String capitalize = message.substring(0, 1).toUpperCase() + message.substring(1);
+
+            try {
+                final Snackbar snackbar = Snackbar.make(layout, capitalize, Snackbar.LENGTH_SHORT);
+                snackbar.getView().setBackgroundColor(Color.parseColor("#df5a55"));
+                ((TextView) snackbar.getView().findViewById(R.id.snackbar_text))
+                        .setTextColor(Color.parseColor("#ffffff"));
+                snackbar.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     public void handleError(Throwable error) {

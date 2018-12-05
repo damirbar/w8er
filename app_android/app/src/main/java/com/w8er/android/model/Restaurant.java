@@ -5,24 +5,38 @@ import java.util.List;
 
 public class Restaurant {
 
+    private String restId;
     private String _id;
     private String phone_number;
     private String name;
     private String owner;
     private List<String> tags;
-    private List<String> pictures;
+    private ArrayList<Pictures> pictures;
     private boolean kosher;
     private ArrayList<Review> reviews;
-    private Coordinates coordinates;
+    private LocationPoint location;
     private String address;
     private String country;
     private ArrayList<TimeSlot> hours;
     private float rating;
     private String profile_img;
-    //        menu: {},
-    //        layout: {},
-    //        capacity: {},
-    //        sessions: {}
+    private MenuItemsId menu;
+
+    public MenuItemsId getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuItemsId menu) {
+        this.menu = menu;
+    }
+
+    public String getRestId() {
+        return restId;
+    }
+
+    public void setRestId(String restId) {
+        this.restId = restId;
+    }
 
 
     public String get_id() {
@@ -73,12 +87,12 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public LocationPoint getLocation() {
+        return location;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setLocation(LocationPoint location) {
+        this.location = location;
     }
 
     public String getPhone_number() {
@@ -113,11 +127,11 @@ public class Restaurant {
         this.tags = tags;
     }
 
-    public List<String> getPictures() {
+    public ArrayList<Pictures> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<String> pictures) {
+    public void setPictures(ArrayList<Pictures> pictures) {
         this.pictures = pictures;
     }
 

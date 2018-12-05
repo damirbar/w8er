@@ -1,0 +1,443 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimaryDark"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_scrollFlags="enterAlways|scroll"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/image_Button_add"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="15dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_add_tolbar" />
+
+            <ImageButton
+                android:id="@+id/image_Button_back"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                app:srcCompat="@drawable/ic_close_button" />
+
+            <TextView
+                android:id="@+id/page_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Menu"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/background">
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/background_light"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/appetizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_appetizer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Appetizers"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/main_course"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_main_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Main Courses"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/name_appetizer"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dessert"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_dessert"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Desserts"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/name_appetizer"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/drinks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_drinks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Drinks"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/name_appetizer"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deals"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_deals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Deals"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/specials"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/name_specials"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="13dp"
+                            android:layout_marginBottom="13dp"
+                            android:layout_toEndOf="@+id/pic_button"
+                            android:layout_toRightOf="@+id/pic_button"
+                            android:text="Specials"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="12dp"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="?attr/colorButtonNormal" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

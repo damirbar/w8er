@@ -69,6 +69,8 @@ public class SettingsFragment extends BaseFragment {
         reportBtn.setOnClickListener(view -> OpenReport());
         Button addRes = v.findViewById(R.id.add_res_button);
         addRes.setOnClickListener(view -> OpenAddRes());
+        Button myRes = v.findViewById(R.id.my_res_button);
+        myRes.setOnClickListener(view -> OpenMyRes());
         TextView editProfileBtn = v.findViewById(R.id.user_profile);
         editProfileBtn.setOnClickListener(view -> OpenEditProfile());
         image.setOnClickListener(view -> OpenEditProfile());
@@ -108,6 +110,14 @@ public class SettingsFragment extends BaseFragment {
             }
         });
 
+    }
+
+    private void OpenMyRes() {
+        MyResFragment frag = new MyResFragment();
+
+        if (mFragmentNavigation != null) {
+            mFragmentNavigation.pushFragment(frag);
+        }
     }
 
     private void OpenAddRes() {

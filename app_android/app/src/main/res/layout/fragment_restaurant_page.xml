@@ -145,7 +145,7 @@
 
 
                     <TextView
-                        android:id="@+id/name"
+                        android:id="@+id/name_appetizer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -162,7 +162,7 @@
                         app:srb_drawableFilled="@drawable/ic_star_full"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/name"
+                        android:layout_below="@+id/name_appetizer"
                         android:layout_marginStart="187dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginTop="15dp"
@@ -212,7 +212,8 @@
                     android:gravity="center"
                     android:text="Edit Page"
                     android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
 
                 <com.willy.ratingbar.BaseRatingBar
                     android:id="@+id/simple_rating_open"

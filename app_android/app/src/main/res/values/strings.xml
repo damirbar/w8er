@@ -38,4 +38,7 @@
     <string name="logout">Logout</string>
     <string name="move_the_map_until_the_marker_is_directly_over_the_restaurant">Move the map until the marker is directly over the restaurant\n@</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

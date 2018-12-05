@@ -1,7 +1,8 @@
-package com.w8er.android.activities;
+package com.w8er.android.restMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +11,12 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
-import com.w8er.android.model.MenuItem;
+import com.w8er.android.activities.AddTagsActivity;
+import com.w8er.android.activities.ItemDescriptionActivity;
+import com.w8er.android.model.RestItem;
 import com.w8er.android.model.Response;
-import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
 import com.w8er.android.network.ServerResponse;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
@@ -40,7 +41,7 @@ public class AddToMenuActivity extends AppCompatActivity {
     private ServerResponse mServerResponse;
     private Button mBSave;
     private ProgressBar mProgressBar;
-    private String resID;
+    private String restId;
     private String itemType[];
     private NumberPicker mNumberPicker;
     private Button typeBtn;
@@ -79,13 +80,12 @@ public class AddToMenuActivity extends AppCompatActivity {
         mBSave = findViewById(R.id.save_button);
         Button mBCancel = findViewById(R.id.cancel_button);
         mBSave.setOnClickListener(view -> saveMenu());
-        mBCancel.setOnClickListener(view -> finish());
+        mBCancel.setOnClickListener(view -> exitAlert());
         mNumberPicker = findViewById(R.id.number_picker);
         mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> changeType());
         typeBtn.setOnClickListener(view -> OpenCloseList());
         eTtags.setOnClickListener(view -> setTags());
         mDesc.setOnClickListener(view -> setDesc());
-
 
     }
 
@@ -149,14 +149,15 @@ public class AddToMenuActivity extends AppCompatActivity {
 
     private boolean getData() {
         if (getIntent().getExtras() != null) {
-            resID = getIntent().getExtras().getString("resID");
+            restId = getIntent().getExtras().getString("restId");
             return true;
         } else
             return false;
     }
 
     private void initTypePicker() {
-        itemType = new String[]{"Main Course", "Appetizer", "Dessert", "Drinks", "Deals", "Specials"};
+        itemType = new String[]{"Appetizer", "Main Course", "Dessert", "Drinks", "Deals", "Specials"};
+
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(itemType.length - 1);
         mNumberPicker.setDisplayedValues(itemType);
@@ -167,8 +168,8 @@ public class AddToMenuActivity extends AppCompatActivity {
         typeBtn.setText(type);
     }
 
-    private void postMenuItem(MenuItem item) {
-        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().postMenuItem(item)
+    private void postMenuItem(RestItem item) {
+        mSubscriptions.add(mRetrofitRequests.getTokenRetrofit().postMenuItem(restId, item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseGet, this::handleErrorUpdate));
@@ -192,8 +193,8 @@ public class AddToMenuActivity extends AppCompatActivity {
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
         String name = mName.getText().toString().trim();
         String desc = mDesc.getText().toString().trim();
-        String type = typeBtn.getText().toString().trim();
-        String price = moneyEditText.getFormattedString();
+        String type = typeBtn.getText().toString().trim().toLowerCase().replaceAll(" ", "_");
+        double price = Double.parseDouble(moneyEditText.getValueString());
 
         if (!validateFields(name)) {
 
@@ -207,13 +208,7 @@ public class AddToMenuActivity extends AppCompatActivity {
             return;
         }
 
-        if (allHashTags.isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
-
-        MenuItem item = new MenuItem();
+        RestItem item = new RestItem();
         item.setName(name);
         item.setDescription(desc);
         item.setType(type);
@@ -226,5 +221,36 @@ public class AddToMenuActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
+
+    public boolean isChanged() {
+        String name = mName.getText().toString().trim();
+        String disc = mDesc.getText().toString().trim();
+        String price  = moneyEditText.getValueString();
+        String type = typeBtn.getText().toString().trim();
+        List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+
+        return (!name.isEmpty() || !disc.isEmpty() || !price.equalsIgnoreCase("0") || allHashTags.size() > 0||!type.equals(itemType[0]));
+
+    }
+
+    public void exitAlert() {
+
+        if (isChanged()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("If you go back now, you will lose your changes.");
+            builder.setPositiveButton("Leave", (dialog, which) -> finish());
+            builder.setNegativeButton("Stay", (dialog, which) -> { });
+            builder.show();
+        } else
+            finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubscriptions.unsubscribe();
+    }
+
 
 }

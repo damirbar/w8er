@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.w8er.android.R;
 import com.w8er.android.address.AddAddressActivity;
-import com.w8er.android.model.Coordinates;
+import com.w8er.android.model.LocationPoint;
 import com.w8er.android.model.Restaurant;
 import com.w8er.android.model.TimeSlot;
 import com.w8er.android.network.RetrofitRequests;
@@ -57,7 +57,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private EditText eTwebsite;
     private EditText eTtags;
     private EditText eTHours;
-    private Coordinates coordinates;
+    private LocationPoint locationPoint;
     private CompositeSubscription mSubscriptions;
     private RetrofitRequests mRetrofitRequests;
     private ServerResponse mServerResponse;
@@ -142,9 +142,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Bundle extra = result.getExtras();
                 String address = extra.getString("address");
-                coordinates = extra.getParcelable("coordinates");
+                locationPoint = extra.getParcelable("locationPoint");
                 eTaddress.setText(address);
-                initMap(new LatLng(Double.parseDouble(coordinates.getLat()), Double.parseDouble(coordinates.getLng())));
+                initMap(new LatLng(locationPoint.getLat(), locationPoint.getLng()));
                 mMapView.setVisibility(View.VISIBLE);
             } else if (resultCode == RESULT_CANCELED) {
             }
@@ -198,7 +198,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         mMapView.getMapAsync(mMap -> {
             googleMap = mMap;
 
-            GoogleMapUtils.goToLocation(latLng, 17, googleMap);
+            GoogleMapUtils.goToLocation(latLng, 17, googleMap,true);
             GoogleMapUtils.addMapMarker(latLng, "", "", googleMap);
 
             mMap.getUiSettings().setAllGesturesEnabled(false);
@@ -314,11 +314,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
             mServerResponse.showSnackBarMessage("Phone should not be empty.");
             return;
         }
-        if (allHashTags.isEmpty()) {
-
-            mServerResponse.showSnackBarMessage("Tags should not be empty.");
-            return;
-        }
 
         if (timeSlots.isEmpty()) {
 
@@ -333,7 +328,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         Restaurant restaurant = new Restaurant();
         restaurant.setAddress(address);
         restaurant.setName(name);
-        restaurant.setCoordinates(coordinates);
+
+        restaurant.setLocation(locationPoint);
         restaurant.setPhone_number(phone);
         restaurant.setTags(allHashTags);
         restaurant.setCountry(country);
@@ -378,8 +374,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
         String name = eTname.getText().toString().trim();
         String address = eTaddress.getText().toString().trim();
         List<String> allHashTags = mTextHashTagHelper.getAllHashTags();
+        String country = countryBtn.getText().toString().trim();
 
-        return (!name.isEmpty() || !address.isEmpty() || !fullPhone.isEmpty() || allHashTags.size() > 0 || timeSlots.size() > 0);
+        return (!name.isEmpty() || !address.isEmpty() || !fullPhone.isEmpty() || allHashTags.size() > 0 || timeSlots.size() > 0 || !country.equals(countryNames[0]));
 
     }
 

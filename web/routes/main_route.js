@@ -3,15 +3,28 @@ let router = express.Router();
 let jwt = require('jsonwebtoken');
 let config = require('../config/config');
 let User = require('../schemas/user');
+let Restaurant = require('../schemas/restaurant');
 let path = require('path');
 
-router.all("/", function (req, res, next) {
+router.all('*', function (req, res, next) {
 
-  if (req.url === '/' || req.url === '/favicon.ico' ||
-    req.url.includes('/auth/login-signup') ||
-    req.url.includes('/auth/verify') ||
-    req.url.includes('free-text-search') ||
-    req.url.includes('get-rest')) {
+  if (req.url === '/' ||
+    req.url === '/favicon.ico' ||
+    req.url === '/runtime.js' ||
+    req.url === '/runtime.js.map' ||
+    req.url === '/polyfills.js' ||
+    req.url === '/polyfills.js.map' ||
+    req.url === '/styles.js' ||
+    req.url === '/styles.js.map' ||
+    req.url === '/vendor.js' ||
+    req.url === '/main.js' ||
+    req.url.includes('/auth/') ||
+    req.url.includes('/search/') ||
+    req.url.includes('/find-near-location') ||
+    req.url.includes('/get-menu') ||
+    req.url.includes('/get-item-by-id') ||
+    req.url.includes('/get-rest')) {
+
 
     return next();
   }
@@ -23,30 +36,40 @@ router.all("/", function (req, res, next) {
     jwt.verify(token, config.email.secret, function (err, decoded) {
       if (err) {
         res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
-        return res.status(401).json({
-          success: false,
-          message: 'Failed to authenticate token.'
-        });
+        return res.status(401).json({message: 'Failed to authenticate token.'});
       } else {
         req.phone_number = decoded;
-        if (req.url.includes('/rest/') || req.url.includes('/user/')) {
-          User.findOne({
-            phone_number: decoded
-          }, function (err, user) {
+        User.findOne({phone_number: decoded}, function (err, user) {
             if (err) {
               console.log(err);
-              res.status(500).json({
-                message: err
-              });
+              res.status(500).json({message: err});
             } else {
               if (user) {
-                if (req.url.includes('/user/') || user.is_admin) {
-                  req.user = user;
+                req.user = user;
+                if (req.url.includes('/restAuth')) {
+                  if (user.restaurants.includes(req.body.restId) || user.restaurants.includes(req.query.restId)) {
+                    Restaurant.findOne({$or: [{_id: req.body.restId}, {_id: req.query.restId}]}, function (err, rest) {
+                      if (err) {
+                        console.log("error in /finding restaurant");
+                        res.status(500).json({message: err});
+                      }
+                      else {
+                        if (rest) {
+                          req.rest = rest;
+                          return next();
+                        }
+                        else {
+                          res.status(404).json({message: 'no such restaurant'})
+                        }
+                      }
+                    });
+                  }
+                  else {
+                    res.status(403).json({messasge: 'not permitted'})
+                  }
+                }
+                else {
                   return next();
-                } else {
-                  res.status(404).json({
-                    message: 'user ' + req.phone_number + ' not admin'
-                  });
                 }
               } else {
                 res.status(404).json({
@@ -54,17 +77,16 @@ router.all("/", function (req, res, next) {
                 });
               }
             }
-          });
-        } else {
-          return next();
-        }
+          }
+        );
       }
     });
   }
 });
 
 router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  // res.sendFile(path.join(__dirname + "/../dist/w8erWebapp/index.html"));
+  res.sendFile('/home/eran/WebstormProjects/w8er/web/dist/w8erWebapp/index.html');
 });
 
 module.exports = router;

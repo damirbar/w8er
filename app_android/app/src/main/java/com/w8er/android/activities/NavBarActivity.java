@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 
 
-public class NavBarActivity extends AppCompatActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
+public class NavBarActivity extends AppCompatActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener{
 
     private NavigationTabBar navigationTabBar;
     private FragNavController mNavController;
@@ -46,6 +46,7 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
         initNavigationTabBar(initial, savedInstanceState);
         firstTime();
     }
+
 
     private void initViews() {
         navigationTabBar = findViewById(R.id.ntb_horizontal);
@@ -206,7 +207,6 @@ public class NavBarActivity extends AppCompatActivity implements BaseFragment.Fr
                 mNavController.popFragment();
                 break;
         }
-        return true;
+        return false;
     }
-
 }

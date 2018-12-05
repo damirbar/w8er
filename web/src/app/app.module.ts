@@ -10,7 +10,10 @@ import { MatInputModule,
   MatCardModule,
   MatButtonModule,
   MatToolbarModule,
-  MatExpansionModule } from '@angular/material';
+  MatExpansionModule,
+  MatSidenavModule,
+  MatSidenavContent,
+  MatSidenav} from '@angular/material';
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PostCreateComponent} from "./posts/post-create/post-create.component";
@@ -18,11 +21,16 @@ import {PostListComponent} from "./posts/post-list/post-list.component";
 import {PostsService} from "./posts/posts.service";
 import { LoginComponent } from './user-forms/login/login.component';
 import {LoginService} from "./user-forms/login.service";
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
-// import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
+import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import {AuthInterceptor} from "./auth-interceptor.service";
+import {RouterModule} from "@angular/router";
+import { AgmCoreModule } from '@agm/core'
 
 @NgModule({
   declarations: [
@@ -30,8 +38,9 @@ import { MessageService } from './message.service';
     HeaderComponent,
     PostCreateComponent,
     PostListComponent,
-    LoginComponent//,
-    // RestRequestsComponent
+    LoginComponent,
+    RestRequestsComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,8 +54,22 @@ import { MessageService } from './message.service';
     MatExpansionModule,
     HttpClientModule,
     HttpModule,
+    FlexLayoutModule,
+    MatSidenavModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDgeD52T0OSxhoQ4K0_75-FDIKdACGg3pk'
+    })
   ],
-  providers: [PostsService, LoginService, HttpErrorHandler, MessageService],
+  providers: [
+    PostsService,
+    LoginService,
+    HttpErrorHandler,
+    MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

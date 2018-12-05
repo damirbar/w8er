@@ -17,7 +17,7 @@
         android:layout_marginTop="2.0dip"
         android:background="@null"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_more" />
+        app:srcCompat="@drawable/ic_more" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_image"

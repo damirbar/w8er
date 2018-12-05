@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.w8er.android.R;
 import com.w8er.android.model.Review;
 import com.willy.ratingbar.BaseRatingBar;
@@ -45,6 +47,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 //        holder.userName.setText(mData.get(position).getGiver());
         holder.ratingBar.setRating(mData.get(position).getAmount());
 
+        String pic = mData.get(position).getImage();
+        if (pic != null && !(pic.isEmpty()))
+            Picasso.with(mContext)
+                    .load(pic)
+                    .error(R.drawable.default_user_image)
+                    .into(holder.userImage);
+
         //Date
         Date date = mData.get(position).getDate();
         if (date != null) {
@@ -75,9 +84,11 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         TextView userName;
         TextView mDate;
         BaseRatingBar ratingBar;
+        ImageView userImage;
 
         ViewHolder(View itemView) {
             super(itemView);
+            userImage = itemView.findViewById(R.id.user_image);
             msg = itemView.findViewById(R.id.content);
             userName = itemView.findViewById(R.id.user_name);
             mDate = itemView.findViewById(R.id.creation_date);

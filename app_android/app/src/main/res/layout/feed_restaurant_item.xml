@@ -2,108 +2,140 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:orientation="vertical">
 
-        <com.daimajia.swipe.SwipeLayout
-            android:id="@+id/swipe"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:leftEdgeSwipeOffset="0dp"
-            app:rightEdgeSwipeOffset="100dp">
+            android:layout_below="@+id/simple_rating_bar"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginRight="20dp"
+            android:text="Open"
+            android:textColor="@color/green"
+            android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/highlight_blue_color"
-                android:gravity="right|center"
-                android:tag="Bottom3"
-                android:weightSum="10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="Table"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@color/colorAccent" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@color/colorAccent" />
 
 
-                <TextView
-                    android:id="@+id/title_res"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginStart="131dp"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_toRightOf="@+id/imageView"
-                    android:text="PizzaHut"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+        <TextView
+            android:id="@+id/title_res"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="131dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@+id/imageView"
+            android:text="PizzaHut"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
-                <com.willy.ratingbar.BaseRatingBar
-                    android:id="@+id/simple_rating_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title_res"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginStart="136dp"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/imageView"
-                    android:clickable="false"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:srb_drawableEmpty="@drawable/ic_star_empty"
-                    app:srb_drawableFilled="@drawable/ic_star_full"
-                    app:srb_minimumStars="1"
-                    app:srb_numStars="5"
-                    app:srb_scrollable="false"
-                    app:srb_starHeight="15dp"
-                    app:srb_starPadding="1dp"
-                    app:srb_starWidth="15dp"
-                    app:srb_stepSize="0" />
+        <com.willy.ratingbar.BaseRatingBar
+            android:id="@+id/simple_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_res"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="136dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/imageView"
+            android:clickable="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srb_drawableEmpty="@drawable/ic_star_empty"
+            app:srb_drawableFilled="@drawable/ic_star_full"
+            app:srb_minimumStars="0"
+            app:srb_numStars="5"
+            app:srb_scrollable="false"
+            app:srb_starHeight="15dp"
+            app:srb_starPadding="1dp"
+            app:srb_starWidth="15dp"
+            app:srb_stepSize="0" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/imageView"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="?attr/colorButtonNormal"
-                    android:visibility="visible" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="?attr/colorButtonNormal"
+            android:visibility="visible" />
 
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/textViewReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_res"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/textViewNum"
+            android:layout_toRightOf="@+id/textViewNum"
+            android:text="Reviews"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
-        </com.daimajia.swipe.SwipeLayout>
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/simple_rating_bar"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_toRightOf="@+id/imageView"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textViewNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_res"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="9dp"
+            android:layout_toEndOf="@+id/simple_rating_bar"
+            android:layout_toRightOf="@+id/simple_rating_bar"
+            android:text="12"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

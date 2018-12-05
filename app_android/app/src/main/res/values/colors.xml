@@ -4,14 +4,16 @@
     <color name="colorPrimary">#f4f4f4</color>
     <color name="colorPrimaryDark">#ebe5e5</color>
     <color name="colorAccent">#3e4a5b</color>
-
+    <color name="transparent_dark">#80000000</color>
     <color name="HashTag">#3f51b5</color>
+    <color name="blue">#0096eb</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#df5a55</color>
     <color name="background">#fdfdfe</color>
     <color name="edit_text">#dbdbdb</color>
     <color name="grey">#888b8e</color>
+    <color name="grey_dark">#676767</color>
     <color name="primary_text">#ff222222</color>
     <color name="ultra_dark">#29303f</color>
     <color name="default_circle_indicator_page_color">#3e4a5b</color>
@@ -20,6 +22,7 @@
     <color name="text_dis">#e7dada</color>
     <color name="account_status_bar">#f0f2f5</color>
 
+    <color name="blueDark">#3e4a5b</color>
 
     <color name="green">#62e14c</color>
 

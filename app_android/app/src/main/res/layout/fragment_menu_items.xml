@@ -8,6 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
@@ -38,16 +39,13 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                app:srcCompat="@drawable/ic_close_button" />
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
             <TextView
-                android:id="@+id/page_name"
+                android:id="@+id/resr_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Menu"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -56,15 +54,14 @@
 
     </android.support.v7.widget.Toolbar>
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvRes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar"
-        android:scrollbarSize="3dp"
-        android:scrollbarThumbVertical="@color/colorPrimaryDark"
-        android:scrollbars="vertical" />
+        android:background="@color/white"
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class User {
+    private String _id;
     private String first_name;
     private String phone_number;
     private String last_name;
@@ -24,8 +25,15 @@ public class User {
     private String gender;
     private Date birthday;
     private String address;
-    private Coordinates coordinates;
     private String country;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getCountry() {
         return country;
@@ -33,14 +41,6 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public String getAddress() {
