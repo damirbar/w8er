@@ -30,10 +30,26 @@ public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
         this.tableID = Integer.toString(row) + "," + Integer.toString(col);
     }
 
-    public boolean setBackground() {
+    public boolean setBackground(String type) {
 
         this.setScaleX(0.7f);
 //        this.setScaleY(0.8f);
+
+        switch(type)
+        {
+            case "Entrance":
+                this.setBackgroundResource(R.drawable.ic_double_door);
+                break;
+            case "Restroom":
+                this.setBackgroundResource(R.drawable.ic_restroom_sign);
+                break;
+            case "Table":
+                this.setBackgroundResource(R.drawable.ic_table);
+                break;
+            default:
+                this.setBackgroundResource(R.drawable.ic_question_mark);
+        }
+
 
         if (this.isPlace) {
             this.setBackgroundResource(R.drawable.ic_table);
