@@ -1,11 +1,12 @@
 package com.w8er.android.view;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.w8er.android.dialogs.ViewItemDialog;
 import com.w8er.android.model.RestTable;
 
 import java.util.ArrayList;
@@ -16,25 +17,14 @@ public class ResLayoutViewBuild {
     private ArrayList<TableViewBuild> tableViews;
     private int ROW;
     private int COL;
+    private Context context;
 
     public int getROW() {
         return ROW;
     }
 
-    public void setROW(int ROW) {
-        this.ROW = ROW;
-    }
-
     public int getCOL() {
         return COL;
-    }
-
-    public void setCOL(int COL) {
-        this.COL = COL;
-    }
-
-    public ArrayList<TableViewBuild> getTableViews() {
-        return tableViews;
     }
 
     public ArrayList<RestTable> getTables() {
@@ -48,8 +38,8 @@ public class ResLayoutViewBuild {
         return restTables;
     }
 
-    public ResLayoutViewBuild(Context context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
-
+    public ResLayoutViewBuild(Context _Context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
+        context = _Context;
         tableViews = new ArrayList<>();
         ROW = _ROW;
         COL = _COL;
@@ -62,15 +52,13 @@ public class ResLayoutViewBuild {
             );
             params.setMargins(0, 0, 0, 25);
             tableRow.setLayoutParams(params);
-
-
             layout.addView(tableRow);
+
 
             for (int j = 0; j < COL; j++) {
 
                 final TableViewBuild table = new TableViewBuild(context, i, j);
                 table.setStatus(false);
-
 
                 int pos = tables.indexOf(new RestTable(table.getTableID()));
                 if (pos != -1) {
@@ -87,8 +75,7 @@ public class ResLayoutViewBuild {
                 table.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        table.setBackground();
-                        addSeat(table);
+                        itemDialog();
                     }
                 });
                 tableRow.addView(table);
@@ -107,4 +94,17 @@ public class ResLayoutViewBuild {
             return false;
         }
     }
+
+    public void itemDialog() {
+        ViewItemDialog newFragment = new ViewItemDialog();
+//        String c = mETCountry.getText().toString().trim();
+//        if (!(c.isEmpty())) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("country", c);
+//            newFragment.setArguments(bundle);
+//        }
+        newFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), ViewItemDialog.TAG);
+
+    }
+
 }

@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 
 import com.w8er.android.R;
 import com.w8er.android.dialogs.NumberDialog;
+import com.w8er.android.dialogs.ViewItemDialog;
 import com.w8er.android.model.RestLayout;
 import com.w8er.android.model.RestTable;
 import com.w8er.android.view.ResLayoutViewBuild;
@@ -17,7 +18,7 @@ import com.w8er.android.view.ResLayoutViewBuild;
 import java.util.ArrayList;
 
 
-public class EditRestLayoutActivity extends AppCompatActivity implements NumberDialog.OnCallbackHour {
+public class EditRestLayoutActivity extends AppCompatActivity implements NumberDialog.OnCallbackNum,ViewItemDialog.OnCallbackItem{
 
     private ResLayoutViewBuild res;
     private TableLayout tableLayout;
@@ -143,6 +144,11 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
             mFromButton.setText(num);
         else
             mToButton.setText(num);
+
+    }
+
+    @Override
+    public void UpdateItem(String item) {
 
     }
 }

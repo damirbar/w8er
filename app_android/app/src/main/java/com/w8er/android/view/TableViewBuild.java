@@ -1,9 +1,12 @@
 package com.w8er.android.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 
 import com.w8er.android.R;
+import com.w8er.android.dialogs.CountryDialog;
+import com.w8er.android.dialogs.ViewItemDialog;
 
 public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
     private String tableID;
@@ -42,7 +45,7 @@ public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
             this.isSelected = false;
             return false;
         } else {
-            this.setBackgroundResource(R.drawable.ic_table_transparent);
+            this.setBackgroundResource(R.drawable.ic_question_mark);
             this.isSelected = true;
             return false;
         }

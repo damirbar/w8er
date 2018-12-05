@@ -1,7 +1,5 @@
 package com.w8er.android.model;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
