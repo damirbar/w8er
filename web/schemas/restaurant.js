@@ -50,11 +50,11 @@ var RestaurantSchema = new mongoose.Schema({
   restLayout: {
     row: {type: Number},
     col: {type: Number},
-    tables: [{
-      tableId: {type: String, default: ""},
-      booked: {type: Boolean, default: false},
-      date: {type: Date, default: Date.now()}
-    }]
+    tables: {
+        type: Map,
+        of: String,
+        default: {}
+    }
   },
 
 }, {usePushEach: true});

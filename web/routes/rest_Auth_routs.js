@@ -21,6 +21,9 @@ router.post("/edit-rest", function (req, res) {
   rest.country = updatedUser.country ? updatedUser.country : rest.country;
   rest.hours = updatedUser.hours ? updatedUser.hours : rest.hours;
 
+  rest.restLayout = updatedUser.restLayout ? updatedUser.restLayout : rest.restLayout;
+
+
   if (updatedUser.coordinates) {
     rest.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : rest.coordinates.lat;
     rest.coordinates.lng = updatedUser.coordinates.lng ? updatedUser.coordinates.lng : rest.coordinates.lng;
@@ -267,6 +270,30 @@ router.post('/post-profile-image', type, function (req, res) {
     }
   }
 });
+
+//should be sync
+router.post('/book-table', function (req, res) {
+  let date = req.body.date;
+  let x = req.rest.restLayout.tables.get(date);
+  if(x){
+
+  }
+  else{
+    req.rest.restLayout.tables.set(date, req.body.tableId);
+    console.log(x);
+    req.rest.save(function (then) {
+      console.log(x)
+    })
+  }
+  console.log(x)
+
+  // tableId: {type: String, default: ""},
+  // booked: {type: Boolean, default: false},
+  // date: {type: Date, default: Date.now()}
+});
+
+
+
 
 //
 // body =
