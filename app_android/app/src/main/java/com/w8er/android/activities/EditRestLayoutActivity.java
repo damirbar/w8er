@@ -34,9 +34,6 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
         initViews();
         getData();
 
-
-
-
     }
 
     private boolean getData() {
