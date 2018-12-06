@@ -166,8 +166,20 @@ public class Restaurant {
             return false;
         }
         Restaurant u = (Restaurant) other;
+
+        Boolean layout = true;
+        if ((this.getRestLayout() != null && u.getRestLayout() == null) || (this.getRestLayout() == null && u.getRestLayout() != null)){
+            return false;
+        }
+        if (this.getRestLayout() != null && u.getRestLayout() != null) {
+            if(!this.getRestLayout().equals(u.getRestLayout())){
+                layout = false;
+            }
+        }
+
         return this.getName().equals(u.getName()) &&
                 this.getHours().equals(u.getHours()) &&
+                layout &&
                 this.getTags().equals(u.getTags());
     }
 

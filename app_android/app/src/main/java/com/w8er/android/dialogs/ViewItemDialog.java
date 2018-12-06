@@ -13,22 +13,26 @@ import android.widget.NumberPicker;
 
 import com.w8er.android.R;
 
-public class NumberDialog extends BottomSheetDialogFragment {
+import java.util.Arrays;
 
-    public interface OnCallbackNum {
-        void UpdateNum(String num, int id);
+
+public class ViewItemDialog extends BottomSheetDialogFragment {
+
+    public interface OnCallbackItem {
+        void UpdateItem(String item);
     }
 
-    public static final String TAG = NumberDialog.class.getSimpleName();
-    private int id;
+    public static final String TAG = ViewItemDialog.class.getSimpleName();
 
     private NumberPicker mNumberPicker;
-    OnCallbackNum mCallback;
+    OnCallbackItem mCallback;
+    private String[] data;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_number_picker_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_item_picker_dialog, container, false);
         initViews(view);
         initPicker();
         getData();
@@ -37,14 +41,17 @@ public class NumberDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
+        data = new String[]{"Table", "Entrance", "Restroom"};
         mNumberPicker.setMinValue(0);
-        mNumberPicker.setMaxValue(10);
+        mNumberPicker.setMaxValue(data.length-1);
+        mNumberPicker.setDisplayedValues(data);
+
     }
 
     private void initViews(View v) {
         mNumberPicker = v.findViewById(R.id.number_picker);
-        Button mBtSetCountry = v.findViewById(R.id.button_ok);
-        mBtSetCountry.setOnClickListener(view -> onNumSet());
+        Button mBtSetItem = v.findViewById(R.id.button_ok);
+        mBtSetItem.setOnClickListener(view -> onItemSet());
         Button mBtCancel = v.findViewById(R.id.button_cancel);
         mBtCancel.setOnClickListener(view -> dismiss());
     }
@@ -52,26 +59,25 @@ public class NumberDialog extends BottomSheetDialogFragment {
     private void getData() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            id = bundle.getInt("id");
-            String numStr = bundle.getString("num");
-            if (numStr != null) {
-                int num = Integer.parseInt(numStr);
-                mNumberPicker.setValue(num);
-            }
+            String item = bundle.getString("item");
+
+            int index = Arrays.asList(data).indexOf(item);
+            mNumberPicker.setValue(index);
         }
     }
 
-    public void onNumSet() {
-        String numStr = String.valueOf(mNumberPicker.getValue());
-        mCallback.UpdateNum(numStr, id);
+    public void onItemSet() {
+        String item = data[mNumberPicker.getValue()];
+        mCallback.UpdateItem(item);
         dismiss();
     }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (OnCallbackNum) context;
+            mCallback = (OnCallbackItem) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

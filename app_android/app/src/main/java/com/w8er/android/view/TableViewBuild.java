@@ -1,9 +1,12 @@
 package com.w8er.android.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 
 import com.w8er.android.R;
+import com.w8er.android.dialogs.CountryDialog;
+import com.w8er.android.dialogs.ViewItemDialog;
 
 public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
     private String tableID;
@@ -27,10 +30,26 @@ public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
         this.tableID = Integer.toString(row) + "," + Integer.toString(col);
     }
 
-    public boolean setBackground() {
+    public boolean setBackground(String type) {
 
         this.setScaleX(0.7f);
 //        this.setScaleY(0.8f);
+
+        switch(type)
+        {
+            case "Entrance":
+                this.setBackgroundResource(R.drawable.ic_double_door);
+                break;
+            case "Restroom":
+                this.setBackgroundResource(R.drawable.ic_restroom_sign);
+                break;
+            case "Table":
+                this.setBackgroundResource(R.drawable.ic_table);
+                break;
+            default:
+                this.setBackgroundResource(R.drawable.ic_question_mark);
+        }
+
 
         if (this.isPlace) {
             this.setBackgroundResource(R.drawable.ic_table);
@@ -42,7 +61,7 @@ public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
             this.isSelected = false;
             return false;
         } else {
-            this.setBackgroundResource(R.drawable.ic_table_transparent);
+            this.setBackgroundResource(R.drawable.ic_question_mark);
             this.isSelected = true;
             return false;
         }

@@ -1,55 +1,26 @@
 package com.w8er.android.view;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.w8er.android.dialogs.ViewItemDialog;
 import com.w8er.android.model.RestTable;
 
 import java.util.ArrayList;
-
 
 public class ResLayoutViewBuild {
 
     private ArrayList<TableViewBuild> tableViews;
     private int ROW;
     private int COL;
+    private Context context;
+    private TableViewBuild tableViewSelect;
 
-    public int getROW() {
-        return ROW;
-    }
-
-    public void setROW(int ROW) {
-        this.ROW = ROW;
-    }
-
-    public int getCOL() {
-        return COL;
-    }
-
-    public void setCOL(int COL) {
-        this.COL = COL;
-    }
-
-    public ArrayList<TableViewBuild> getTableViews() {
-        return tableViews;
-    }
-
-    public ArrayList<RestTable> getTables() {
-        ArrayList<RestTable> restTables = new ArrayList<>();
-
-        for(TableViewBuild t :tableViews ){
-            RestTable table = new RestTable();
-            table.setTableId(t.getTableID());
-            restTables.add(table);
-        }
-        return restTables;
-    }
-
-    public ResLayoutViewBuild(Context context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
-
+    public ResLayoutViewBuild(Context _Context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
+        context = _Context;
         tableViews = new ArrayList<>();
         ROW = _ROW;
         COL = _COL;
@@ -62,49 +33,74 @@ public class ResLayoutViewBuild {
             );
             params.setMargins(0, 0, 0, 25);
             tableRow.setLayoutParams(params);
-
-
             layout.addView(tableRow);
 
             for (int j = 0; j < COL; j++) {
 
-                final TableViewBuild table = new TableViewBuild(context, i, j);
-                table.setStatus(false);
+                TableViewBuild tableView = new TableViewBuild(context, i, j);
+                tableView.setStatus(false);
 
-
-                int pos = tables.indexOf(new RestTable(table.getTableID()));
+                int pos = tables.indexOf(new RestTable(tableView.getTableID()));
                 if (pos != -1) {
-                    table.setPlace(true);
-                    tableViews.add(table);
+                    tableView.setPlace(true);
+                    tableViews.add(tableView);
                 }
 
-                table.setBackground();
-                table.setLayoutParams(new TableRow.LayoutParams(
+                tableView.setBackground("");
+                tableView.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT, 1.0f
                 ));
 
-                table.setOnClickListener(new View.OnClickListener() {
+                tableView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        table.setBackground();
-                        addSeat(table);
+                        tableViewSelect = tableView;
+                        itemDialog();
                     }
                 });
-                tableRow.addView(table);
+                tableRow.addView(tableView);
             }
         }
     }
 
     private Boolean addSeat(TableViewBuild table) {
         if (!table.getStatus()) {
-
             tableViews.add(table);
             return true;
-
         } else {
             tableViews.remove(table);
             return false;
         }
     }
+
+    private void itemDialog() {
+        ViewItemDialog newFragment = new ViewItemDialog();
+        newFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), ViewItemDialog.TAG);
+    }
+
+    public void setItem(String type) {
+        tableViewSelect.setBackground(type);
+        addSeat(tableViewSelect);
+    }
+
+    public int getROW() {
+        return ROW;
+    }
+
+    public int getCOL() {
+        return COL;
+    }
+
+    public ArrayList<RestTable> getTables() {
+        ArrayList<RestTable> restTables = new ArrayList<>();
+
+        for (TableViewBuild t : tableViews) {
+            RestTable table = new RestTable();
+            table.setTableId(t.getTableID());
+            restTables.add(table);
+        }
+        return restTables;
+    }
 }
+
