@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.w8er.android.R;
@@ -27,6 +28,7 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     private NumberPicker mNumberPicker;
     OnCallbackItem mCallback;
     private String[] data;
+    private LinearLayout tableLayout;
 
 
     @Nullable
@@ -41,7 +43,7 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
-        data = new String[]{"Table", "Entrance", "Restroom"};
+        data = new String[]{"Table", "Exit", "Restroom","Bar","Remove"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(data.length-1);
         mNumberPicker.setDisplayedValues(data);
@@ -49,11 +51,13 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     }
 
     private void initViews(View v) {
+        tableLayout = v.findViewById(R.id.amount);
         mNumberPicker = v.findViewById(R.id.number_picker);
         Button mBtSetItem = v.findViewById(R.id.button_ok);
         mBtSetItem.setOnClickListener(view -> onItemSet());
         Button mBtCancel = v.findViewById(R.id.button_cancel);
         mBtCancel.setOnClickListener(view -> dismiss());
+        mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> valueChange());
     }
 
     private void getData() {
@@ -71,6 +75,18 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
         mCallback.UpdateItem(item);
         dismiss();
     }
+
+    public void valueChange() {
+        String item = data[mNumberPicker.getValue()];
+
+        if(item.equals("Table"))
+            tableLayout.setVisibility(View.VISIBLE);
+        else
+            tableLayout.setVisibility(View.GONE);
+
+
+    }
+
 
 
     @Override

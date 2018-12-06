@@ -33,6 +33,10 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
         setContentView(R.layout.activity_edit_layout);
         initViews();
         getData();
+
+
+
+
     }
 
     private boolean getData() {
