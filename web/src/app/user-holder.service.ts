@@ -20,4 +20,8 @@ export class UserHolderService {
   removeUser() {
     this.user = null;
   }
+
+  isLoggedIn() {
+    return this.user != null;
+  }
 }

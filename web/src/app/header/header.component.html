@@ -103,11 +103,20 @@
 
 
     <button
+      *ngIf="!isLoggedIn()"
+      class="nav-link login"
+      mat-raised-button
+      color="accent"
+      type="submit"
+      (click)="openDialog()">Request login</button>
+
+    <button
+      *ngIf="isLoggedIn()"
       class="nav-link login"
       mat-raised-button
       color="primary"
       type="submit"
-      (click)="openDialog()">Request login</button>
+      (click)="logout()">Logout</button>
     <!--<div class="nav-link login" style="cursor: pointer" (click)="openDialog()">-->
       <!--Log In-->
       <!--<div class="underlined"></div>-->
