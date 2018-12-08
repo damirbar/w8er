@@ -1,49 +1,141 @@
- <!--<mat-toolbar color="primary">Text <a routerLink="/rest-requests">CLICK</a></mat-toolbar>-->
- <mat-toolbar color="primary">
+<!--&lt;!&ndash;<mat-toolbar color="primary">Text <a routerLink="/rest-requests">CLICK</a></mat-toolbar>&ndash;&gt;-->
+<!--<mat-toolbar color="primary">-->
 
-   <span>W8er</span>
+<!--<span>W8er</span>-->
 
-   <span class="example-spacer"></span>
+<!--<span class="example-spacer"></span>-->
+<!--<div class="container">-->
+<!--<div class="row" fxShow="true" fxHide.lt-md="true">-->
+<!--&lt;!&ndash; The following menu items will be hidden on both SM and XS screen sizes &ndash;&gt;-->
+<!--<div class="col-8">-->
+<!--<a routerLink="/" mat-button>Home</a>-->
 
-   <div fxShow="true" fxHide.lt-md="true">
+<!--<a routerLink="/user-profile" mat-button>Profile</a>-->
 
-     <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+<!--<a routerLink="/" mat-button>Restaurants</a>-->
+<!--</div>-->
+
+<!--<div class="col-2"></div>-->
+<!--<div class="col-2">-->
+<!--<button (click)="openDialog()">Login</button>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+
+<!--<div fxShow="true" fxHide.gt-sm="true">-->
+
+<!--<button (click)="sidenav.toggle()">Show Side Menu</button>-->
+
+<!--</div>-->
+
+<!--</mat-toolbar>-->
+
+<!--<mat-sidenav-container fxFlexFill class="example-container">-->
+
+<!--<mat-sidenav #sidenav fxLayout="column">-->
+
+<!--<div fxLayout="column">-->
+
+<!--<button (click)="sidenav.toggle()" mat-button>Close</button>-->
+
+<!--<a routerLink="/" mat-button>Home</a>-->
+
+<!--<a routerLink="/user-profile" mat-button>Profile</a>-->
+
+<!--<a routerLink="/" mat-button>Restaurants</a>-->
+
+<!--</div>-->
+
+<!--</mat-sidenav>-->
+
+<!--&lt;!&ndash;<mat-sidenav-content fxFlexFill>Some content</mat-sidenav-content>&ndash;&gt;-->
+
+<!--</mat-sidenav-container>-->
 
 
-     <a routerLink="/" mat-button>Home</a>
+<nav class="w8er-nav navbar navbar-expand-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-     <a routerLink="/user-profile" mat-button>Profile</a>
+  <div routerLink="/" class="w8er-logo-placeholder pull-left">W8er</div>
 
-     <a routerLink="/" mat-button>Restaurants</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
 
-   </div>
+      <li class="nav-item active home-nav-btn fade-in first">
+        <a class="nav-link liner" routerLink="/">Home</a>
+      </li>
+      <li class="nav-item non-home-nav-btn fade-in first">
+        <a class="nav-link profile-link liner" routerLink="/user-profile">Profile</a>
+      </li>
 
-   <div fxShow="true" fxHide.gt-sm="true">
+      <li class="nav-item non-home-nav-btn fade-in first">
+        <a class="nav-link restaurants-link liner" routerLink="/">Restaurants</a>
+      </li>
 
-     <button (click)="sidenav.toggle()">Show Side Menu</button>
+    </ul>
 
-   </div>
+    <!--Notifications part:-->
+    <!--<div class="fade-in first" ng-show="isLoggedIn()">-->
+    <!--<button type="button" class="fas fa-bell btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+    <!--</button>-->
+    <!--<div class="dropdown-menu dropdown-menu-right notifications-cont">-->
 
- </mat-toolbar>
+    <!--<div class="loading" ng-show="loadingNotifications" style="text-align: center;">-->
+    <!--<div class="fa fa-spinner fa-spin" style="font-size:34px; margin: auto; width: 100%; margin-top: 8%;"></div>-->
+    <!--</div>-->
 
- <mat-sidenav-container fxFlexFill class="example-container">
+    <!--<div class="no-nofitifications" ng-if="notifications.length === 0">-->
+    <!--No notifications-->
+    <!--</div>-->
+    <!--<div class="dropdown-item" ng-repeat="notification in notifications">-->
+    <!--<div class="notification-body font-weight-bold">{{notification.content}}</div>-->
+    <!--<div class="notification-date">{{notification.creation_date | date: 'medium'}}</div>-->
 
-   <mat-sidenav #sidenav fxLayout="column">
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-     <div fxLayout="column">
 
-       <button (click)="sidenav.toggle()" mat-button>Close</button>
 
-       <a routerLink="/" mat-button>Home</a>
+    <button
+      *ngIf="!isLoggedIn()"
+      class="nav-link login"
+      mat-raised-button
+      color="accent"
+      type="submit"
+      (click)="openDialog()">Request login</button>
 
-       <a routerLink="/user-profile" mat-button>Profile</a>
+    <button
+      *ngIf="isLoggedIn()"
+      class="nav-link login"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="logout()">Logout</button>
+    <!--<div class="nav-link login" style="cursor: pointer" (click)="openDialog()">-->
+      <!--Log In-->
+      <!--<div class="underlined"></div>-->
+    <!--</div>-->
 
-       <a routerLink="/" mat-button>Restaurants</a>
+    <!--Log out:-->
+    <!--<div class="nav-link login" style="cursor: pointer">-->
+    <!--<div class="logout-activator" ng-click="logout()">Log Out</div>-->
+    <!--<div class="underlined"></div>-->
+    <!--</div>-->
 
-     </div>
 
-   </mat-sidenav>
+    <!--Search: -->
+    <!--<form class="form-inline my-2 my-lg-0 search-nav-form animate-show-hide" ng-show="showSearchNav">-->
 
-   <!--<mat-sidenav-content fxFlexFill>Some content</mat-sidenav-content>-->
+      <!--<input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="searchTerm.keywords">-->
+      <!--<button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>-->
 
- </mat-sidenav-container>
+    <!--</form>-->
+  </div>
+</nav>
+

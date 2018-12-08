@@ -237,7 +237,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
         newRestaurant.setTags(allHashTags);
         newRestaurant.setHours(timeSlots);
         newRestaurant.setRestId(restaurant.get_id());
-        newRestaurant.setRestLayout(restLayout);
+//        newRestaurant.setRestLayout(restLayout);
 
         return newRestaurant;
 
@@ -314,7 +314,7 @@ public class EditRestaurantActivity extends AppCompatActivity {
 
     private void handleResponseGet(Restaurant _restaurant) {
 
-        restLayout = _restaurant.getRestLayout();
+//        restLayout = _restaurant.getRestLayout();
         restaurant = _restaurant;
 
         LatLng latLngMarker = new LatLng(restaurant.getLocation().getLat(),

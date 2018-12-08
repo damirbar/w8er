@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormGroup, NgForm} from "@angular/forms";
 import {LoginService} from "../login.service";
 import {Router} from "@angular/router";
 import {IUser} from "../../i-user";
 import {UserHolderService} from "../../user-holder.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,9 @@ export class LoginComponent implements OnInit {
   // Saving the number for retrying
   numberSaveForRetry: string = "";
 
-  constructor(public loginService: LoginService, private router: Router, public userHolderService: UserHolderService){}
+  constructor(public loginService: LoginService, private router: Router, public userHolderService: UserHolderService,
+              private dialogRef: MatDialogRef<LoginComponent>,
+              @Inject(MAT_DIALOG_DATA) data){}
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -82,12 +86,16 @@ export class LoginComponent implements OnInit {
           console.log(data);
           this.loginService.setToken(data.accessToken);
           this.userHolderService.setUser(data);
+          this.closeDialog();
 
         }
       );
 
   }
 
+  closeDialog() {
+    this.dialogRef.close();
+  }
 
   ngOnInit() {
   }

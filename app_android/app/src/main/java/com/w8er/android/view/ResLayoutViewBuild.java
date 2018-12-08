@@ -31,18 +31,18 @@ public class ResLayoutViewBuild {
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT, 1.0f
             );
-            params.setMargins(0, 0, 0, 25);
+            params.setMargins(0, 25, 0, 25);
             tableRow.setLayoutParams(params);
             layout.addView(tableRow);
 
             for (int j = 0; j < COL; j++) {
 
                 TableViewBuild tableView = new TableViewBuild(context, i, j);
-                tableView.setStatus(false);
+//                tableView.setStatus(false);
 
                 int pos = tables.indexOf(new RestTable(tableView.getTableID()));
                 if (pos != -1) {
-                    tableView.setPlace(true);
+//                    tableView.setPlace(true);
                     tableViews.add(tableView);
                 }
 
@@ -80,6 +80,7 @@ public class ResLayoutViewBuild {
     }
 
     public void setItem(String type) {
+        tableViewSelect.setType(type);
         tableViewSelect.setBackground(type);
         addSeat(tableViewSelect);
     }

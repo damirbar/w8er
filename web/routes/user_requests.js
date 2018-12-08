@@ -22,6 +22,7 @@ router.post("/edit-profile", function (req, res) {
   user.email = updatedUser.email ? updatedUser.email : user.email;
   user.address = updatedUser.address ? updatedUser.address : user.address;
   user.country = updatedUser.country ? updatedUser.country : user.country;
+  user.is_admin = updatedUser.is_admin ? updatedUser.is_admin : user.is_admin;
 
   if (updatedUser.coordinates) {
     user.coordinates.lat = updatedUser.coordinates.lat ? updatedUser.coordinates.lat : user.coordinates.lat;

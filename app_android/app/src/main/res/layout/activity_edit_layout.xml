@@ -120,7 +120,7 @@
                         android:layout_marginStart="0dp"
                         android:layout_toEndOf="@+id/from_button"
                         android:text="X"
-                        android:textColor="@color/black"
+                        android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="20sp" />
 
                     <Button
@@ -130,7 +130,6 @@
                         android:layout_height="50dp"
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="0dp"
-                        android:layout_marginTop="0dp"
                         android:layout_toEndOf="@+id/textViewX"
                         android:text="4"
                         android:textAllCaps="false"
@@ -143,7 +142,7 @@
                         android:layout_height="55dp"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/to_button"
-                        android:text="Set Layout"
+                        android:text="APPLAY"
                         android:textAllCaps="false"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp" />
@@ -156,7 +155,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="5dp"
-                        android:text="Clear Layout"
+                        android:text="CLEAR"
                         android:textAllCaps="false"
                         android:textColor="@color/red"
                         android:textSize="13sp" />
@@ -170,20 +169,20 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp">
 
-                    <LinearLayout
+                <com.w8er.android.ZoomLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TableLayout
-                            android:id="@+id/tablesLayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="@drawable/border" />
+                    <TableLayout
+                        android:id="@+id/tablesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/border" />
 
-                    </LinearLayout>
+                    </com.w8er.android.ZoomLayout>
                 </HorizontalScrollView>
 
             </LinearLayout>

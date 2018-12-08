@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.w8er.android.R;
 
@@ -27,6 +30,8 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     private NumberPicker mNumberPicker;
     OnCallbackItem mCallback;
     private String[] data;
+    private RelativeLayout tableLayout;
+    private int amount = 1;
 
 
     @Nullable
@@ -41,7 +46,7 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     }
 
     private void initPicker() {
-        data = new String[]{"Table", "Entrance", "Restroom"};
+        data = new String[]{"Table", "Exit", "Restroom","Bar","Remove"};
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(data.length-1);
         mNumberPicker.setDisplayedValues(data);
@@ -49,11 +54,40 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
     }
 
     private void initViews(View v) {
+        tableLayout = v.findViewById(R.id.table_layout);
         mNumberPicker = v.findViewById(R.id.number_picker);
         Button mBtSetItem = v.findViewById(R.id.button_ok);
         mBtSetItem.setOnClickListener(view -> onItemSet());
         Button mBtCancel = v.findViewById(R.id.button_cancel);
         mBtCancel.setOnClickListener(view -> dismiss());
+        mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> valueChange());
+
+        TextView mAmount = v.findViewById(R.id.size);
+        ImageButton mAdd = v.findViewById(R.id.image_add);
+        ImageButton mRemove = v.findViewById(R.id.image_remove);
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    amount++;
+                    if (amount > 20) amount = 20;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+            }
+        });
+
+        mRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    amount--;
+                    if (amount < 1) amount = 1;
+                    String num = String.valueOf(amount);
+                    mAmount.setText(num);
+
+            }
+        });
+
     }
 
     private void getData() {
@@ -71,6 +105,18 @@ public class ViewItemDialog extends BottomSheetDialogFragment {
         mCallback.UpdateItem(item);
         dismiss();
     }
+
+    public void valueChange() {
+        String item = data[mNumberPicker.getValue()];
+
+        if(item.equals("Table"))
+            tableLayout.setVisibility(View.VISIBLE);
+        else
+            tableLayout.setVisibility(View.GONE);
+
+
+    }
+
 
 
     @Override

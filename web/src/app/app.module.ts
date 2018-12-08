@@ -13,7 +13,10 @@ import { MatInputModule,
   MatExpansionModule,
   MatSidenavModule,
   MatSidenavContent,
-  MatSidenav} from '@angular/material';
+  MatSidenav,
+  MatDialogModule} from '@angular/material';
+
+
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PostCreateComponent} from "./posts/post-create/post-create.component";
@@ -30,7 +33,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import {AuthInterceptor} from "./auth-interceptor.service";
 import {RouterModule} from "@angular/router";
-import { AgmCoreModule } from '@agm/core'
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { AgmCoreModule } from '@agm/core'
     MatSidenavModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAyKg00vFRU05qHOX6GTCR7ANb9RRYSj_o'
-    })
+    }),
+    MatDialogModule
   ],
   providers: [
     PostsService,
@@ -70,6 +74,7 @@ import { AgmCoreModule } from '@agm/core'
       useClass: AuthInterceptor,
       multi: true
     }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LoginComponent]
 })
 export class AppModule { }
