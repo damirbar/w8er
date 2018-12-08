@@ -42,11 +42,8 @@ public class SetUpIpActivity extends AppCompatActivity {
 
         if (ip.isEmpty()) {
 
-            String msg = "IP should not be empty.";
-            Toast toast = Toast.makeText(new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme), msg, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            return;
+            ip = "10.0.2.2";
+
         }
 
         Constants.BASE_URL = "http://" + ip + ":3000/";
