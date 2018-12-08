@@ -295,6 +295,7 @@ router.post('/add-layout', function (req, res) {
 //   end: Date,
 //   amount: Number
 // }
+
 router.post('/book-table', function (req, res) {
   let date = new Date(req.body.order.start);
   let str = date.toDateString();
