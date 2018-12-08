@@ -1,7 +1,9 @@
 package com.w8er.android.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,6 +21,7 @@ public class ResLayoutViewBuild {
     private Context context;
     private TableViewBuild tableViewSelect;
 
+    @SuppressLint("ClickableViewAccessibility")
     public ResLayoutViewBuild(Context _Context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
         context = _Context;
         tableViews = new ArrayList<>();
@@ -51,6 +54,15 @@ public class ResLayoutViewBuild {
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT, 1.0f
                 ));
+
+                tableView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        tableView.setBackground();
+
+                        return false;
+                    }
+                });
 
                 tableView.setOnClickListener(new View.OnClickListener() {
                     @Override

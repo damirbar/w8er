@@ -39,6 +39,11 @@ public class TableViewBuild extends android.support.v7.widget.AppCompatButton {
         this.type = type;
     }
 
+    public void setBackground(){
+        this.setBackgroundResource(R.drawable.ic_bar);
+    }
+
+
     public void setBackground(String type) {
 
         this.setScaleX(0.6f);
