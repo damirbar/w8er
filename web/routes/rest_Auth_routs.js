@@ -6,6 +6,7 @@ const upload = multer({dest: 'upload/'});
 const type = upload.single('recfile');
 let uploader = require('../tools/uploader');
 let fs = require('fs');
+let _ = require('lodash');
 const cloudinary = require('../config/config').cloudniary;
 
 
@@ -271,28 +272,110 @@ router.post('/post-profile-image', type, function (req, res) {
   }
 });
 
-//should be sync
-router.post('/book-table', function (req, res) {
-  let date = req.body.date;
-  let x = req.rest.restLayout.tables.get(date);
-  if(x){
-
-  }
-  else{
-    req.rest.restLayout.tables.set(date, req.body.tableId);
-    console.log(x);
-    req.rest.save(function (then) {
-      console.log(x)
-    })
-  }
-  console.log(x)
-
-  // tableId: {type: String, default: ""},
-  // booked: {type: Boolean, default: false},
-  // date: {type: Date, default: Date.now()}
+//see presentation for explanation
+// https://docs.google.com/presentation/d/1HI0Ius4WYjac1liSVikiej0eqDt3FXgDKcNje0VK0tY/edit#slide=id.g463fa639f0_0_1
+router.post('/add-layout', function (req, res) {
+  req.rest.updateOne({layout: req.body.layout}, function (err) {
+    if (err) {
+      console.log("error in /add-layout");
+      res.status(500).json({message: err});
+    }
+    else {
+      res.status(200).json({message: 'added layout'});
+    }
+  });
 });
 
 
+//should be sync
+
+// order : {
+//   tableId: String,
+//   start: Date,
+//   end: Date,
+//   amount: Number
+// }
+router.post('/book-table', function (req, res) {
+  let date = new Date(req.body.order.start);
+  let str = date.toDateString();
+  if (req.rest.orders.get(str)) {
+    let arr = req.rest.orders.get(str);
+    let flag = false;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].tableId === req.body.order.tableId) {
+        if (!(req.body.order.end < arr[i].start || req.body.order.start > arr[i].end))
+          flag = true;
+      }
+    }
+    if (flag) {
+      //already booked
+      res.status(401).json({message: 'sorry table already taken'})
+    }
+    else {
+      //all is good
+      req.rest.orders.get(str).push(req.body.order);
+      req.rest.save(function (err) {
+        if (err) {
+          console.log("error in /book-table");
+          res.status(500).json({message: err});
+        }
+        else {
+          res.status(200).json('order-placed')
+        }
+      });
+    }
+  }
+  else {
+    req.rest.orders.set(str, []);
+    req.rest.orders.get(str).push(req.body.order);
+    req.rest.save(function (err) {
+      if (err) {
+        console.log("error in /book-table");
+        res.status(500).json({message: err});
+      }
+      else {
+        res.status(200).json('order-placed')
+      }
+    });
+  }
+});
+
+router.post('/delete-booking', function (req, res) {
+  let date = new Date(req.body.order.start);
+  let str = date.toDateString();
+  if (req.rest.orders.get(str)) {
+    let arr = req.rest.orders.get(str);
+    let flag = false;
+    for (let i = 0; i < arr.length; i++) {
+      if (_.isEqual(arr[i], req.body.order)) {
+        flag = true;
+        arr.splice(i, 1);
+        req.rest.save(function (err) {
+          if (err) {
+            console.log("error in /delete-booking");
+            res.status(500).json({message: err});
+          }
+          else {
+            return res.status(200).json({message: 'booking deleted'})
+          }
+        });
+        break;
+      }
+    }
+    if (!flag) {
+      res.status(401).json({message: 'booking not found'});
+    }
+  }
+  else {
+    res.status(401).json({message: 'booking not found'})
+  }
+});
+
+router.post('/get-bookings', function (req, res) {
+  let date = new Date(req.body.date);
+  let str = date.toDateString();
+  res.status(200).json({bookings: req.rest.orders.get(str)});
+});
 
 
 //
@@ -344,3 +427,5 @@ function generate_letter(length) {
 }
 
 module.exports = router;
+
+

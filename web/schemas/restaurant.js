@@ -11,7 +11,6 @@ var RestaurantSchema = new mongoose.Schema({
 
   name: {type: String, default: "", required: true},
   phone_number: {type: String, required: true},
-  layout: {},
   capacity: {},
   owner: {type: String, default: ""},
   tags: [String],
@@ -47,16 +46,38 @@ var RestaurantSchema = new mongoose.Schema({
     specials: [String]
   },
   sessions: [String],
-  restLayout: {
-    row: {type: Number},
-    col: {type: Number},
-    tables: {
-        type: Map,
-        of: String,
-        default: {}
-    }
+  layout: {
+    grid: {
+      row: {type: Number},
+      col: {type: Number}
+    },
+    stuff: [{
+      type: {type: String, default: ""}, // table, exit, restroom, bar ...
+      id: {type: String, default: ""},
+      location: {
+        start: {
+          row: {type: Number},
+          col: {type: Number}
+        },
+        end: {
+          row: {type: Number},
+          col: {type: Number}
+        }
+      }
+    }]
   },
-
+  orders: {
+    type: Map,
+    of: Array,
+    default: []
+  }
+  // order : {
+  //   date: String,
+  //   tableId: String,
+  //   start: Date,
+  //   end: Date,
+  //   amount: Number
+  // }
 }, {usePushEach: true});
 
 RestaurantSchema.index({location: "2dsphere"});
@@ -74,3 +95,10 @@ RestaurantSchema.index({
     name: "TextIndex"
   });
 module.exports = mongoose.model('Restaurant', RestaurantSchema);
+
+
+// tables: {
+//   type: Map,
+//     of: Array,
+// default: []
+// }
