@@ -69,11 +69,11 @@
       <li class="nav-item active home-nav-btn fade-in first">
         <a class="nav-link liner" routerLink="/">Home</a>
       </li>
-      <li class="nav-item non-home-nav-btn fade-in first">
+      <li *ngIf="isLoggedIn()" class="nav-item non-home-nav-btn fade-in first">
         <a class="nav-link profile-link liner" routerLink="/user-profile">Profile</a>
       </li>
 
-      <li class="nav-item non-home-nav-btn fade-in first">
+      <li *ngIf="isLoggedIn()" class="nav-item non-home-nav-btn fade-in first">
         <a class="nav-link restaurants-link liner" routerLink="/">Restaurants</a>
       </li>
 
