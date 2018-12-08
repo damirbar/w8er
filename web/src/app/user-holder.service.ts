@@ -14,7 +14,11 @@ export class UserHolderService {
 
   setUser(user: IUser) {
     this.user = user;
-    console.log("I got the user " + user);
+    console.log('I got the user ' + user);
+  }
+
+  getUser(): IUser {
+    return this.user;
   }
 
   removeUser() {
