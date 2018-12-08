@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from "@angular/forms";
+import {IUser} from "../i-user";
+import {UserUpdatesService} from "./user-updates.service";
+import {User} from "../user";
 
 @Component({
   selector: 'app-user-profile',
@@ -7,9 +11,71 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserProfileComponent implements OnInit {
 
-  constructor() { }
+  public numOfSidenavBtns = 13;
+  public isClicked: boolean[] = new Array<boolean>(this.numOfSidenavBtns);
+  public oldActive = 0;
+
+  changeActiveBtn(newActive: number) {
+      this.isClicked[this.oldActive] = false;
+      this.isClicked[newActive]      = true;
+
+      this.oldActive = newActive;
+  }
+
+
+  editProfile(form: NgForm) {
+    if (form.invalid) {
+      console.log('Invalid form');
+      return;
+    }
+
+    const val = form.value;
+    const user: IUser = {
+        first_name: val.fname,
+        last_name: val.lname,
+        email: val.email,
+        about_me: val.public_info,
+        is_admin: val.owner
+      };
+
+    // const user: User = new User();
+    // {
+    //   first_name: val.fname,
+    //   last_name: val.lname,
+    //   email: val.email,
+    //   about_me: val.public_info,
+    //   is_admin: val.owner
+    // };
+
+    // user.first_name = val.fname;
+    // user.last_name = val.lname;
+    // user.email = val.email;
+    // user.about_me = val.public_info;
+    // user.is_admin = val.owner;
+
+
+
+    this.userUpdatesService.editProfile(user)
+      .subscribe(
+        (data) => {
+          console.log(typeof(data));
+          if (data instanceof Array && data.length == 0) {
+            console.log('No data received');
+            return;
+          }
+
+          console.log('The user got a code');
+
+        }
+      );
+
+  }
+
+
+  constructor(public userUpdatesService: UserUpdatesService) { }
 
   ngOnInit() {
+    this.isClicked[0] = true;
   }
 
 }

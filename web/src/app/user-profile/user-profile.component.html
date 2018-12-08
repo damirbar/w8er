@@ -2,24 +2,28 @@
   <div class="row">
     <div class="col-md-3 ">
       <div class="list-group ">
-        <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action">User Management</a>
-        <a href="#" class="list-group-item list-group-item-action">Used</a>
-        <a href="#" class="list-group-item list-group-item-action">Enquiry</a>
-        <a href="#" class="list-group-item list-group-item-action">Dealer</a>
-        <a href="#" class="list-group-item list-group-item-action">Media</a>
-        <a href="#" class="list-group-item list-group-item-action">Post</a>
-        <a href="#" class="list-group-item list-group-item-action">Category</a>
-        <a href="#" class="list-group-item list-group-item-action">New</a>
-        <a href="#" class="list-group-item list-group-item-action">Comments</a>
-        <a href="#" class="list-group-item list-group-item-action">Appearance</a>
-        <a href="#" class="list-group-item list-group-item-action">Reports</a>
-        <a href="#" class="list-group-item list-group-item-action">Settings</a>
+        <button (click)="changeActiveBtn(0)" [ngClass]="{'active':isClicked[0]}"
+                class="list-group-item list-group-item-action">Dashboard
+        </button>
+        <button (click)="changeActiveBtn(1)" [ngClass]="{'active':isClicked[1]}"
+                class="list-group-item list-group-item-action ">User Management
+        </button>
+        <!--<button (click)="changeActiveBtn(2)" [ngClass]="{'active':isClicked[2]}" class="list-group-item list-group-item-action">Used</button>-->
+        <!--<button (click)="changeActiveBtn(3)" [ngClass]="{'active':isClicked[3]}" class="list-group-item list-group-item-action">Enquiry</button>-->
+        <!--<button (click)="changeActiveBtn(4)" [ngClass]="{'active':isClicked[4]}" class="list-group-item list-group-item-action">Dealer</button>-->
+        <!--<button (click)="changeActiveBtn(5)" [ngClass]="{'active':isClicked[5]}" class="list-group-item list-group-item-action">Media</button>-->
+        <!--<button (click)="changeActiveBtn(6)" [ngClass]="{'active':isClicked[6]}" class="list-group-item list-group-item-action">Post</button>-->
+        <!--<button (click)="changeActiveBtn(7)" [ngClass]="{'active':isClicked[7]}" class="list-group-item list-group-item-action">Category</button>-->
+        <!--<button (click)="changeActiveBtn(8)" [ngClass]="{'active':isClicked[8]}" class="list-group-item list-group-item-action">New</button>-->
+        <!--<button (click)="changeActiveBtn(9)" [ngClass]="{'active':isClicked[9]}" class="list-group-item list-group-item-action">Comments</button>-->
+        <!--<button (click)="changeActiveBtn(10)" [ngClass]="{'active':isClicked[10]}" class="list-group-item list-group-item-action">Appearance</button>-->
+        <!--<button (click)="changeActiveBtn(11)" [ngClass]="{'active':isClicked[11]}" class="list-group-item list-group-item-action">Reports</button>-->
+        <!--<button (click)="changeActiveBtn(12)" [ngClass]="{'active':isClicked[12]}" class="list-group-item list-group-item-action">Settings</button>-->
 
 
       </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9" *ngIf="isClicked[0]">
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -30,40 +34,94 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <form>
+              <form (submit)="editProfile(postForm)" #postForm="ngForm">
                 <div class="form-group row">
-                  <label for="email" class="col-4 col-form-label">User Name*</label>
-                  <div class="col-8">
-                    <input id="email" name="email" placeholder="ex@ample.com" class="form-control here" required="required" type="email">
-                  </div>
+                  <mat-form-field class="edit-profile-input" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <!--<input matInput placeholder="Placeholder">-->
+                    <input matInput ngModel name="email" required #email="ngModel"
+                           id="email" name="email" placeholder="ex@ample.com" class="form-control here"
+                           required="required" type="email">
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-hint>ex@ample.com</mat-hint>
+                  </mat-form-field>
+                  <!--<label for="email" class="col-4 col-form-label">Email*</label>-->
+                  <!--<div class="col-8">-->
+                  <!--<mat-form-field>-->
+                  <!--<input ngModel name="email" required #email="ngModel"-->
+                  <!--id="email" name="email" placeholder="ex@ample.com" class="form-control here" required="required" type="email">-->
+                  <!--</mat-form-field>-->
+                  <!--</div>-->
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-4 col-form-label">First Name</label>
-                  <div class="col-8">
-                    <input id="name" name="name" placeholder="First Name" class="form-control here" type="text">
-                  </div>
+                  <mat-form-field class="edit-profile-input" appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <!--<input matInput placeholder="Placeholder">-->
+                    <input matInput ngModel name="fname" #fname="ngModel"
+                           id="fname" name="fname" placeholder="First Name" class="form-control here" type="text">
+                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-hint>John</mat-hint>
+                  </mat-form-field>
                 </div>
                 <div class="form-group row">
-                  <label for="lastname" class="col-4 col-form-label">Last Name</label>
-                  <div class="col-8">
-                    <input id="lastname" name="lastname" placeholder="Last Name" class="form-control here" type="text">
-                  </div>
+                  <mat-form-field class="edit-profile-input" appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <!--<input matInput placeholder="Placeholder">-->
+                    <input matInput ngModel name="lname" #lname="ngModel"
+                           id="lname" name="lname" placeholder="Last Name" class="form-control here" type="text">
+                    <mat-icon matSuffix>people</mat-icon>
+                    <mat-hint>Doe</mat-hint>
+                  </mat-form-field>
                 </div>
                 <div class="form-group row">
-                  <label for="publicinfo" class="col-4 col-form-label">About Me</label>
-                  <div class="col-8">
-                    <textarea id="publicinfo" name="publicinfo" cols="40" rows="4" class="form-control"></textarea>
-                  </div>
+                  <mat-form-field class="edit-profile-input" appearance="outline">
+                    <mat-label>About me</mat-label>
+                    <!--<input matInput placeholder="Placeholder">-->
+                    <textarea matInput ngModel name="publicinfo" #publicinfo="ngModel"
+                              id="publicinfo" name="publicinfo" cols="40" rows="4" class="form-control"></textarea>
+                    <mat-icon matSuffix>content_paste</mat-icon>
+                    <mat-hint></mat-hint>
+                  </mat-form-field>
                 </div>
                 <div class="form-group row">
-                  <label for="country" class="col-4 col-form-label">Country</label>
-                  <div class="col-8">
-                    <input id="country" name="country" placeholder="Wonderland" class="form-control here" type="text">
-                  </div>
+                  <mat-form-field class="edit-profile-input" appearance="outline">
+                    <mat-label>Country</mat-label>
+                    <!--<input matInput placeholder="Placeholder">-->
+                    <input matInput ngModel name="country" #country="ngModel"
+                           id="country" name="country" placeholder="Wonderland" class="form-control here" type="text">
+                    <mat-icon matSuffix>not_listed_location</mat-icon>
+                    <mat-hint></mat-hint>
+                  </mat-form-field>
                 </div>
                 <div class="form-group row">
-                  <div class="offset-4 col-8">
-                    <button name="submit" type="submit" class="btn btn-primary">Update My Profile</button>
+                    <label for="owner" class="col-4 col-form-label">Do you own a restaurant/bar?</label>
+                    <div class="col-1">
+                      <input ngModel name="owner" #owner="ngModel"
+                             id="owner" name="owner" style="width: 30px; height: 30px" class="form-control here"
+                             type="checkbox">
+
+                      <!--<mat-form-field class="edit-profile-input" appearance="outline">-->
+                      <!--<mat-label>Owner?</mat-label>-->
+                      <!--&lt;!&ndash;<input matInput placeholder="Placeholder">&ndash;&gt;-->
+                      <!--<input matInput ngModel name="owner" #owner="ngModel"-->
+                      <!--id="owner" name="owner" style="width: 30px; height: 30px" class="form-control here" type="checkbox">-->
+                      <!--<mat-icon matSuffix>more_vert</mat-icon>-->
+                      <!--<mat-hint></mat-hint>-->
+                  <!--</mat-form-field>-->
+                </div>
+                </div>
+                <div class="form-group row">
+                  <div class="offset-4 col-4">
+                    <!--<button type="submit" class="btn btn-primary">Update My Profile</button>-->
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      type="submit">Update Profile
+                    </button>
+                  </div>
+                  <br/>
+                  <div class="col-4">
+                    <button class="btn btn-default">Skip</button>
                   </div>
                 </div>
               </form>
@@ -73,5 +131,29 @@
         </div>
       </div>
     </div>
+
+
+    <div class="col-md-9" *ngIf="isClicked[1]">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <h4>More options</h4>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+
+              Some text
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>

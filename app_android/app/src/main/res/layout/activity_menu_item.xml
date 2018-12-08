@@ -138,6 +138,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="20dp"
+                    android:background="@drawable/border"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageButton
@@ -149,7 +151,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:scaleX="0.6"
                         android:scaleY="0.6"
-                        app:srcCompat="@drawable/ic_minus" />
+                        app:srcCompat="@drawable/ic_minus_blue" />
 
                     <TextView
                         android:id="@+id/size"

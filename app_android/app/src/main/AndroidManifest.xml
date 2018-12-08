@@ -21,7 +21,7 @@
 
         tools:replace="android:supportsRtl">
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -44,114 +44,117 @@
 
         <!--Change Password Activity If Needed-->
         <activity
-            android:name=".activities.ChangePasswordActivity"
+            android:name=".ui.activities.ChangePasswordActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
 
         <!--Need to be removed!-->
         <activity
-            android:name=".SetUpIpActivity"
+            android:name=".debug.SetUpIpActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".restaurantPage_test.TableSelectionActivity"
+            android:name=".debug.restaurantPage_test.TableSelectionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".entry.EntryActivity"
+            android:name=".ui.entry.EntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.NavBarActivity"
+            android:name=".ui.activities.NavBarActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".imageCrop.ImageCropActivity"
+            android:name=".ui.imageCrop.ImageCropActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.FeedbackActivity"
+            android:name=".ui.activities.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name=".ui.activities.EditProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.BioActivity"
+            android:name=".ui.activities.BioActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AddRestaurantActivity"
+            android:name=".ui.activities.AddRestaurantActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.NotesActivity"
+            android:name=".ui.activities.NotesActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AddPhoneNumberActivity"
+            android:name=".ui.activities.AddPhoneNumberActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".address.AddAddressActivity"
+            android:name=".ui.address.AddAddressActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AddTagsActivity"
+            android:name=".ui.activities.AddTagsActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.OpenHoursActivity"
+            android:name=".ui.activities.OpenHoursActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.EditRestaurantActivity"
+            android:name=".ui.activities.EditRestaurantActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ReviewActivity"
+            android:name=".ui.activities.ReviewActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.AddToMenuActivity"
+            android:name=".ui.restMenu.AddToMenuActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.MenuActivity"
+            android:name=".ui.restMenu.MenuActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ItemDescriptionActivity"
+            android:name=".ui.activities.ItemDescriptionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.MenuItemActivity"
+            android:name=".ui.restMenu.MenuItemActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.EditMenuItemActivity"
+            android:name=".ui.restMenu.EditMenuItemActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.RestMediaGalleryActivity"
+            android:name=".ui.activities.RestMediaGalleryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.RestMediaGallerySlideActivity"
+            android:name=".ui.activities.RestMediaGallerySlideActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.MenuItemCartActivity"
+            android:name=".ui.restMenu.MenuItemCartActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".restMenu.CartActivity"
+            android:name=".ui.restMenu.CartActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.activities.EditRestLayoutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
     </application>
 

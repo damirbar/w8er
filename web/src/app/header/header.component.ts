@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginComponent} from '../user-forms/login/login.component';
+import {UserHolderService} from '../user-holder.service';
+import {LoginService} from '../user-forms/login.service';
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -7,7 +13,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog, public userHolderService: UserHolderService,
+              public loginService: LoginService, private router: Router) { }
+
+  openDialog() {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    this.dialog.open(LoginComponent, dialogConfig);
+  }
+
+  isLoggedIn() {
+    return this.userHolderService.isLoggedIn();
+  }
+
+  logout() {
+    this.userHolderService.removeUser();
+    this.loginService.removeToken();
+    this.router.navigate(['']);
+  }
 
   ngOnInit() {
   }
