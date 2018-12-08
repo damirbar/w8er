@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {IUser} from "../i-user";
 import {UserUpdatesService} from "./user-updates.service";
+import {User} from "../user";
 
 @Component({
   selector: 'app-user-profile',
@@ -24,16 +25,33 @@ export class UserProfileComponent implements OnInit {
 
   editProfile(form: NgForm) {
     if (form.invalid) {
+      console.log('Invalid form');
       return;
     }
 
     const val = form.value;
-    const user: IUser = null;
-    user.first_name = val.fname;
-    user.last_name = val.lname;
-    user.email = val.email;
-    user.about_me = val.public_info;
-    user.is_admin = val.owner;
+    const user: IUser = {
+        first_name: val.fname,
+        last_name: val.lname,
+        email: val.email,
+        about_me: val.public_info,
+        is_admin: val.owner
+      };
+
+    // const user: User = new User();
+    // {
+    //   first_name: val.fname,
+    //   last_name: val.lname,
+    //   email: val.email,
+    //   about_me: val.public_info,
+    //   is_admin: val.owner
+    // };
+
+    // user.first_name = val.fname;
+    // user.last_name = val.lname;
+    // user.email = val.email;
+    // user.about_me = val.public_info;
+    // user.is_admin = val.owner;
 
 
 
@@ -42,11 +60,11 @@ export class UserProfileComponent implements OnInit {
         (data) => {
           console.log(typeof(data));
           if (data instanceof Array && data.length == 0) {
-            console.log("No data received");
+            console.log('No data received');
             return;
           }
 
-          console.log("The user got a code");
+          console.log('The user got a code');
 
         }
       );
