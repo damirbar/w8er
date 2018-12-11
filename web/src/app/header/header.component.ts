@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogConfig} from "@angular/material";
-import {LoginComponent} from "../user-forms/login/login.component";
-import {UserHolderService} from "../user-holder.service";
-import {LoginService} from "../user-forms/login.service";
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoginComponent} from '../user-forms/login/login.component';
+import {UserHolderService} from '../user-holder.service';
+import {LoginService} from '../user-forms/login.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {LoginService} from "../user-forms/login.service";
 export class HeaderComponent implements OnInit {
 
   constructor(private dialog: MatDialog, public userHolderService: UserHolderService,
-              public loginService: LoginService) { }
+              public loginService: LoginService, private router: Router) { }
 
   openDialog() {
 
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.userHolderService.removeUser();
     this.loginService.removeToken();
+    this.router.navigate(['']);
   }
 
   ngOnInit() {

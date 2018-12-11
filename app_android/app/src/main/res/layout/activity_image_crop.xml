@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ultra_dark"
-    tools:context=".entry.EntryActivity">
+    tools:context=".ui.entry.EntryActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimaryDark"
@@ -34,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:fontFamily="sans-serif"
                 android:text="@string/done"
                 android:textAllCaps="false"
@@ -47,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:fontFamily="sans-serif"
                 android:text="@string/cancel"
                 android:textAllCaps="false"

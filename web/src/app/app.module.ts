@@ -4,9 +4,10 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule} from '@angular/forms';
 
-import { MatInputModule,
+import {
+  MatInputModule,
   MatCardModule,
   MatButtonModule,
   MatToolbarModule,
@@ -14,25 +15,26 @@ import { MatInputModule,
   MatSidenavModule,
   MatSidenavContent,
   MatSidenav,
-  MatDialogModule} from '@angular/material';
+  MatDialogModule, MatIconModule
+} from '@angular/material';
 
 
 
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {PostCreateComponent} from "./posts/post-create/post-create.component";
-import {PostListComponent} from "./posts/post-list/post-list.component";
-import {PostsService} from "./posts/posts.service";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PostCreateComponent} from './posts/post-create/post-create.component';
+import {PostListComponent} from './posts/post-list/post-list.component';
+import {PostsService} from './posts/posts.service';
 import { LoginComponent } from './user-forms/login/login.component';
-import {LoginService} from "./user-forms/login.service";
+import {LoginService} from './user-forms/login.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
 import { RestRequestsComponent } from './rests/rest-requests/rest-requests.component';
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import {AuthInterceptor} from "./auth-interceptor.service";
-import {RouterModule} from "@angular/router";
+import {AuthInterceptor} from './auth-interceptor.service';
+import {RouterModule} from '@angular/router';
 import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
@@ -62,7 +64,8 @@ import { AgmCoreModule } from '@agm/core';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAyKg00vFRU05qHOX6GTCR7ANb9RRYSj_o'
     }),
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
   ],
   providers: [
     PostsService,
