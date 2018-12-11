@@ -21,8 +21,7 @@ router.post("/edit-rest", function (req, res) {
   rest.address = updatedUser.address ? updatedUser.address : rest.address;
   rest.country = updatedUser.country ? updatedUser.country : rest.country;
   rest.hours = updatedUser.hours ? updatedUser.hours : rest.hours;
-
-  rest.restLayout = updatedUser.restLayout ? updatedUser.restLayout : rest.restLayout;
+  rest.layout = updatedUser.layout ? updatedUser.layout : rest.layout;
 
 
   if (updatedUser.coordinates) {
