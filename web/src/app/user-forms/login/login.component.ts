@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
               private dialogRef: MatDialogRef<LoginComponent>,
               @Inject(MAT_DIALOG_DATA) data) {}
 
-  static numberOnly(event): boolean {
+  numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
   }
