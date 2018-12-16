@@ -29,7 +29,9 @@ var UserSchema = new mongoose.Schema({
   coordinates: {
     lat: {type: String, default: ""},
     lng: {type: String, default: ""}
-  }
+  },
+  searches: [String]
+
 
 });
 

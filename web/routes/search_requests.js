@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 let geocoder = require('../config/config').geocoder;
 var Restaurant = require("../schemas/restaurant");
+var Search = require("../schemas/search");
 
 let SET_DISTANCE_IN_CITY = 5;
 
@@ -15,6 +16,8 @@ router.get('/free-text-search', function (req, res) {
   let searchResults = {};
 
   let sendSearchResults = function () {
+    addToUser(req);
+    addToSearch(req);
     res.status(200).json(searchResults);
   };
 
@@ -61,6 +64,8 @@ router.post('/search-by-address-tags', function (req, res) {
               ans.push(results[i]);
             }
           }
+          addToUser(req);
+          addToSearch(req);
           res.status(200).json({restaurants: ans});
         }
       });
@@ -104,9 +109,90 @@ router.post('/search-by-coord-tags', function (req, res) {
           ans.push(results[i]);
         }
       }
+      addToUser(req);
+      addToSearch(req);
       res.status(200).json({restaurants: ans});
     }
   });
 });
+
+router.get('/get-top-results', function (req, res) {
+  Search.find({}, null, {limit: 10, sort: {word: -1}}, function (err, words) {
+    if (err) {
+      console.log("error in /get-top-results");
+      res.status(500).json({message: err});
+    }
+    else {
+      res.status(200).json({searches: words});
+    }
+  });
+});
+
+function addToUser(req) {
+  let token = req.headers["x-access-token"] || req.query.token || req.body.token;
+  if (token) {
+    jwt.verify(token, config.email.secret, function (err, decoded) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        req.phone_number = decoded;
+        User.findOne({phone_number: decoded}, function (err, user) {
+          if (err) {
+            console.log(err);
+            res.status(500).json({message: err});
+          }
+          else {
+            if (user) {
+              Restaurant.find({$text: {$search: req.body.tags[0]}}, function (err, results) {
+                if (err) {
+                  console.log("Error in search Restaurants");
+                  console.log(err);
+                } else if (results.length > 0) {
+                  req.user.updateOne({$push: {searches: req.query.keyword}}, function (err, user) {
+                    if (err) {
+                      console.log(err);
+                    }
+                  });
+                }
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+}
+
+function addToSearch(req) {
+  Search.findOne({word: req.body.tags[0].toLowerCase()}, function (err, word) {
+    if (err) {
+      console.log(err);
+      console.log("error in addToSearch");
+    }
+    else {
+      if (word) {
+        word.updateOne({hits: (word.hits + 1)}, function (err, ans) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+      else {
+        Restaurant.find({$text: {$search: req.body.tags[0]}}, function (err, results) {
+          if (err) {
+            console.log("Error in search Restaurants");
+            console.log(err);
+          } else if (results.length > 0) {
+            let word = new Search({
+              word: req.body.tags[0].toLowerCase()
+            });
+            word.save()
+          }
+        });
+      }
+    }
+  });
+}
 
 module.exports = router;
