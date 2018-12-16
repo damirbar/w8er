@@ -17,19 +17,23 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (!this.userHolderService.isLoggedIn()) {
-      this.loginService.getUserWithToken()
-        .subscribe(
-          (data: IUser) => {
+      try {
+        this.loginService.getUserWithToken()
+          .subscribe(
+            (data: IUser) => {
 
-            console.log(typeof(data));
-            if (data instanceof Array && data.length === 0) {
-              console.log('Auto login unsuccessful!');
-              return;
+              console.log(typeof(data));
+              if (data instanceof Array && data.length === 0) {
+                console.log('Auto login unsuccessful!');
+                return;
+              }
+              console.log('Auto login success. Authorized!');
+              this.userHolderService.setUser(data);
             }
-            console.log('Auto login success. Authorized!');
-            this.userHolderService.setUser(data);
-          }
-        );
+          );
+      } catch (err) {
+        console.log('The user have no token.');
+      }
     }
   }
 
