@@ -21,14 +21,14 @@ public class Restaurant {
     private float rating;
     private String profile_img;
     private MenuItemsId menu;
-//    private RestLayout restLayout;
+//    private RestLayout layout;
 
-//    public RestLayout getRestLayout() {
-//        return restLayout;
+//    public layout getRestLayout() {
+//        return layout;
 //    }
 //
-//    public void setRestLayout(RestLayout restLayout) {
-//        this.restLayout = restLayout;
+//    public void setRestLayout(RestLayout layout) {
+//        this.layout = layout;
 //    }
 
     public MenuItemsId getMenu() {

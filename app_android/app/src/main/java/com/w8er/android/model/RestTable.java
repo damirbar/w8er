@@ -5,25 +5,23 @@ import android.os.Parcelable;
 
 public class RestTable implements Parcelable {
 
-    private String tableId;
-    private boolean booked;
+    private String id;
+    private boolean smoking;
+    private boolean outside;
+    private  int col;
+    private  int row;
+    private  int amount;
+
 
     public RestTable(){ }
 
-    public RestTable(String _tableID) {
-        tableId = _tableID;
-        booked = false;
-    }
-
-    public RestTable(String _tableID ,boolean _booked) {
-        tableId = _tableID;
-        booked = _booked;
-    }
-
-
     protected RestTable(Parcel in) {
-        tableId = in.readString();
-        booked = in.readByte() != 0;
+        id = in.readString();
+        smoking = in.readByte() != 0;
+        outside = in.readByte() != 0;
+        col = in.readInt();
+        row = in.readInt();
+        amount = in.readInt();
     }
 
     public static final Creator<RestTable> CREATOR = new Creator<RestTable>() {
@@ -38,31 +36,53 @@ public class RestTable implements Parcelable {
         }
     };
 
-    public String getTableId() {
-        return tableId;
+    public String getId() {
+        return id;
     }
 
-    public void setTableId(String tableId) {
-        this.tableId = tableId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public boolean isBooked() {
-        return booked;
+    public boolean isSmoking() {
+        return smoking;
     }
 
-    public void setBooked(boolean booked) {
-        this.booked = booked;
+    public void setSmoking(boolean smoking) {
+        this.smoking = smoking;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof RestTable)) {
-            return false;
-        }
-        RestTable u = (RestTable) other;
-        return this.getTableId().equals(u.getTableId());
+    public boolean isOutside() {
+        return outside;
     }
 
+    public void setOutside(boolean outside) {
+        this.outside = outside;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
     @Override
     public int describeContents() {
@@ -71,7 +91,26 @@ public class RestTable implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(tableId);
-        dest.writeByte((byte) (booked ? 1 : 0));
+        dest.writeString(id);
+        dest.writeByte((byte) (smoking ? 1 : 0));
+        dest.writeByte((byte) (outside ? 1 : 0));
+        dest.writeInt(col);
+        dest.writeInt(row);
+        dest.writeInt(amount);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof RestTable)) {
+            return false;
+        }
+        RestTable u = (RestTable) other;
+        return this.isOutside() == (u.isOutside()) &&
+                this.isSmoking() == (u.isSmoking()) &&
+                this.getAmount() == (u.getAmount()) &&
+                this.getId().equals(u.getId()) &&
+                this.getRow() == (u.getRow()) &&
+                this.getCol() == (u.getCol());
+    }
+
 }

@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public class RestLayout implements Parcelable {
     private ArrayList<RestTable> tables;
-    private  int row;
-    private  int col;
+    private ArrayList<RestTable> staticItems;
+    private  Grid grid;
 
     public RestLayout(){}
 
     protected RestLayout(Parcel in) {
         tables = in.createTypedArrayList(RestTable.CREATOR);
-        row = in.readInt();
-        col = in.readInt();
+        staticItems = in.createTypedArrayList(RestTable.CREATOR);
+        grid = in.readParcelable(Grid.class.getClassLoader());
     }
 
     public static final Creator<RestLayout> CREATOR = new Creator<RestLayout>() {
@@ -30,6 +30,22 @@ public class RestLayout implements Parcelable {
         }
     };
 
+    public ArrayList<RestTable> getStaticItems() {
+        return staticItems;
+    }
+
+    public void setStaticItems(ArrayList<RestTable> staticItems) {
+        this.staticItems = staticItems;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
     public ArrayList<RestTable> getTables() {
         return tables;
     }
@@ -39,19 +55,19 @@ public class RestLayout implements Parcelable {
     }
 
     public int getRow() {
-        return row;
+        return grid.getRow();
     }
 
     public void setRow(int row) {
-        this.row = row;
+        this.grid.setRow(row);
     }
 
     public int getCol() {
-        return col;
+        return grid.getCol();
     }
 
     public void setCol(int col) {
-        this.col = col;
+        this.grid.setCol(col);
     }
 
     @Override
@@ -60,11 +76,10 @@ public class RestLayout implements Parcelable {
             return false;
         }
         RestLayout u = (RestLayout) other;
-        return this.getTables().equals(u.getTables()) &&
-                this.getRow() == (u.getRow()) &&
-                this.getCol() == (u.getCol());
+        return this.getStaticItems().equals(u.getStaticItems()) &&
+                this.getTables().equals(u.getTables()) &&
+                this.getGrid().equals(u.getGrid());
     }
-
 
     @Override
     public int describeContents() {
@@ -74,7 +89,7 @@ public class RestLayout implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(tables);
-        dest.writeInt(row);
-        dest.writeInt(col);
+        dest.writeTypedList(staticItems);
+        dest.writeParcelable(grid, flags);
     }
 }
