@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.w8er.android.model.StaticItem;
 import com.w8er.android.ui.dialogs.ViewItemDialog;
 import com.w8er.android.model.RestTable;
 
@@ -19,7 +20,7 @@ public class ResLayoutViewBuild {
     private Context context;
     private TableViewBuild tableViewSelect;
 
-    public ResLayoutViewBuild(Context _Context, TableLayout layout, int _ROW, int _COL, ArrayList<RestTable> tables) {
+    public ResLayoutViewBuild(Context _Context, TableLayout layout, int _ROW, int _COL, ArrayList<StaticItem> staticItems, ArrayList<RestTable> tables) {
         context = _Context;
         tableViews = new ArrayList<>();
         ROW = _ROW;
@@ -40,11 +41,11 @@ public class ResLayoutViewBuild {
                 TableViewBuild tableView = new TableViewBuild(context, i, j);
 //                tableView.setStatus(false);
 
-                int pos = tables.indexOf(new RestTable(tableView.getTableID()));
-                if (pos != -1) {
-//                    tableView.setPlace(true);
-                    tableViews.add(tableView);
-                }
+//                int pos = tables.indexOf(new RestTable(tableView.getTableID()));
+//                if (pos != -1) {
+////                    tableView.setPlace(true);
+//                    tableViews.add(tableView);
+//                }
 
                 tableView.setBackground("");
                 tableView.setLayoutParams(new TableRow.LayoutParams(
@@ -98,7 +99,7 @@ public class ResLayoutViewBuild {
 
         for (TableViewBuild t : tableViews) {
             RestTable table = new RestTable();
-            table.setTableId(t.getTableID());
+//            table.setTableId(t.getTableID());
             restTables.add(table);
         }
         return restTables;

@@ -14,9 +14,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Need to be removed!
-//        Intent intent = new Intent(this, EditRestLayoutActivity.class);
+        Intent intent = new Intent(this, EditRestLayoutActivity.class);
 
-        Intent intent = new Intent(this, SetUpIpActivity.class);
+//        Intent intent = new Intent(this, SetUpIpActivity.class);
 
 //        Intent intent = new Intent(this, NavBarActivity.class);
         startActivity(intent);

@@ -34,11 +34,11 @@ public class ResLayoutView {
                 table.setStatus(false);
 
 
-                int pos = tables.indexOf(new RestTable(table.getTableID()));
-                if (pos != -1) {
-                    table.setAvailable();
-                    table.setIsBooked(tables.get(pos).isBooked());
-                }
+//                int pos = tables.indexOf(new RestTable(table.getTableID()));
+//                if (pos != -1) {
+//                    table.setAvailable();
+//                    table.setIsBooked(tables.get(pos).isBooked());
+//                }
 
                 table.setBackground();
                 table.setLayoutParams(new TableRow.LayoutParams(

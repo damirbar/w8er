@@ -7,14 +7,15 @@ import java.util.ArrayList;
 
 public class RestLayout implements Parcelable {
     private ArrayList<RestTable> tables;
-    private ArrayList<RestTable> staticItems;
+    private ArrayList<StaticItem> staticItems;
     private  Grid grid;
 
     public RestLayout(){}
 
+
     protected RestLayout(Parcel in) {
         tables = in.createTypedArrayList(RestTable.CREATOR);
-        staticItems = in.createTypedArrayList(RestTable.CREATOR);
+        staticItems = in.createTypedArrayList(StaticItem.CREATOR);
         grid = in.readParcelable(Grid.class.getClassLoader());
     }
 
@@ -30,11 +31,11 @@ public class RestLayout implements Parcelable {
         }
     };
 
-    public ArrayList<RestTable> getStaticItems() {
+    public ArrayList<StaticItem> getStaticItems() {
         return staticItems;
     }
 
-    public void setStaticItems(ArrayList<RestTable> staticItems) {
+    public void setStaticItems(ArrayList<StaticItem> staticItems) {
         this.staticItems = staticItems;
     }
 

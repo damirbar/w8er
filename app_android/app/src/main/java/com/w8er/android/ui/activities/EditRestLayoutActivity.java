@@ -9,6 +9,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.TableLayout;
 
 import com.w8er.android.R;
+import com.w8er.android.model.StaticItem;
 import com.w8er.android.ui.dialogs.NumberDialog;
 import com.w8er.android.ui.dialogs.ViewItemDialog;
 import com.w8er.android.model.RestLayout;
@@ -133,7 +134,9 @@ public class EditRestLayoutActivity extends AppCompatActivity implements NumberD
 
     private void createLayout(ArrayList<RestTable> tables, int ROW, int COL) {
 
-        res = new ResLayoutViewBuild(this, tableLayout, ROW, COL, tables);
+        ArrayList<StaticItem> staticItems = new ArrayList<>();;
+
+        res = new ResLayoutViewBuild(this, tableLayout, ROW, COL, staticItems, tables);
     }
 
     @Override

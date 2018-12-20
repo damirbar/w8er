@@ -36,10 +36,6 @@ public class TableSelectionActivity extends AppCompatActivity {
     private void createLayout() {
 
         ArrayList<RestTable> tables = new ArrayList<>();
-        tables.add(new RestTable("0,0"));
-        tables.add(new RestTable("1,0",true));
-        tables.add(new RestTable("2,2"));
-        tables.add(new RestTable("1,1"));
 
 
 
